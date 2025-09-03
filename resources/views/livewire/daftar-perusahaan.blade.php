@@ -54,7 +54,7 @@
                                             </div>
                                         </td>
                                         <td>
-                                            <a href="#" class="btn btn-sm btn-primary"> <i class="ri-eye-2-line"></i> Lihat</a>
+                                            <a href="{{ route('profile.show', $item->id) }}" class="btn btn-sm btn-primary"> <i class="ri-eye-2-line"></i> Lihat</a>
                                         </td>
                                     </tr>
                                 @endforeach
