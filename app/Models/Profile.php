@@ -33,6 +33,22 @@ class Profile extends Model
         'keterangan',
     ];
 
+    protected $casts = [
+        'tgl_terbit_izin'     => 'date',
+        'tgl_berakhir_izin'     => 'date',
+    ];
+
+    public function scopeSearch($query, $term)
+    {
+        if ($term) {
+            return $query->where(function ($q) use ($term) {
+                $q->where('nama_pemegang_perizinan', 'like', "%{$term}%")
+                    ->orWhere('nomor_induk_berusaha_nib', 'like', "%{$term}%");
+            });
+        }
+        return $query;
+    }
+
     // Define the relationship for 'Ktt'
     public function ktts()
     {
