@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Livewire\DaftarPerusahaan;
+use App\Livewire\Profile\Handak;
+use App\Livewire\Profile\HandakAdd;
 use App\Livewire\Profile\Iui;
 use App\Livewire\Profile\IuiAdd;
 use App\Livewire\Profile\Iuran;
@@ -33,3 +35,6 @@ Route::get('/profile/add/ktt', KttAdd::class)->name('ktt.add');
 
 Route::get('/profile/kim/{id}', Kim::class)->name('kim.show');
 Route::get('/profile/add/kim', KimAdd::class)->name('kim.add');
+
+Route::get('/profile/handak/{id}', Handak::class)->name('handak.show');
+Route::get('/profile/add/handak', HandakAdd::class)->name('handak.add');

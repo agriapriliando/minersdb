@@ -16,6 +16,12 @@ class Handak extends Model
         'handak_tgl_selesai',
     ];
 
+    protected $casts = [
+        'handak_tgl' => 'date:Y-m-d',
+        'handak_tgl_mulai' => 'date:Y-m-d',
+        'handak_tgl_selesai' => 'date:Y-m-d',
+    ];
+
     public function profile()
     {
         return $this->belongsTo(Profile::class);
