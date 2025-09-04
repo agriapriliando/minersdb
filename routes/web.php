@@ -6,6 +6,8 @@ use App\Livewire\Profile\Iui;
 use App\Livewire\Profile\IuiAdd;
 use App\Livewire\Profile\Iuran;
 use App\Livewire\Profile\IuranAdd;
+use App\Livewire\Profile\Kim;
+use App\Livewire\Profile\KimAdd;
 use App\Livewire\Profile\Ktt;
 use App\Livewire\Profile\KttAdd;
 use App\Livewire\Profile\Profile;
@@ -28,3 +30,6 @@ Route::get('/profile/add/iui', IuiAdd::class)->name('iui.add');
 
 Route::get('/profile/ktt/{id}', Ktt::class)->name('ktt.show');
 Route::get('/profile/add/ktt', KttAdd::class)->name('ktt.add');
+
+Route::get('/profile/kim/{id}', Kim::class)->name('kim.show');
+Route::get('/profile/add/kim', KimAdd::class)->name('kim.add');

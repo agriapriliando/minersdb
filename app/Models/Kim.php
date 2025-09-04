@@ -15,6 +15,12 @@ class Kim extends Model
         'kim_tgl_selesai',
     ];
 
+    protected $casts = [
+        'kim_tgl_persetujuan' => 'date:Y-m-d',
+        'kim_tgl_mulai' => 'date:Y-m-d',
+        'kim_tgl_selesai' => 'date:Y-m-d',
+    ];
+
     public function profile()
     {
         return $this->belongsTo(Profile::class);
