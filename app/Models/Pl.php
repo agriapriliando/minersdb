@@ -15,6 +15,10 @@ class Pl extends Model
         'persetujuan_lingkungan_area_penunjang',
     ];
 
+    protected $casts = [
+        'persetujuan_lingkungan_tgl' => 'date:Y-m-d',
+    ];
+
     public function profile()
     {
         return $this->belongsTo(Profile::class);
