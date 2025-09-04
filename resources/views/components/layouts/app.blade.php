@@ -462,14 +462,14 @@
                                                 Tahunan</a></li>
                                         <li><a href="{{ route('iui.show', session('id_perusahaan')) }}"><span class="menu-icon"><i class="ri-file-list-3-line"></i></span>Izin Usaha Industri
                                                 (IUI)</a></li>
-                                        <li><a href="{{ route('ktt.show', session('id_perusahaan')) }}#"><span class="menu-icon"><i class="ri-shield-user-line"></i></span>Kepala Teknik Tambang
+                                        <li><a href="{{ route('ktt.show', session('id_perusahaan')) }}"><span class="menu-icon"><i class="ri-shield-user-line"></i></span>Kepala Teknik Tambang
                                                 KTT</a></li>
-                                        <li><a href="{{ route('kim.show', session('id_perusahaan')) }}#"><span class="menu-icon"><i class="ri-key-2-line"></i></span>Kartu Izin Meledakan (KIM)</a>
+                                        <li><a href="{{ route('kim.show', session('id_perusahaan')) }}"><span class="menu-icon"><i class="ri-key-2-line"></i></span>Kartu Izin Meledakan (KIM)</a>
                                         </li>
-                                        <li><a href="{{ route('handak.show', session('id_perusahaan')) }}#"><span class="menu-icon"><i class="ri-archive-line"></i></span>Gudang Bahan Peledak</a>
+                                        <li><a href="{{ route('handak.show', session('id_perusahaan')) }}"><span class="menu-icon"><i class="ri-archive-line"></i></span>Gudang Bahan Peledak</a>
                                         </li>
-                                        <li><a href="{{ route('bbc.show', session('id_perusahaan')) }}#"><span class="menu-icon"><i class="ri-oil-line"></i></span>Tangki BBC</a></li>
-                                        <li><a href="{{ route('le.show', session('id_perusahaan')) }}#"><span class="menu-icon"><i class="ri-file-search-line"></i></span>Laporan Eksplorasi</a>
+                                        <li><a href="{{ route('bbc.show', session('id_perusahaan')) }}"><span class="menu-icon"><i class="ri-oil-line"></i></span>Tangki BBC</a></li>
+                                        <li><a href="{{ route('le.show', session('id_perusahaan')) }}"><span class="menu-icon"><i class="ri-file-search-line"></i></span>Laporan Eksplorasi</a>
                                         </li>
                                         <li><a href="#"><span class="menu-icon"><i class="ri-anchor-line"></i></span>Pelabuhan</a></li>
                                         <li><a href="#"><span class="menu-icon"><i class="ri-leaf-line"></i></span>Persetujuan Lingkungan (PKPLH/SKKL)</a></li>
