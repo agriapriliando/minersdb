@@ -14,6 +14,8 @@ use App\Livewire\Profile\Kim;
 use App\Livewire\Profile\KimAdd;
 use App\Livewire\Profile\Ktt;
 use App\Livewire\Profile\KttAdd;
+use App\Livewire\Profile\Le;
+use App\Livewire\Profile\LeAdd;
 use App\Livewire\Profile\Profile;
 use Illuminate\Support\Facades\Route;
 
@@ -43,3 +45,6 @@ Route::get('/profile/add/handak', HandakAdd::class)->name('handak.add');
 
 Route::get('/profile/bbc/{id}', Bbc::class)->name('bbc.show');
 Route::get('/profile/add/bbc', BbcAdd::class)->name('bbc.add');
+
+Route::get('/profile/le/{id}', Le::class)->name('le.show');
+Route::get('/profile/add/le', LeAdd::class)->name('le.add');
