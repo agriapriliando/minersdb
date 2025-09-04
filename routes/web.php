@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Livewire\DaftarPerusahaan;
+use App\Livewire\Profile\Bbc;
+use App\Livewire\Profile\BbcAdd;
 use App\Livewire\Profile\Handak;
 use App\Livewire\Profile\HandakAdd;
 use App\Livewire\Profile\Iui;
@@ -38,3 +40,6 @@ Route::get('/profile/add/kim', KimAdd::class)->name('kim.add');
 
 Route::get('/profile/handak/{id}', Handak::class)->name('handak.show');
 Route::get('/profile/add/handak', HandakAdd::class)->name('handak.add');
+
+Route::get('/profile/bbc/{id}', Bbc::class)->name('bbc.show');
+Route::get('/profile/add/bbc', BbcAdd::class)->name('bbc.add');
