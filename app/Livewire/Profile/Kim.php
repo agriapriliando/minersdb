@@ -62,6 +62,12 @@ class Kim extends Component
 
         ModelsKim::find($id)->update($data);
 
+        // refresh data original dari DB
+        $this->original = ModelsKim::where('profile_id', session('id_perusahaan'))
+            ->latest()
+            ->get()
+            ->toArray();
+
         $this->dispatch('update-success', message: 'Data KIM berhasil diperbaharui!');
     }
 

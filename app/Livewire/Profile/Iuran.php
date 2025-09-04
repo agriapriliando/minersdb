@@ -44,6 +44,12 @@ class Iuran extends Component
 
         ModelsIuran::find($id)->update($data);
 
+        // refresh data original dari DB
+        $this->original = ModelsIuran::where('profile_id', session('id_perusahaan'))
+            ->latest()
+            ->get()
+            ->toArray();
+
         $this->dispatch('update-success', message: 'Data berhasil diperbaharui!');
     }
 

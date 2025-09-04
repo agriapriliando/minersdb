@@ -55,6 +55,12 @@ class Handak extends Component
 
         ModelsHandak::find($id)->update($data);
 
+        // refresh data original dari DB
+        $this->original = ModelsHandak::where('profile_id', session('id_perusahaan'))
+            ->latest()
+            ->get()
+            ->toArray();
+
         $this->dispatch('update-success', message: 'Data berhasil diperbaharui!');
     }
 

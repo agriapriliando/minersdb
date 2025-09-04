@@ -51,6 +51,12 @@ class Ktt extends Component
 
         ModelsKtt::find($id)->update($data);
 
+        // refresh data original dari DB
+        $this->original = ModelsKtt::where('profile_id', session('id_perusahaan'))
+            ->latest()
+            ->get()
+            ->toArray();
+
         $this->dispatch('update-success', message: 'Data KTT berhasil diperbaharui!');
     }
 

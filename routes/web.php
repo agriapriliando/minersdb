@@ -16,6 +16,8 @@ use App\Livewire\Profile\Ktt;
 use App\Livewire\Profile\KttAdd;
 use App\Livewire\Profile\Le;
 use App\Livewire\Profile\LeAdd;
+use App\Livewire\Profile\Pelabuhan;
+use App\Livewire\Profile\PelabuhanAdd;
 use App\Livewire\Profile\Profile;
 use Illuminate\Support\Facades\Route;
 
@@ -48,3 +50,6 @@ Route::get('/profile/add/bbc', BbcAdd::class)->name('bbc.add');
 
 Route::get('/profile/le/{id}', Le::class)->name('le.show');
 Route::get('/profile/add/le', LeAdd::class)->name('le.add');
+
+Route::get('/profile/pelabuhan/{id}', Pelabuhan::class)->name('pelabuhan.show');
+Route::get('/profile/add/pelabuhan', PelabuhanAdd::class)->name('pelabuhan.add');
