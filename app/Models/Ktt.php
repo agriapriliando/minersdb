@@ -13,6 +13,10 @@ class Ktt extends Model
         'nama_ktt',
     ];
 
+    protected $casts = [
+        'ktt_tgl_pengesahan' => 'date:Y-m-d',
+    ];
+
     public function profile()
     {
         return $this->belongsTo(Profile::class);
