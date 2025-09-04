@@ -12,6 +12,10 @@ class Iuran extends Model
         'iuran_tetap_per_tahun_tgl_bayar',
     ];
 
+    protected $casts = [
+        'iuran_tetap_per_tahun_tgl_bayar' => 'date:Y-m-d'
+    ];
+
     public function profile()
     {
         return $this->belongsTo(Profile::class);

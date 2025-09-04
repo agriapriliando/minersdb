@@ -25,11 +25,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-    <!-- Vendor CSS -->
-    <link rel="stylesheet" href="{{ asset('') }}assets/css/libs.bundle.css" />
-
-    <!-- Main CSS -->
-    <link rel="stylesheet" href="{{ asset('') }}assets/css/theme.bundle.css" />
+    @stack('scriptsatas')
 
     <!-- Fix for custom scrollbar if JS is disabled-->
     <noscript>
@@ -53,7 +49,7 @@
     <!-- Navbar-->
     <nav class="navbar navbar-expand-lg navbar-light border-bottom py-0 fixed-top bg-white">
         <div class="container-fluid">
-            <a class="navbar-brand d-flex justify-content-start align-items-center border-end" href="./index.html">
+            <a class="navbar-brand d-flex justify-content-start align-items-center border-end" href="{{ route('home') }}">
                 <div class="d-flex align-items-center">
                     <div class="me-2">
                         <img src="{{ asset('assets/logo/android-chrome-192x192.png') }}" width="30" alt="">
@@ -430,7 +426,7 @@
 
                         <!-- Dashboard Menu Section-->
                         <li class="menu-section mt-2">Menu</li>
-                        <li class="menu-item"><a class="d-flex align-items-center" href="./index.html">
+                        <li class="menu-item"><a class="d-flex align-items-center" href="{{ route('home') }}">
                                 <span class="menu-icon">
                                     <i class="ri-dashboard-line"></i>
                                 </span>
@@ -439,70 +435,72 @@
                                 </span></a>
                         </li>
                         <!-- / Dashboard Menu Section-->
-
-                        <!-- Menu Perusahaan Section-->
-                        <li class="menu-section mt-4">Menu Perusahaan</li>
-                        <!-- Profil Menu Section-->
-                        <li class="menu-item"><a class="d-flex align-items-center" href="./index.html">
-                                <span class="menu-icon">
-                                    <i class="ri-user-line"></i>
-                                </span>
-                                <span class="menu-link">
-                                    Profil Perusahaan
-                                </span></a>
-                        </li>
-                        <!-- / Profil Menu Section-->
-                        <li class="menu-item"><a class="d-flex align-items-center collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseMenuItemPages"
-                                aria-expanded="false" aria-controls="collapseMenuItemPages">
-                                <span class="menu-icon">
-                                    <i class="ri-file-list-3-line"></i>
-                                </span>
-                                <span class="menu-link">Dokumen Teknis</span></a>
-                            <div class="collapse" id="collapseMenuItemPages">
-                                <ul class="submenu">
-                                    <li><a href="#"><span class="menu-icon"><i class="ri-money-dollar-circle-line"></i></span>Iuran Tetap Tahunan</a></li>
-                                    <li><a href="#"><span class="menu-icon"><i class="ri-file-list-3-line"></i></span>Izin Usaha Industri (IUI)</a></li>
-                                    <li><a href="#"><span class="menu-icon"><i class="ri-shield-user-line"></i></span>Kepala Teknik Tambang KTT</a></li>
-                                    <li><a href="#"><span class="menu-icon"><i class="ri-key-2-line"></i></span>Kartu Izin Meledakan (KIM)</a></li>
-                                    <li><a href="#"><span class="menu-icon"><i class="ri-archive-line"></i></span>Gudang Bahan Peledak</a></li>
-                                    <li><a href="#"><span class="menu-icon"><i class="ri-oil-line"></i></span>Tangki BBC</a></li>
-                                    <li><a href="#"><span class="menu-icon"><i class="ri-file-search-line"></i></span>Laporan Eksplorasi</a></li>
-                                    <li><a href="#"><span class="menu-icon"><i class="ri-anchor-line"></i></span>Pelabuhan</a></li>
-                                    <li><a href="#"><span class="menu-icon"><i class="ri-leaf-line"></i></span>Persetujuan Lingkungan (PKPLH/SKKL)</a></li>
-                                    <li><a href="#"><span class="menu-icon"><i class="ri-map-pin-line"></i></span>Project Area</a></li>
-                                    <li><a href="#"><span class="menu-icon"><i class="ri-earth-line"></i></span>Rencana Pascatambang RPT</a></li>
-                                    <li><a href="#"><span class="menu-icon"><i class="ri-road-map-line"></i></span>Rencana Penambangan</a></li>
-                                    <li><a href="#"><span class="menu-icon"><i class="ri-seedling-line"></i></span>Rencana Reklamasi RR</a></li>
-                                    <li><a href="#"><span class="menu-icon"><i class="ri-tools-line"></i></span>Rencana Teknis Penambangan</a></li>
-                                    <li><a href="#"><span class="menu-icon"><i class="ri-government-line"></i></span>RIPPM</a></li>
-                                    <li><a href="#"><span class="menu-icon"><i class="ri-clipboard-line"></i></span>RKAB Eksplorasi</a></li>
-                                    <li><a href="#"><span class="menu-icon"><i class="ri-briefcase-4-line"></i></span>RKAB Operasi Produksi</a></li>
-                                    <li><a href="#"><span class="menu-icon"><i class="ri-book-2-line"></i></span>Studi Kelayakan (Persetujuan Tekno-Ekonomi)</a></li>
-                                    <li><a href="#"><span class="menu-icon"><i class="ri-flag-line"></i></span>Tanda Batas</a></li>
-                                </ul>
-                            </div>
-                        </li>
-                        <!-- Pelaporan Section-->
-                        <li class="menu-item"><a class="d-flex align-items-center" href="./index.html">
-                                <span class="menu-icon">
-                                    <i class="ri-file-list-2-line"></i>
-                                </span>
-                                <span class="menu-link">
-                                    Pelaporan
-                                </span></a>
-                        </li>
-                        <!-- / Pelaporan Section-->
-                        <!-- Surat Menyurat Section-->
-                        <li class="menu-item"><a class="d-flex align-items-center" href="./index.html">
-                                <span class="menu-icon">
-                                    <i class="ri-archive-drawer-line"></i>
-                                </span>
-                                <span class="menu-link">
-                                    Surat Menyurat
-                                </span></a>
-                        </li>
-                        <!-- / Surat Menyurat Section-->
-                        <!-- / Menu Perusahaan Section-->
+                        @if (session('id_perusahaan') != null)
+                            <!-- Menu Perusahaan Section-->
+                            <li class="menu-section mt-4">Menu Perusahaan</li>
+                            <!-- Profil Menu Section-->
+                            <li class="menu-item"><a class="d-flex align-items-center" href="{{ route('profile.show', session('id_perusahaan')) }}">
+                                    <span class="menu-icon">
+                                        <i class="ri-user-line"></i>
+                                    </span>
+                                    <span class="menu-link">
+                                        Profil Perusahaan
+                                    </span></a>
+                            </li>
+                            <!-- / Profil Menu Section-->
+                            <li class="menu-item"><a class="d-flex align-items-center collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseMenuItemPages"
+                                    aria-expanded="false" aria-controls="collapseMenuItemPages">
+                                    <span class="menu-icon">
+                                        <i class="ri-file-list-3-line"></i>
+                                    </span>
+                                    <span class="menu-link">Dokumen Teknis</span></a>
+                                <div class="collapse" id="collapseMenuItemPages">
+                                    <ul class="submenu">
+                                        <li><a href="{{ route('iuran.show', session('id_perusahaan')) }}"><span class="menu-icon"><i class="ri-money-dollar-circle-line"></i></span>Iuran Tetap
+                                                Tahunan</a></li>
+                                        <li><a href="#"><span class="menu-icon"><i class="ri-file-list-3-line"></i></span>Izin Usaha Industri (IUI)</a></li>
+                                        <li><a href="#"><span class="menu-icon"><i class="ri-shield-user-line"></i></span>Kepala Teknik Tambang KTT</a></li>
+                                        <li><a href="#"><span class="menu-icon"><i class="ri-key-2-line"></i></span>Kartu Izin Meledakan (KIM)</a></li>
+                                        <li><a href="#"><span class="menu-icon"><i class="ri-archive-line"></i></span>Gudang Bahan Peledak</a></li>
+                                        <li><a href="#"><span class="menu-icon"><i class="ri-oil-line"></i></span>Tangki BBC</a></li>
+                                        <li><a href="#"><span class="menu-icon"><i class="ri-file-search-line"></i></span>Laporan Eksplorasi</a></li>
+                                        <li><a href="#"><span class="menu-icon"><i class="ri-anchor-line"></i></span>Pelabuhan</a></li>
+                                        <li><a href="#"><span class="menu-icon"><i class="ri-leaf-line"></i></span>Persetujuan Lingkungan (PKPLH/SKKL)</a></li>
+                                        <li><a href="#"><span class="menu-icon"><i class="ri-map-pin-line"></i></span>Project Area</a></li>
+                                        <li><a href="#"><span class="menu-icon"><i class="ri-earth-line"></i></span>Rencana Pascatambang RPT</a></li>
+                                        <li><a href="#"><span class="menu-icon"><i class="ri-road-map-line"></i></span>Rencana Penambangan</a></li>
+                                        <li><a href="#"><span class="menu-icon"><i class="ri-seedling-line"></i></span>Rencana Reklamasi RR</a></li>
+                                        <li><a href="#"><span class="menu-icon"><i class="ri-tools-line"></i></span>Rencana Teknis Penambangan</a></li>
+                                        <li><a href="#"><span class="menu-icon"><i class="ri-government-line"></i></span>RIPPM</a></li>
+                                        <li><a href="#"><span class="menu-icon"><i class="ri-clipboard-line"></i></span>RKAB Eksplorasi</a></li>
+                                        <li><a href="#"><span class="menu-icon"><i class="ri-briefcase-4-line"></i></span>RKAB Operasi Produksi</a></li>
+                                        <li><a href="#"><span class="menu-icon"><i class="ri-book-2-line"></i></span>Studi Kelayakan (Persetujuan Tekno-Ekonomi)</a></li>
+                                        <li><a href="#"><span class="menu-icon"><i class="ri-flag-line"></i></span>Tanda Batas</a></li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <!-- Pelaporan Section-->
+                            <li class="menu-item"><a class="d-flex align-items-center" href="./index.html">
+                                    <span class="menu-icon">
+                                        <i class="ri-file-list-2-line"></i>
+                                    </span>
+                                    <span class="menu-link">
+                                        Pelaporan
+                                    </span></a>
+                            </li>
+                            <!-- / Pelaporan Section-->
+                            <!-- Surat Menyurat Section-->
+                            <li class="menu-item"><a class="d-flex align-items-center" href="./index.html">
+                                    <span class="menu-icon">
+                                        <i class="ri-archive-drawer-line"></i>
+                                    </span>
+                                    <span class="menu-link">
+                                        Surat Menyurat
+                                    </span></a>
+                            </li>
+                            <!-- / Surat Menyurat Section-->
+                            <!-- / Menu Perusahaan Section-->
+                        @endif
 
                     </ul>
                 </div>
@@ -511,12 +509,8 @@
 
     </aside> <!-- / Page Aside-->
 
-    <!-- Theme JS -->
-    <!-- Vendor JS -->
-    <script src="{{ asset('') }}assets/js/vendor.bundle.js"></script>
+    @stack('scriptsbawah')
 
-    <!-- Theme JS -->
-    <script src="{{ asset('') }}assets/js/theme.bundle.js"></script>
 </body>
 
 </html>

@@ -12,6 +12,11 @@ class DaftarPerusahaan extends Component
 
     public $search = '';
     public $perPage = 5;
+    public function mount()
+    {
+        session(['id_perusahaan' => null]);
+        session(['nama_pemegang_perizinan' => null]);
+    }
     public function render()
     {
         return view('livewire.daftar-perusahaan', [
