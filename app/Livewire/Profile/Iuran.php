@@ -28,6 +28,14 @@ class Iuran extends Component
         'iuran.*.iuran_tetap_per_tahun_tgl_bayar.date'     => 'Tanggal tidak valid.',
     ];
 
+    public function mount()
+    {
+        $this->iuran = ModelsIuran::where('profile_id', session('id_perusahaan'))->latest()->get()
+            ->toArray();
+        $this->original = $this->iuran; // simpan salinan asli
+
+    }
+
     public function update($id)
     {
         $this->validate();
@@ -37,14 +45,6 @@ class Iuran extends Component
         ModelsIuran::find($id)->update($data);
 
         $this->dispatch('update-success', message: 'Data berhasil diperbaharui!');
-    }
-
-    public function mount()
-    {
-        $this->iuran = ModelsIuran::where('profile_id', session('id_perusahaan'))->latest()->get()
-            ->toArray();
-        $this->original = $this->iuran; // simpan salinan asli
-
     }
 
     public function batal($index)

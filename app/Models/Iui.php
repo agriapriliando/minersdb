@@ -14,6 +14,10 @@ class Iui extends Model
         'iui_kontrak_kerja_sama',
     ];
 
+    protected $casts = [
+        'iui_tgl_izin' => 'date:Y-m-d'
+    ];
+
     public function profile()
     {
         return $this->belongsTo(Profile::class);
