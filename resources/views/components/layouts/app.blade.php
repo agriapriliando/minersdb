@@ -41,7 +41,9 @@
 
     <!-- Page Title -->
     <title>{{ $title ?? 'Bid. Tambang ESDM' }}</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @if (app()->environment('local') && config('app.debug'))
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @endif
 </head>
 
 <body class="">
