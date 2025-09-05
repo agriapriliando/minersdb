@@ -14,4 +14,8 @@ class Rr extends Model
         'rr_nominal_yang_ditetapkan',
         'rr_nominal_yang_ditempatkan',
     ];
+
+    protected $casts = [
+        'rr_tgl_persetujuan' => 'date:Y-m-d',
+    ];
 }
