@@ -15,6 +15,10 @@ class Rpt extends Model
         'rpt_tahun_pembayaran',
     ];
 
+    protected $casts = [
+        'rpt_tgl_persetujuan' => 'date:Y-m-d',
+    ];
+
     public function profile()
     {
         return $this->belongsTo(Profile::class);

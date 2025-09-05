@@ -23,6 +23,8 @@ use App\Livewire\Profile\PelabuhanAdd;
 use App\Livewire\Profile\Pl;
 use App\Livewire\Profile\PlAdd;
 use App\Livewire\Profile\Profile;
+use App\Livewire\Profile\Rpt;
+use App\Livewire\Profile\RptAdd;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -63,3 +65,6 @@ Route::get('/profile/add/pl', PlAdd::class)->name('pl.add');
 
 Route::get('/profile/pa/{id}', Pa::class)->name('pa.show');
 Route::get('/profile/add/pa', PaAdd::class)->name('pa.add');
+
+Route::get('/profile/rpt/{id}', Rpt::class)->name('rpt.show');
+Route::get('/profile/add/rpt', RptAdd::class)->name('rpt.add');
