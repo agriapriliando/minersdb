@@ -29,6 +29,8 @@ use App\Livewire\Profile\Rr;
 use App\Livewire\Profile\RrAdd;
 use App\Livewire\Profile\Stk;
 use App\Livewire\Profile\StkAdd;
+use App\Livewire\Profile\Tb;
+use App\Livewire\Profile\TbAdd;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -78,3 +80,6 @@ Route::get('/profile/add/rr', RrAdd::class)->name('rr.add');
 
 Route::get('/profile/stk/{id}', Stk::class)->name('stk.show');
 Route::get('/profile/add/stk', StkAdd::class)->name('stk.add');
+
+Route::get('/profile/tb/{id}', Tb::class)->name('tb.show');
+Route::get('/profile/add/tb', TbAdd::class)->name('tb.add');

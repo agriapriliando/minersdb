@@ -12,4 +12,8 @@ class Tb extends Model
         'tgl_sk_tanda_batas',
         'tanda_batas_laporan_pemeliharaan',
     ];
+
+    protected $casts = [
+        'tgl_sk_tanda_batas' => 'date:Y-m-d',
+    ];
 }
