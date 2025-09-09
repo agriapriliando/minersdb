@@ -20,99 +20,157 @@
                         <div class="card-header justify-content-between align-items-center d-flex">
                             <h6 class="card-title m-0">Kartu Izin Meledakan | KIM | {{ session('nama_pemegang_perizinan') }}</h6>
                             <div class="d-flex gap-2">
-                                <a href="{{ route('profile.show', session('id_perusahaan')) }}" wire:navigate class="btn btn-primary btn-sm">Kembali</a>
-                                <a href="{{ route('kim.add') }}" wire:navigate class="btn btn-primary btn-sm"><i class="ri-add-line"></i> Tambah</a>
+                                <a href="{{ route('profile.show', session('id_perusahaan')) }}" wire:navigate class="btn btn-primary btn-sm">Profil</a>
                             </div>
                         </div>
-                        <div class="card-body">
-                            @foreach ($kim as $index => $item)
-                                <form wire:submit.prevent="update({{ $item['id'] }})" x-data="{ editing: false, confirmDelete: false }" wire:key="kim-row-{{ $item['id'] }}">
+                        <div class="card-body table-responsive">
+                            <table class="table table-bordered align-middle">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th style="width: 5%">#</th>
+                                        <th class="text-nowrap">No Persetujuan</th>
+                                        <th class="text-nowrap">Tanggal Persetujuan</th>
+                                        <th class="text-nowrap">Nama Juru Ledak</th>
+                                        <th class="text-nowrap">Tanggal Mulai</th>
+                                        <th class="text-nowrap">Tanggal Selesai</th>
+                                        <th class="text-nowrap" style="width: 20%">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($kim as $id => $item)
+                                        <tr wire:key="kim-row-{{ $id }}" x-data="{ confirmDelete: false }">
+                                            <td>{{ $loop->iteration }}</td>
 
-                                    <div class="row">
-                                        <div class="col-md-4 mb-3">
-                                            <label class="form-label">
-                                                <span class="fw-bold">{{ $loop->iteration }}.</span> Nomor Persetujuan
-                                            </label>
-                                            <input type="text" class="form-control @error('kim.' . $index . '.kim_no_persetujuan') is-invalid @enderror"
-                                                wire:model="kim.{{ $index }}.kim_no_persetujuan" :disabled="!editing">
-                                            @error('kim.' . $index . '.kim_no_persetujuan')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-
-                                        <div class="col-md-2 mb-3">
-                                            <label class="form-label">Tanggal</label>
-                                            <input type="date" class="form-control @error('kim.' . $index . '.kim_tgl_persetujuan') is-invalid @enderror"
-                                                wire:model="kim.{{ $index }}.kim_tgl_persetujuan" :disabled="!editing">
-                                            @error('kim.' . $index . '.kim_tgl_persetujuan')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-
-                                        <div class="col-md-4 mb-3">
-                                            <label class="form-label">
-                                                Nama Juru Ledak
-                                            </label>
-                                            <input type="text" class="form-control @error('kim.' . $index . '.kim_nama_juru_ledak') is-invalid @enderror"
-                                                wire:model="kim.{{ $index }}.kim_nama_juru_ledak" :disabled="!editing">
-                                            @error('kim.' . $index . '.kim_nama_juru_ledak')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-2 mb-3">
-                                                <label class="form-label">Tanggal Mulai</label>
-                                                <input type="date" class="form-control @error('kim.' . $index . '.kim_tgl_mulai') is-invalid @enderror"
-                                                    wire:model="kim.{{ $index }}.kim_tgl_mulai" :disabled="!editing">
-                                                @error('kim.' . $index . '.kim_tgl_mulai')
+                                            {{-- No Persetujuan --}}
+                                            <td>
+                                                <input type="text" class="form-control form-control-sm @error('kim.' . $id . '.kim_no_persetujuan') is-invalid @enderror"
+                                                    wire:model="kim.{{ $id }}.kim_no_persetujuan" :disabled="$wire.editingId !== {{ $id }}">
+                                                @error('kim.' . $id . '.kim_no_persetujuan')
                                                     <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
-                                            </div>
+                                            </td>
 
-                                            <div class="col-md-2 mb-3">
-                                                <label class="form-label">Tanggal Selesai</label>
-                                                <input type="date" class="form-control @error('kim.' . $index . '.kim_tgl_selesai') is-invalid @enderror"
-                                                    wire:model="kim.{{ $index }}.kim_tgl_selesai" :disabled="!editing">
-                                                @error('kim.' . $index . '.kim_tgl_selesai')
+                                            {{-- Tanggal Persetujuan --}}
+                                            <td>
+                                                <input type="date" class="form-control form-control-sm @error('kim.' . $id . '.kim_tgl_persetujuan') is-invalid @enderror"
+                                                    wire:model="kim.{{ $id }}.kim_tgl_persetujuan" :disabled="$wire.editingId !== {{ $id }}">
+                                                @error('kim.' . $id . '.kim_tgl_persetujuan')
                                                     <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
-                                            </div>
-                                        </div>
+                                            </td>
 
-                                    </div>
+                                            {{-- Nama Juru Ledak --}}
+                                            <td class="text-nowrap" style="min-width: 300px;">
+                                                <input type="text" class="form-control form-control-sm @error('kim.' . $id . '.kim_nama_juru_ledak') is-invalid @enderror"
+                                                    wire:model="kim.{{ $id }}.kim_nama_juru_ledak" :disabled="$wire.editingId !== {{ $id }}">
+                                                @error('kim.' . $id . '.kim_nama_juru_ledak')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </td>
 
-                                    <div class="d-flex flex-wrap gap-2 align-items-center">
-                                        {{-- Simpan --}}
-                                        <button type="submit" class="btn btn-primary btn-sm" x-show="editing" @click="editing = false">
-                                            Simpan
-                                        </button>
+                                            {{-- Tanggal Mulai --}}
+                                            <td>
+                                                <input type="date" class="form-control form-control-sm @error('kim.' . $id . '.kim_tgl_mulai') is-invalid @enderror"
+                                                    wire:model="kim.{{ $id }}.kim_tgl_mulai" :disabled="$wire.editingId !== {{ $id }}">
+                                                @error('kim.' . $id . '.kim_tgl_mulai')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </td>
 
-                                        {{-- Edit / Batal (reset nilai dari DB via method batal) --}}
-                                        <button type="button" class="btn btn-secondary btn-sm" @click="editing = !editing" wire:click="batal({{ $index }})">
-                                            <i class="ri-edit-line"></i>
-                                            <span x-text="editing ? 'Batal' : 'Edit'"></span>
-                                        </button>
+                                            {{-- Tanggal Selesai --}}
+                                            <td>
+                                                <input type="date" class="form-control form-control-sm @error('kim.' . $id . '.kim_tgl_selesai') is-invalid @enderror"
+                                                    wire:model="kim.{{ $id }}.kim_tgl_selesai" :disabled="$wire.editingId !== {{ $id }}">
+                                                @error('kim.' . $id . '.kim_tgl_selesai')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </td>
 
-                                        {{-- Hapus --}}
-                                        <button type="button" class="btn btn-danger btn-sm text-white" @click.stop="confirmDelete = true">
-                                            <i class="ri-delete-bin-line"></i> Hapus
-                                        </button>
+                                            {{-- Tombol Aksi --}}
+                                            <td>
+                                                <div class="d-flex flex-wrap gap-1">
+                                                    {{-- Simpan --}}
+                                                    <button type="button" class="btn btn-primary btn-sm" wire:click="update({{ $id }})" x-show="$wire.editingId === {{ $id }}">
+                                                        Simpan
+                                                    </button>
 
-                                        {{-- Alert konfirmasi hapus --}}
-                                        <div x-cloak x-show="confirmDelete" x-transition>
-                                            <span class="me-2">Yakin ingin menghapus data ini?</span>
-                                            <button type="button" class="btn btn-danger btn-sm" @click="confirmDelete = false" wire:click="delete({{ $item['id'] }})">
-                                                Ya
+                                                    {{-- Edit --}}
+                                                    <button type="button" class="btn btn-secondary btn-sm" @click="$wire.editingId = {{ $id }}"
+                                                        x-show="$wire.editingId !== {{ $id }}">
+                                                        <i class="ri-edit-line"></i>
+                                                    </button>
+
+                                                    {{-- Batal --}}
+                                                    <button type="button" class="btn btn-secondary btn-sm" wire:click="batal({{ $id }})" x-show="$wire.editingId === {{ $id }}">
+                                                        <i class="ri-close-line"></i>
+                                                    </button>
+
+                                                    {{-- Hapus --}}
+                                                    <button type="button" class="btn btn-danger btn-sm text-white" @click.stop="confirmDelete = true"
+                                                        x-show="$wire.editingId !== {{ $id }}">
+                                                        <i class="ri-delete-bin-line"></i>
+                                                    </button>
+                                                </div>
+
+                                                {{-- Konfirmasi hapus --}}
+                                                <div x-cloak x-show="confirmDelete" x-transition class="mt-2">
+                                                    <span class="small d-block mb-1">Yakin hapus?</span>
+                                                    <div class="d-flex gap-1">
+                                                        <button type="button" class="btn btn-danger btn-sm" @click="confirmDelete = false" wire:click="delete({{ $id }})">
+                                                            Ya
+                                                        </button>
+                                                        <button type="button" class="btn btn-secondary btn-sm" @click="confirmDelete = false">
+                                                            Batal
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+
+                                    {{-- Form tambah data baru --}}
+                                    <tr>
+                                        <td>+</td>
+                                        <td>
+                                            <input type="text" class="form-control form-control-sm @error('kim_no_persetujuan') is-invalid @enderror" wire:model="kim_no_persetujuan"
+                                                placeholder="No Persetujuan">
+                                            @error('kim_no_persetujuan')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </td>
+                                        <td>
+                                            <input type="date" class="form-control form-control-sm @error('kim_tgl_persetujuan') is-invalid @enderror" wire:model="kim_tgl_persetujuan">
+                                            @error('kim_tgl_persetujuan')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control form-control-sm @error('kim_nama_juru_ledak') is-invalid @enderror" wire:model="kim_nama_juru_ledak"
+                                                placeholder="Nama Juru Ledak">
+                                            @error('kim_nama_juru_ledak')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </td>
+                                        <td>
+                                            <input type="date" class="form-control form-control-sm @error('kim_tgl_mulai') is-invalid @enderror" wire:model="kim_tgl_mulai">
+                                            @error('kim_tgl_mulai')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </td>
+                                        <td>
+                                            <input type="date" class="form-control form-control-sm @error('kim_tgl_selesai') is-invalid @enderror" wire:model="kim_tgl_selesai">
+                                            @error('kim_tgl_selesai')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-success btn-sm text-white" wire:click="store">
+                                                <i class="ri-add-line"></i> Tambah
                                             </button>
-                                            <button type="button" class="btn btn-secondary btn-sm" @click="confirmDelete = false">
-                                                Batal
-                                            </button>
-                                        </div>
-                                    </div>
-
-                                    <hr class="my-3">
-                                </form>
-                            @endforeach
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                     <!-- / Example-->
@@ -126,6 +184,20 @@
 </div>
 @script
     <script>
+        $wire.on('store-success', (event) => {
+            var element = document.getElementById('liveToast');
+            console.log(event.message);
+            const myToast = bootstrap.Toast.getOrCreateInstance(element);
+            setTimeout(function() {
+                myToast.show();
+                document.getElementById('pesan').innerHTML = event.message;
+                element.className += " text-bg-success";
+                console.log(event.message);
+            }, 10);
+            setTimeout(function() {
+                myToast.hide();
+            }, 3000);
+        });
         $wire.on('update-success', (event) => {
             var element = document.getElementById('liveToast');
             console.log(event.message);

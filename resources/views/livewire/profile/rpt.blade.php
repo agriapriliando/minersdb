@@ -20,100 +20,159 @@
                         <div class="card-header justify-content-between align-items-center d-flex">
                             <h6 class="card-title m-0">Rencana Pascatambang RPT| {{ session('nama_pemegang_perizinan') }}</h6>
                             <div class="d-flex gap-2">
-                                <a href="{{ route('profile.show', session('id_perusahaan')) }}" wire:navigate class="btn btn-primary btn-sm">Kembali</a>
-                                <a href="{{ route('rpt.add') }}" wire:navigate class="btn btn-primary btn-sm"><i class="ri-add-line"></i> Tambah</a>
+                                <a href="{{ route('profile.show', session('id_perusahaan')) }}" wire:navigate class="btn btn-primary btn-sm">Profil</a>
                             </div>
                         </div>
-                        <div class="card-body">
-                            @foreach ($rpt as $index => $item)
-                                <form wire:submit.prevent="update({{ $item['id'] }})" x-data="{ editing: false, confirmDelete: false }" wire:key="rpt-row-{{ $item['id'] }}">
+                        <div class="card-body table-responsive">
+                            <table class="table table-bordered align-middle">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th style="width: 5%">#</th>
+                                        <th class="text-nowrap">No. Persetujuan</th>
+                                        <th class="text-nowrap">Tanggal Persetujuan</th>
+                                        <th class="text-nowrap">Nominal yang Ditetapkan</th>
+                                        <th class="text-nowrap">Nominal yang Ditempatkan</th>
+                                        <th class="text-nowrap">Tahun Pembayaran</th>
+                                        <th style="width: 20%">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($rpt as $id => $item)
+                                        <tr wire:key="rpt-row-{{ $id }}" x-data="{ confirmDelete: false }">
+                                            <td>{{ $loop->iteration }}</td>
 
-                                    <div class="row">
-                                        <div class="col-md-3 mb-3">
-                                            <label class="form-label">
-                                                <span class="fw-bold">{{ $loop->iteration }}.</span> No Persetujuan
-                                            </label>
-                                            <input type="text" class="form-control @error('rpt.' . $index . '.rpt_no_persetujuan') is-invalid @enderror"
-                                                wire:model="rpt.{{ $index }}.rpt_no_persetujuan" :disabled="!editing">
-                                            @error('rpt.' . $index . '.rpt_no_persetujuan')
+                                            {{-- No. Persetujuan --}}
+                                            <td>
+                                                <input type="text" class="form-control form-control-sm @error('rpt.' . $id . '.rpt_no_persetujuan') is-invalid @enderror"
+                                                    wire:model="rpt.{{ $id }}.rpt_no_persetujuan" :disabled="$wire.editingId !== {{ $id }}">
+                                                @error('rpt.' . $id . '.rpt_no_persetujuan')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </td>
+
+                                            {{-- Tanggal Persetujuan --}}
+                                            <td>
+                                                <input type="date" class="form-control form-control-sm @error('rpt.' . $id . '.rpt_tgl_persetujuan') is-invalid @enderror"
+                                                    wire:model="rpt.{{ $id }}.rpt_tgl_persetujuan" :disabled="$wire.editingId !== {{ $id }}">
+                                                @error('rpt.' . $id . '.rpt_tgl_persetujuan')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </td>
+
+                                            {{-- Nominal yang Ditetapkan --}}
+                                            <td>
+                                                <input type="text" class="form-control form-control-sm @error('rpt.' . $id . '.rpt_nominal_yang_ditetapkan') is-invalid @enderror"
+                                                    wire:model="rpt.{{ $id }}.rpt_nominal_yang_ditetapkan" :disabled="$wire.editingId !== {{ $id }}">
+                                                @error('rpt.' . $id . '.rpt_nominal_yang_ditetapkan')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </td>
+
+                                            {{-- Nominal yang Ditempatkan --}}
+                                            <td>
+                                                <input type="text" class="form-control form-control-sm @error('rpt.' . $id . '.rpt_nominal_yang_ditempatkan') is-invalid @enderror"
+                                                    wire:model="rpt.{{ $id }}.rpt_nominal_yang_ditempatkan" :disabled="$wire.editingId !== {{ $id }}">
+                                                @error('rpt.' . $id . '.rpt_nominal_yang_ditempatkan')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </td>
+
+                                            {{-- Tahun Pembayaran --}}
+                                            <td>
+                                                <input type="number" class="form-control form-control-sm @error('rpt.' . $id . '.rpt_tahun_pembayaran') is-invalid @enderror"
+                                                    wire:model="rpt.{{ $id }}.rpt_tahun_pembayaran" :disabled="$wire.editingId !== {{ $id }}">
+                                                @error('rpt.' . $id . '.rpt_tahun_pembayaran')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </td>
+
+                                            {{-- Tombol Aksi --}}
+                                            <td>
+                                                <div class="d-flex flex-wrap gap-1">
+                                                    {{-- Simpan --}}
+                                                    <button type="button" class="btn btn-primary btn-sm" wire:click="update({{ $id }})" x-show="$wire.editingId === {{ $id }}">
+                                                        Simpan
+                                                    </button>
+
+                                                    {{-- Edit --}}
+                                                    <button type="button" class="btn btn-secondary btn-sm" @click="$wire.editingId = {{ $id }}"
+                                                        x-show="$wire.editingId !== {{ $id }}">
+                                                        <i class="ri-edit-line"></i>
+                                                    </button>
+
+                                                    {{-- Batal --}}
+                                                    <button type="button" class="btn btn-secondary btn-sm" wire:click="batal({{ $id }})" x-show="$wire.editingId === {{ $id }}">
+                                                        <i class="ri-close-line"></i>
+                                                    </button>
+
+                                                    {{-- Hapus --}}
+                                                    <button type="button" class="btn btn-danger btn-sm text-white" @click.stop="confirmDelete = true"
+                                                        x-show="$wire.editingId !== {{ $id }}">
+                                                        <i class="ri-delete-bin-line"></i>
+                                                    </button>
+                                                </div>
+
+                                                {{-- Konfirmasi hapus --}}
+                                                <div x-cloak x-show="confirmDelete" x-transition class="mt-2">
+                                                    <span class="small d-block mb-1">Yakin hapus?</span>
+                                                    <div class="d-flex gap-1">
+                                                        <button type="button" class="btn btn-danger btn-sm" @click="confirmDelete = false" wire:click="delete({{ $id }})">
+                                                            Ya
+                                                        </button>
+                                                        <button type="button" class="btn btn-secondary btn-sm" @click="confirmDelete = false">
+                                                            Batal
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+
+                                    {{-- Form tambah data baru --}}
+                                    <tr>
+                                        <td>+</td>
+                                        <td>
+                                            <input type="text" class="form-control form-control-sm @error('rpt_no_persetujuan') is-invalid @enderror" wire:model="rpt_no_persetujuan"
+                                                placeholder="No. Persetujuan">
+                                            @error('rpt_no_persetujuan')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
-                                        </div>
-
-                                        <div class="col-md-3 mb-3">
-                                            <label class="form-label">Tanggal</label>
-                                            <input type="date" class="form-control @error('rpt.' . $index . '.rpt_tgl_persetujuan') is-invalid @enderror"
-                                                wire:model="rpt.{{ $index }}.rpt_tgl_persetujuan" :disabled="!editing">
-                                            @error('rpt.' . $index . '.rpt_tgl_persetujuan')
+                                        </td>
+                                        <td>
+                                            <input type="date" class="form-control form-control-sm @error('rpt_tgl_persetujuan') is-invalid @enderror" wire:model="rpt_tgl_persetujuan">
+                                            @error('rpt_tgl_persetujuan')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
-                                        </div>
-
-                                        <div class="col-md-3 mb-3">
-                                            <label class="form-label">
-                                                Nominal Ditetapkan
-                                            </label>
-                                            <input type="number" class="form-control @error('rpt.' . $index . '.rpt_nominal_yang_ditetapkan') is-invalid @enderror"
-                                                wire:model="rpt.{{ $index }}.rpt_nominal_yang_ditetapkan" :disabled="!editing">
-                                            @error('rpt.' . $index . '.rpt_nominal_yang_ditetapkan')
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control form-control-sm @error('rpt_nominal_yang_ditetapkan') is-invalid @enderror"
+                                                wire:model="rpt_nominal_yang_ditetapkan" placeholder="Nominal Ditetapkan">
+                                            @error('rpt_nominal_yang_ditetapkan')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
-                                        </div>
-
-                                        <div class="col-md-3 mb-3">
-                                            <label class="form-label">
-                                                Nominal Ditempatkan
-                                            </label>
-                                            <input type="text" class="form-control @error('rpt.' . $index . '.rpt_nominal_yang_ditempatkan') is-invalid @enderror"
-                                                wire:model="rpt.{{ $index }}.rpt_nominal_yang_ditempatkan" :disabled="!editing">
-                                            @error('rpt.' . $index . '.rpt_nominal_yang_ditempatkan')
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control form-control-sm @error('rpt_nominal_yang_ditempatkan') is-invalid @enderror"
+                                                wire:model="rpt_nominal_yang_ditempatkan" placeholder="Nominal Ditempatkan">
+                                            @error('rpt_nominal_yang_ditempatkan')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
-                                        </div>
-                                        <div class="col-md-3 mb-3">
-                                            <label class="form-label">
-                                                Nominal Ditempatkan
-                                            </label>
-                                            <input type="number" class="form-control @error('rpt.' . $index . '.rpt_tahun_pembayaran') is-invalid @enderror"
-                                                wire:model="rpt.{{ $index }}.rpt_tahun_pembayaran" :disabled="!editing">
-                                            @error('rpt.' . $index . '.rpt_tahun_pembayaran')
+                                        </td>
+                                        <td>
+                                            <input type="number" class="form-control form-control-sm @error('rpt_tahun_pembayaran') is-invalid @enderror" wire:model="rpt_tahun_pembayaran"
+                                                placeholder="Tahun">
+                                            @error('rpt_tahun_pembayaran')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
-                                        </div>
-                                    </div>
-
-                                    <div class="d-flex flex-wrap gap-2 align-items-center">
-                                        {{-- Simpan --}}
-                                        <button type="submit" class="btn btn-primary btn-sm" x-show="editing" @click="editing = false">
-                                            Simpan
-                                        </button>
-
-                                        {{-- Edit / Batal (reset nilai dari DB via method batal) --}}
-                                        <button type="button" class="btn btn-secondary btn-sm" @click="editing = !editing" wire:click="batal({{ $index }})">
-                                            <i class="ri-edit-line"></i>
-                                            <span x-text="editing ? 'Batal' : 'Edit'"></span>
-                                        </button>
-
-                                        {{-- Hapus --}}
-                                        <button type="button" class="btn btn-danger btn-sm text-white" @click.stop="confirmDelete = true">
-                                            <i class="ri-delete-bin-line"></i> Hapus
-                                        </button>
-
-                                        {{-- Alert konfirmasi hapus --}}
-                                        <div x-cloak x-show="confirmDelete" x-transition>
-                                            <span class="me-2">Yakin ingin menghapus data ini?</span>
-                                            <button type="button" class="btn btn-danger btn-sm" @click="confirmDelete = false" wire:click="delete({{ $item['id'] }})">
-                                                Ya
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-success btn-sm text-white text-nowrap" wire:click="store">
+                                                <i class="ri-add-line"></i> Tambah
                                             </button>
-                                            <button type="button" class="btn btn-secondary btn-sm" @click="confirmDelete = false">
-                                                Batal
-                                            </button>
-                                        </div>
-                                    </div>
-
-                                    <hr class="my-3">
-                                </form>
-                            @endforeach
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                     <!-- / Example-->
@@ -127,6 +186,20 @@
 </div>
 @script
     <script>
+        $wire.on('store-success', (event) => {
+            var element = document.getElementById('liveToast');
+            console.log(event.message);
+            const myToast = bootstrap.Toast.getOrCreateInstance(element);
+            setTimeout(function() {
+                myToast.show();
+                document.getElementById('pesan').innerHTML = event.message;
+                element.className += " text-bg-success";
+                console.log(event.message);
+            }, 10);
+            setTimeout(function() {
+                myToast.hide();
+            }, 3000);
+        });
         $wire.on('update-success', (event) => {
             var element = document.getElementById('liveToast');
             console.log(event.message);

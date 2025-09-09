@@ -13,6 +13,10 @@ class Rippm extends Model
         'rippm_keterangan',
     ];
 
+    protected $casts = [
+        'rippm_tgl_persetujuan' => 'date:Y-m-d',
+    ];
+
     public function profile()
     {
         return $this->belongsTo(Profile::class);

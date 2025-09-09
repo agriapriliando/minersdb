@@ -21,99 +21,159 @@
                             <h6 class="card-title m-0">Persetujuan Lingkungan SKKL | {{ session('nama_pemegang_perizinan') }}</h6>
                             <div class="d-flex gap-2">
                                 <a href="{{ route('profile.show', session('id_perusahaan')) }}" class="btn btn-primary btn-sm">Kembali</a>
-                                <a href="{{ route('pl.add') }}" class="btn btn-primary btn-sm"><i class="ri-add-line"></i> Tambah</a>
                             </div>
                         </div>
-                        <div class="card-body">
-                            @foreach ($persetujuan_lingkungan as $index => $item)
-                                <form wire:submit.prevent="update({{ $item['id'] }})" x-data="{ editing: false, confirmDelete: false }" wire:key="pl-row-{{ $item['id'] }}">
+                        <div class="card-body table-responsive">
+                            <table class="table table-bordered align-middle">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th style="width: 5%">#</th>
+                                        <th class="text-nowrap">Nomor Persetujuan</th>
+                                        <th class="text-nowrap">Tanggal Persetujuan</th>
+                                        <th class="text-nowrap">Target Produksi</th>
+                                        <th class="text-nowrap">Wilayah Izin</th>
+                                        <th class="text-nowrap">Area Penunjang</th>
+                                        <th style="width: 20%">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($pl as $id => $item)
+                                        <tr wire:key="pl-row-{{ $id }}" x-data="{ confirmDelete: false }">
+                                            <td>{{ $loop->iteration }}</td>
 
-                                    <div class="row">
-                                        <div class="col-md-3 mb-3">
-                                            <label class="form-label">
-                                                <span class="fw-bold">{{ $loop->iteration }}.</span> No Persetujuan
-                                            </label>
-                                            <input type="text" class="form-control @error('persetujuan_lingkungan.' . $index . '.persetujuan_lingkungan_nomor') is-invalid @enderror"
-                                                wire:model="persetujuan_lingkungan.{{ $index }}.persetujuan_lingkungan_nomor" :disabled="!editing">
-                                            @error('persetujuan_lingkungan.' . $index . '.persetujuan_lingkungan_nomor')
+                                            {{-- Nomor Persetujuan --}}
+                                            <td class="text-nowrap" style="min-width: 260px">
+                                                <input type="text" class="form-control form-control-sm @error('pl.' . $id . '.persetujuan_lingkungan_nomor') is-invalid @enderror"
+                                                    wire:model="pl.{{ $id }}.persetujuan_lingkungan_nomor" :disabled="$wire.editingId !== {{ $id }}">
+                                                @error('pl.' . $id . '.persetujuan_lingkungan_nomor')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </td>
+
+                                            {{-- Tanggal Persetujuan --}}
+                                            <td>
+                                                <input type="date" class="form-control form-control-sm @error('pl.' . $id . '.persetujuan_lingkungan_tgl') is-invalid @enderror"
+                                                    wire:model="pl.{{ $id }}.persetujuan_lingkungan_tgl" :disabled="$wire.editingId !== {{ $id }}">
+                                                @error('pl.' . $id . '.persetujuan_lingkungan_tgl')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </td>
+
+                                            {{-- Target Produksi --}}
+                                            <td>
+                                                <input type="text" class="form-control form-control-sm @error('pl.' . $id . '.persetujuan_lingkungan_target_produksi') is-invalid @enderror"
+                                                    wire:model="pl.{{ $id }}.persetujuan_lingkungan_target_produksi" :disabled="$wire.editingId !== {{ $id }}">
+                                                @error('pl.' . $id . '.persetujuan_lingkungan_target_produksi')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </td>
+
+                                            {{-- Wilayah Izin --}}
+                                            <td>
+                                                <input type="text" class="form-control form-control-sm @error('pl.' . $id . '.persetujuan_lingkungan_wilayah_izin') is-invalid @enderror"
+                                                    wire:model="pl.{{ $id }}.persetujuan_lingkungan_wilayah_izin" :disabled="$wire.editingId !== {{ $id }}">
+                                                @error('pl.' . $id . '.persetujuan_lingkungan_wilayah_izin')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </td>
+
+                                            {{-- Area Penunjang --}}
+                                            <td>
+                                                <input type="text" class="form-control form-control-sm @error('pl.' . $id . '.persetujuan_lingkungan_area_penunjang') is-invalid @enderror"
+                                                    wire:model="pl.{{ $id }}.persetujuan_lingkungan_area_penunjang" :disabled="$wire.editingId !== {{ $id }}">
+                                                @error('pl.' . $id . '.persetujuan_lingkungan_area_penunjang')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </td>
+
+                                            {{-- Tombol Aksi --}}
+                                            <td>
+                                                <div class="d-flex flex-wrap gap-1">
+                                                    {{-- Simpan --}}
+                                                    <button type="button" class="btn btn-primary btn-sm" wire:click="update({{ $id }})" x-show="$wire.editingId === {{ $id }}">
+                                                        Simpan
+                                                    </button>
+
+                                                    {{-- Edit --}}
+                                                    <button type="button" class="btn btn-secondary btn-sm" @click="$wire.editingId = {{ $id }}"
+                                                        x-show="$wire.editingId !== {{ $id }}">
+                                                        <i class="ri-edit-line"></i>
+                                                    </button>
+
+                                                    {{-- Batal --}}
+                                                    <button type="button" class="btn btn-secondary btn-sm" wire:click="batal({{ $id }})" x-show="$wire.editingId === {{ $id }}">
+                                                        <i class="ri-close-line"></i>
+                                                    </button>
+
+                                                    {{-- Hapus --}}
+                                                    <button type="button" class="btn btn-danger btn-sm text-white" @click.stop="confirmDelete = true"
+                                                        x-show="$wire.editingId !== {{ $id }}">
+                                                        <i class="ri-delete-bin-line"></i>
+                                                    </button>
+                                                </div>
+
+                                                {{-- Konfirmasi hapus --}}
+                                                <div x-cloak x-show="confirmDelete" x-transition class="mt-2">
+                                                    <span class="small d-block mb-1">Yakin hapus?</span>
+                                                    <div class="d-flex gap-1">
+                                                        <button type="button" class="btn btn-danger btn-sm" @click="confirmDelete = false" wire:click="delete({{ $id }})">
+                                                            Ya
+                                                        </button>
+                                                        <button type="button" class="btn btn-secondary btn-sm" @click="confirmDelete = false">
+                                                            Batal
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+
+                                    {{-- Form tambah data baru --}}
+                                    <tr>
+                                        <td>+</td>
+                                        <td>
+                                            <input type="text" class="form-control form-control-sm @error('persetujuan_lingkungan_nomor') is-invalid @enderror"
+                                                wire:model="persetujuan_lingkungan_nomor" placeholder="Nomor Persetujuan">
+                                            @error('persetujuan_lingkungan_nomor')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
-                                        </div>
-
-                                        <div class="col-md-3 mb-3">
-                                            <label class="form-label">Tanggal</label>
-                                            <input type="date" class="form-control @error('persetujuan_lingkungan.' . $index . '.persetujuan_lingkungan_tgl') is-invalid @enderror"
-                                                wire:model="persetujuan_lingkungan.{{ $index }}.persetujuan_lingkungan_tgl" :disabled="!editing">
-                                            @error('persetujuan_lingkungan.' . $index . '.persetujuan_lingkungan_tgl')
+                                        </td>
+                                        <td>
+                                            <input type="date" class="form-control form-control-sm @error('persetujuan_lingkungan_tgl') is-invalid @enderror"
+                                                wire:model="persetujuan_lingkungan_tgl">
+                                            @error('persetujuan_lingkungan_tgl')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
-                                        </div>
-
-                                        <div class="col-md-3 mb-3">
-                                            <label class="form-label">
-                                                Target Produksi
-                                            </label>
-                                            <input type="text" class="form-control @error('persetujuan_lingkungan.' . $index . '.persetujuan_lingkungan_target_produksi') is-invalid @enderror"
-                                                wire:model="persetujuan_lingkungan.{{ $index }}.persetujuan_lingkungan_target_produksi" :disabled="!editing">
-                                            @error('persetujuan_lingkungan.' . $index . '.persetujuan_lingkungan_target_produksi')
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control form-control-sm @error('persetujuan_lingkungan_target_produksi') is-invalid @enderror"
+                                                wire:model="persetujuan_lingkungan_target_produksi" placeholder="Target Produksi">
+                                            @error('persetujuan_lingkungan_target_produksi')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
-                                        </div>
-
-                                        <div class="col-md-3 mb-3">
-                                            <label class="form-label">
-                                                Wilayah Izin
-                                            </label>
-                                            <input type="text" class="form-control @error('persetujuan_lingkungan.' . $index . '.persetujuan_lingkungan_wilayah_izin') is-invalid @enderror"
-                                                wire:model="persetujuan_lingkungan.{{ $index }}.persetujuan_lingkungan_wilayah_izin" :disabled="!editing">
-                                            @error('persetujuan_lingkungan.' . $index . '.persetujuan_lingkungan_wilayah_izin')
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control form-control-sm @error('persetujuan_lingkungan_wilayah_izin') is-invalid @enderror"
+                                                wire:model="persetujuan_lingkungan_wilayah_izin" placeholder="Wilayah Izin">
+                                            @error('persetujuan_lingkungan_wilayah_izin')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
-                                        </div>
-                                        <div class="col-md-3 mb-3">
-                                            <label class="form-label">
-                                                Area Penunjang
-                                            </label>
-                                            <input type="text" class="form-control @error('persetujuan_lingkungan.' . $index . '.persetujuan_lingkungan_area_penunjang') is-invalid @enderror"
-                                                wire:model="persetujuan_lingkungan.{{ $index }}.persetujuan_lingkungan_area_penunjang" :disabled="!editing">
-                                            @error('persetujuan_lingkungan.' . $index . '.persetujuan_lingkungan_area_penunjang')
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control form-control-sm @error('persetujuan_lingkungan_area_penunjang') is-invalid @enderror"
+                                                wire:model="persetujuan_lingkungan_area_penunjang" placeholder="Area Penunjang">
+                                            @error('persetujuan_lingkungan_area_penunjang')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
-                                        </div>
-                                    </div>
-
-                                    <div class="d-flex flex-wrap gap-2 align-items-center">
-                                        {{-- Simpan --}}
-                                        <button type="submit" class="btn btn-primary btn-sm" x-show="editing" @click="editing = false">
-                                            Simpan
-                                        </button>
-
-                                        {{-- Edit / Batal (reset nilai dari DB via method batal) --}}
-                                        <button type="button" class="btn btn-secondary btn-sm" @click="editing = !editing" wire:click="batal({{ $index }})">
-                                            <i class="ri-edit-line"></i>
-                                            <span x-text="editing ? 'Batal' : 'Edit'"></span>
-                                        </button>
-
-                                        {{-- Hapus --}}
-                                        <button type="button" class="btn btn-danger btn-sm text-white" @click.stop="confirmDelete = true">
-                                            <i class="ri-delete-bin-line"></i> Hapus
-                                        </button>
-
-                                        {{-- Alert konfirmasi hapus --}}
-                                        <div x-cloak x-show="confirmDelete" x-transition>
-                                            <span class="me-2">Yakin ingin menghapus data ini?</span>
-                                            <button type="button" class="btn btn-danger btn-sm" @click="confirmDelete = false" wire:click="delete({{ $item['id'] }})">
-                                                Ya
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-success btn-sm text-white text-nowrap" wire:click="store">
+                                                <i class="ri-add-line"></i> Tambah
                                             </button>
-                                            <button type="button" class="btn btn-secondary btn-sm" @click="confirmDelete = false">
-                                                Batal
-                                            </button>
-                                        </div>
-                                    </div>
-
-                                    <hr class="my-3">
-                                </form>
-                            @endforeach
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                     <!-- / Example-->

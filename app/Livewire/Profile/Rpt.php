@@ -7,32 +7,28 @@ use Livewire\Component;
 
 class Rpt extends Component
 {
-    public $rpt;
-    public $original;
+    public $rpt = [];
+    public $original = [];
 
+    // field tambah data baru
     public $rpt_no_persetujuan;
     public $rpt_tgl_persetujuan;
     public $rpt_nominal_yang_ditetapkan;
     public $rpt_nominal_yang_ditempatkan;
     public $rpt_tahun_pembayaran;
 
-    protected $rules = [
-        'rpt.*.rpt_no_persetujuan'           => 'required|string|max:255',
-        'rpt.*.rpt_tgl_persetujuan'          => 'required|date',
-        'rpt.*.rpt_nominal_yang_ditetapkan'  => 'required|numeric|min:0',
-        'rpt.*.rpt_nominal_yang_ditempatkan' => 'required|numeric|min:0',
-        'rpt.*.rpt_tahun_pembayaran'         => 'required|digits:4|integer|min:1900',
-    ];
+    public $editingId = null;
 
     protected $messages = [
-        'rpt.*.rpt_no_persetujuan.required'           => 'Nomor persetujuan wajib diisi.',
-        'rpt.*.rpt_tgl_persetujuan.required'          => 'Tanggal persetujuan wajib diisi.',
-        'rpt.*.rpt_nominal_yang_ditetapkan.required'  => 'Nominal yang ditetapkan wajib diisi.',
-        'rpt.*.rpt_nominal_yang_ditetapkan.numeric'   => 'Nominal yang ditetapkan harus berupa angka.',
+        'rpt.*.rpt_no_persetujuan.required' => 'Nomor persetujuan wajib diisi.',
+        'rpt.*.rpt_tgl_persetujuan.required' => 'Tanggal persetujuan wajib diisi.',
+        'rpt.*.rpt_tgl_persetujuan.date'     => 'Tanggal persetujuan tidak valid.',
+        'rpt.*.rpt_nominal_yang_ditetapkan.required' => 'Nominal yang ditetapkan wajib diisi.',
+        'rpt.*.rpt_nominal_yang_ditetapkan.numeric'  => 'Nominal yang ditetapkan harus berupa angka.',
         'rpt.*.rpt_nominal_yang_ditempatkan.required' => 'Nominal yang ditempatkan wajib diisi.',
         'rpt.*.rpt_nominal_yang_ditempatkan.numeric'  => 'Nominal yang ditempatkan harus berupa angka.',
-        'rpt.*.rpt_tahun_pembayaran.required'         => 'Tahun pembayaran wajib diisi.',
-        'rpt.*.rpt_tahun_pembayaran.digits'           => 'Tahun pembayaran harus 4 digit.',
+        'rpt.*.rpt_tahun_pembayaran.required' => 'Tahun pembayaran wajib diisi.',
+        'rpt.*.rpt_tahun_pembayaran.integer'  => 'Tahun pembayaran harus berupa angka.',
     ];
 
     public function mount()
@@ -40,69 +36,103 @@ class Rpt extends Component
         $this->rpt = ModelsRpt::where('profile_id', session('id_perusahaan'))
             ->latest()
             ->get()
+            ->keyBy('id')
             ->toArray();
 
         $this->original = $this->rpt;
     }
 
-    protected function rulesForRow($index)
+    protected function rulesForRow($id)
     {
         return [
-            "rpt.$index.rpt_no_persetujuan"           => 'required|string|max:255',
-            "rpt.$index.rpt_tgl_persetujuan"          => 'required|date',
-            "rpt.$index.rpt_nominal_yang_ditetapkan"  => 'required|numeric|min:0',
-            "rpt.$index.rpt_nominal_yang_ditempatkan" => 'required|numeric|min:0',
-            "rpt.$index.rpt_tahun_pembayaran"         => 'required|digits:4|integer|min:1900',
+            "rpt.$id.rpt_no_persetujuan"          => 'required',
+            "rpt.$id.rpt_tgl_persetujuan"         => 'required|date',
+            "rpt.$id.rpt_nominal_yang_ditetapkan" => 'required|numeric|min:0',
+            "rpt.$id.rpt_nominal_yang_ditempatkan" => 'required|numeric|min:0',
+            "rpt.$id.rpt_tahun_pembayaran"        => 'required|integer|min:1900|max:2100',
         ];
+    }
+
+    protected function rulesForNew()
+    {
+        return [
+            "rpt_no_persetujuan"          => 'required',
+            "rpt_tgl_persetujuan"         => 'required|date',
+            "rpt_nominal_yang_ditetapkan" => 'required|numeric|min:0',
+            "rpt_nominal_yang_ditempatkan" => 'required|numeric|min:0',
+            "rpt_tahun_pembayaran"        => 'required|integer|min:1900|max:2100',
+        ];
+    }
+
+    public function store()
+    {
+        $this->validate($this->rulesForNew());
+
+        ModelsRpt::create([
+            'profile_id' => session('id_perusahaan'),
+            'rpt_no_persetujuan'          => $this->rpt_no_persetujuan,
+            'rpt_tgl_persetujuan'         => $this->rpt_tgl_persetujuan,
+            'rpt_nominal_yang_ditetapkan' => $this->rpt_nominal_yang_ditetapkan,
+            'rpt_nominal_yang_ditempatkan' => $this->rpt_nominal_yang_ditempatkan,
+            'rpt_tahun_pembayaran'        => $this->rpt_tahun_pembayaran,
+        ]);
+
+        $this->rpt = ModelsRpt::where('profile_id', session('id_perusahaan'))
+            ->latest()
+            ->get()
+            ->keyBy('id')
+            ->toArray();
+
+        $this->original = $this->rpt;
+
+        $this->reset([
+            'rpt_no_persetujuan',
+            'rpt_tgl_persetujuan',
+            'rpt_nominal_yang_ditetapkan',
+            'rpt_nominal_yang_ditempatkan',
+            'rpt_tahun_pembayaran',
+        ]);
+
+        $this->dispatch('store-success', message: 'Data RPT baru berhasil ditambahkan!');
     }
 
     public function update($id)
     {
-        $index = collect($this->rpt)->search(fn($row) => $row['id'] == $id);
+        $this->validate($this->rulesForRow($id));
 
-        $this->validate($this->rulesForRow($index));
-
-        $data = $this->rpt[$index];
-
+        $data = $this->rpt[$id];
         ModelsRpt::find($id)->update($data);
 
-        // refresh data original dari DB
         $this->original = ModelsRpt::where('profile_id', session('id_perusahaan'))
             ->latest()
             ->get()
+            ->keyBy('id')
             ->toArray();
 
-        $this->dispatch('update-success', message: 'Data berhasil diperbaharui!');
+        $this->dispatch('update-success', message: 'Data RPT berhasil diperbaharui!');
+        $this->editingId = null;
     }
 
-    public function batal($index)
+    public function batal($id)
     {
-        $this->rpt[$index] = $this->original[$index];
+        if (isset($this->original[$id])) {
+            $this->rpt[$id] = $this->original[$id];
+        }
+        $this->editingId = null;
     }
 
     public function delete($id)
     {
         ModelsRpt::whereId($id)->delete();
-        $this->rpt = collect($this->rpt)
-            ->reject(fn($row) => $row['id'] == $id)
-            ->values()
-            ->toArray();
 
-        $this->dispatch('delete-success', message: 'Data berhasil dihapus!');
+        unset($this->rpt[$id]);
+        unset($this->original[$id]);
+
+        $this->dispatch('delete-success', message: 'Data RPT berhasil dihapus!');
     }
 
     public function render()
     {
-        $rpt = ModelsRpt::where('profile_id', session('id_perusahaan'))
-            ->latest()
-            ->get()
-            ->toArray();
-
-        $original = $rpt;
-
-        return view('livewire.profile.rpt', [
-            'rpt' => $rpt,
-            'original' => $original,
-        ]);
+        return view('livewire.profile.rpt');
     }
 }

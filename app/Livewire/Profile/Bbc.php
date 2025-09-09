@@ -7,31 +7,28 @@ use Livewire\Component;
 
 class Bbc extends Component
 {
-    public $bbc;
-    public $original;
+    public $bbc = [];
+    public $original = [];
 
+    // field tambah data baru
     public $bbc_tangki_no_persetujuan;
     public $bbc_tgl;
     public $bbc_kapasitas_tangki;
     public $bbc_tgl_mulai;
     public $bbc_tgl_selesai;
 
-    protected $rules = [
-        'bbc.*.bbc_tangki_no_persetujuan' => 'required|string|max:255',
-        'bbc.*.bbc_tgl'                   => 'required|date',
-        'bbc.*.bbc_kapasitas_tangki'      => 'required|numeric|min:0',
-        'bbc.*.bbc_tgl_mulai'             => 'required|date',
-        'bbc.*.bbc_tgl_selesai'           => 'required|date|after_or_equal:bbc.*.bbc_tgl_mulai',
-    ];
+    public $editingId = null;
 
     protected $messages = [
         'bbc.*.bbc_tangki_no_persetujuan.required' => 'Nomor persetujuan wajib diisi.',
-        'bbc.*.bbc_tgl.required'                   => 'Tanggal wajib diisi.',
-        'bbc.*.bbc_kapasitas_tangki.required'      => 'Kapasitas tangki wajib diisi.',
-        'bbc.*.bbc_kapasitas_tangki.numeric'       => 'Kapasitas tangki harus angka.',
-        'bbc.*.bbc_tgl_mulai.required'             => 'Tanggal mulai wajib diisi.',
-        'bbc.*.bbc_tgl_selesai.required'           => 'Tanggal selesai wajib diisi.',
-        'bbc.*.bbc_tgl_selesai.after_or_equal'     => 'Tanggal selesai harus setelah atau sama dengan tanggal mulai.',
+        'bbc.*.bbc_tgl.required' => 'Tanggal wajib diisi.',
+        'bbc.*.bbc_tgl.date' => 'Tanggal tidak valid.',
+        'bbc.*.bbc_kapasitas_tangki.required' => 'Kapasitas tangki wajib diisi.',
+        'bbc.*.bbc_kapasitas_tangki.numeric' => 'Kapasitas tangki harus berupa angka.',
+        'bbc.*.bbc_tgl_mulai.required' => 'Tanggal mulai wajib diisi.',
+        'bbc.*.bbc_tgl_mulai.date' => 'Tanggal mulai tidak valid.',
+        'bbc.*.bbc_tgl_selesai.required' => 'Tanggal selesai wajib diisi.',
+        'bbc.*.bbc_tgl_selesai.date' => 'Tanggal selesai tidak valid.',
     ];
 
     public function mount()
@@ -39,57 +36,103 @@ class Bbc extends Component
         $this->bbc = ModelsBbc::where('profile_id', session('id_perusahaan'))
             ->latest()
             ->get()
+            ->keyBy('id')
             ->toArray();
 
-        $this->original = $this->bbc; // simpan salinan asli
+        $this->original = $this->bbc;
+    }
+
+    protected function rulesForRow($id)
+    {
+        return [
+            "bbc.$id.bbc_tangki_no_persetujuan" => 'required',
+            "bbc.$id.bbc_tgl" => 'required|date',
+            "bbc.$id.bbc_kapasitas_tangki" => 'required|numeric',
+            "bbc.$id.bbc_tgl_mulai" => 'required|date',
+            "bbc.$id.bbc_tgl_selesai" => 'required|date',
+        ];
+    }
+
+    protected function rulesForNew()
+    {
+        return [
+            "bbc_tangki_no_persetujuan" => 'required',
+            "bbc_tgl" => 'required|date',
+            "bbc_kapasitas_tangki" => 'required|numeric',
+            "bbc_tgl_mulai" => 'required|date',
+            "bbc_tgl_selesai" => 'required|date',
+        ];
+    }
+
+    public function store()
+    {
+        $this->validate($this->rulesForNew());
+
+        ModelsBbc::create([
+            'profile_id' => session('id_perusahaan'),
+            'bbc_tangki_no_persetujuan' => $this->bbc_tangki_no_persetujuan,
+            'bbc_tgl' => $this->bbc_tgl,
+            'bbc_kapasitas_tangki' => $this->bbc_kapasitas_tangki,
+            'bbc_tgl_mulai' => $this->bbc_tgl_mulai,
+            'bbc_tgl_selesai' => $this->bbc_tgl_selesai,
+        ]);
+
+        $this->bbc = ModelsBbc::where('profile_id', session('id_perusahaan'))
+            ->latest()
+            ->get()
+            ->keyBy('id')
+            ->toArray();
+
+        $this->original = $this->bbc;
+
+        $this->reset([
+            'bbc_tangki_no_persetujuan',
+            'bbc_tgl',
+            'bbc_kapasitas_tangki',
+            'bbc_tgl_mulai',
+            'bbc_tgl_selesai',
+        ]);
+
+        $this->dispatch('store-success', message: 'Data BBC baru berhasil ditambahkan!');
     }
 
     public function update($id)
     {
-        $this->validate();
+        $this->validate($this->rulesForRow($id));
 
-        $data = collect($this->bbc)->firstWhere('id', $id);
-
+        $data = $this->bbc[$id];
         ModelsBbc::find($id)->update($data);
 
-        // refresh data original dari DB
         $this->original = ModelsBbc::where('profile_id', session('id_perusahaan'))
             ->latest()
             ->get()
+            ->keyBy('id')
             ->toArray();
 
-        $this->dispatch('update-success', message: 'Data berhasil diperbaharui!');
+        $this->dispatch('update-success', message: 'Data BBC berhasil diperbaharui!');
+        $this->editingId = null;
     }
 
-    public function batal($index)
+    public function batal($id)
     {
-        $this->bbc[$index] = $this->original[$index];
+        if (isset($this->original[$id])) {
+            $this->bbc[$id] = $this->original[$id];
+        }
+        $this->editingId = null;
     }
 
     public function delete($id)
     {
         ModelsBbc::whereId($id)->delete();
 
-        $this->bbc = collect($this->bbc)
-            ->reject(fn($row) => $row['id'] == $id)
-            ->values()
-            ->toArray();
+        unset($this->bbc[$id]);
+        unset($this->original[$id]);
 
-        $this->dispatch('delete-success', message: 'Data berhasil dihapus!');
+        $this->dispatch('delete-success', message: 'Data BBC berhasil dihapus!');
     }
 
     public function render()
     {
-        $bbc = ModelsBbc::where('profile_id', session('id_perusahaan'))
-            ->latest()
-            ->get()
-            ->toArray();
-
-        $original = $bbc;
-
-        return view('livewire.profile.bbc', [
-            'bbc' => $bbc,
-            'original' => $original,
-        ]);
+        return view('livewire.profile.bbc');
     }
 }

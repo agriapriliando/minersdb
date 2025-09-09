@@ -20,100 +20,159 @@
                         <div class="card-header justify-content-between align-items-center d-flex">
                             <h6 class="card-title m-0">Project Area | {{ session('nama_pemegang_perizinan') }}</h6>
                             <div class="d-flex gap-2">
-                                <a href="{{ route('profile.show', session('id_perusahaan')) }}" wire:navigate class="btn btn-primary btn-sm">Kembali</a>
-                                <a href="{{ route('pa.add') }}" wire:navigate class="btn btn-primary btn-sm"><i class="ri-add-line"></i> Tambah</a>
+                                <a href="{{ route('profile.show', session('id_perusahaan')) }}" wire:navigate class="btn btn-primary btn-sm">Profil</a>
                             </div>
                         </div>
-                        <div class="card-body">
-                            @foreach ($project_area as $index => $item)
-                                <form wire:submit.prevent="update({{ $item['id'] }})" x-data="{ editing: false, confirmDelete: false }" wire:key="project_area-row-{{ $item['id'] }}">
+                        <div class="card-body table-responsive">
+                            <table class="table table-bordered align-middle">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th style="width: 5%">#</th>
+                                        <th class="text-nowrap">Nomor Area</th>
+                                        <th class="text-nowrap">Tanggal</th>
+                                        <th class="text-nowrap">Penggunaan</th>
+                                        <th class="text-nowrap">Luas (m²)</th>
+                                        <th class="text-nowrap">Keterangan</th>
+                                        <th style="width: 20%">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($pa as $id => $item)
+                                        <tr wire:key="pa-row-{{ $id }}" x-data="{ confirmDelete: false }">
+                                            <td>{{ $loop->iteration }}</td>
 
-                                    <div class="row">
-                                        <div class="col-md-3 mb-3">
-                                            <label class="form-label">
-                                                <span class="fw-bold">{{ $loop->iteration }}.</span> No Persetujuan
-                                            </label>
-                                            <input type="text" class="form-control @error('project_area.' . $index . '.project_area_nomor') is-invalid @enderror"
-                                                wire:model="project_area.{{ $index }}.project_area_nomor" :disabled="!editing">
-                                            @error('project_area.' . $index . '.project_area_nomor')
+                                            {{-- Nomor Area --}}
+                                            <td>
+                                                <input type="text" class="form-control form-control-sm @error('pa.' . $id . '.project_area_nomor') is-invalid @enderror"
+                                                    wire:model="pa.{{ $id }}.project_area_nomor" :disabled="$wire.editingId !== {{ $id }}">
+                                                @error('pa.' . $id . '.project_area_nomor')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </td>
+
+                                            {{-- Tanggal --}}
+                                            <td>
+                                                <input type="date" class="form-control form-control-sm @error('pa.' . $id . '.project_area_tgl') is-invalid @enderror"
+                                                    wire:model="pa.{{ $id }}.project_area_tgl" :disabled="$wire.editingId !== {{ $id }}">
+                                                @error('pa.' . $id . '.project_area_tgl')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </td>
+
+                                            {{-- Penggunaan --}}
+                                            <td>
+                                                <input type="text" class="form-control form-control-sm @error('pa.' . $id . '.project_area_penggunaan') is-invalid @enderror"
+                                                    wire:model="pa.{{ $id }}.project_area_penggunaan" :disabled="$wire.editingId !== {{ $id }}">
+                                                @error('pa.' . $id . '.project_area_penggunaan')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </td>
+
+                                            {{-- Luas --}}
+                                            <td>
+                                                <input type="text" class="form-control form-control-sm @error('pa.' . $id . '.project_area_luas') is-invalid @enderror"
+                                                    wire:model="pa.{{ $id }}.project_area_luas" :disabled="$wire.editingId !== {{ $id }}">
+                                                @error('pa.' . $id . '.project_area_luas')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </td>
+
+                                            {{-- Keterangan --}}
+                                            <td>
+                                                <input type="text" class="form-control form-control-sm @error('pa.' . $id . '.project_area_keterangan') is-invalid @enderror"
+                                                    wire:model="pa.{{ $id }}.project_area_keterangan" :disabled="$wire.editingId !== {{ $id }}">
+                                                @error('pa.' . $id . '.project_area_keterangan')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </td>
+
+                                            {{-- Tombol Aksi --}}
+                                            <td>
+                                                <div class="d-flex flex-wrap gap-1">
+                                                    {{-- Simpan --}}
+                                                    <button type="button" class="btn btn-primary btn-sm" wire:click="update({{ $id }})" x-show="$wire.editingId === {{ $id }}">
+                                                        Simpan
+                                                    </button>
+
+                                                    {{-- Edit --}}
+                                                    <button type="button" class="btn btn-secondary btn-sm" @click="$wire.editingId = {{ $id }}"
+                                                        x-show="$wire.editingId !== {{ $id }}">
+                                                        <i class="ri-edit-line"></i>
+                                                    </button>
+
+                                                    {{-- Batal --}}
+                                                    <button type="button" class="btn btn-secondary btn-sm" wire:click="batal({{ $id }})" x-show="$wire.editingId === {{ $id }}">
+                                                        <i class="ri-close-line"></i>
+                                                    </button>
+
+                                                    {{-- Hapus --}}
+                                                    <button type="button" class="btn btn-danger btn-sm text-white" @click.stop="confirmDelete = true"
+                                                        x-show="$wire.editingId !== {{ $id }}">
+                                                        <i class="ri-delete-bin-line"></i>
+                                                    </button>
+                                                </div>
+
+                                                {{-- Konfirmasi hapus --}}
+                                                <div x-cloak x-show="confirmDelete" x-transition class="mt-2">
+                                                    <span class="small d-block mb-1">Yakin hapus?</span>
+                                                    <div class="d-flex gap-1">
+                                                        <button type="button" class="btn btn-danger btn-sm" @click="confirmDelete = false" wire:click="delete({{ $id }})">
+                                                            Ya
+                                                        </button>
+                                                        <button type="button" class="btn btn-secondary btn-sm" @click="confirmDelete = false">
+                                                            Batal
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+
+                                    {{-- Form tambah data baru --}}
+                                    <tr>
+                                        <td>+</td>
+                                        <td>
+                                            <input type="text" class="form-control form-control-sm @error('project_area_nomor') is-invalid @enderror" wire:model="project_area_nomor"
+                                                placeholder="Nomor Area">
+                                            @error('project_area_nomor')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
-                                        </div>
-
-                                        <div class="col-md-3 mb-3">
-                                            <label class="form-label">Tanggal</label>
-                                            <input type="date" class="form-control @error('project_area.' . $index . '.project_area_tgl') is-invalid @enderror"
-                                                wire:model="project_area.{{ $index }}.project_area_tgl" :disabled="!editing">
-                                            @error('project_area.' . $index . '.project_area_tgl')
+                                        </td>
+                                        <td>
+                                            <input type="date" class="form-control form-control-sm @error('project_area_tgl') is-invalid @enderror" wire:model="project_area_tgl">
+                                            @error('project_area_tgl')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
-                                        </div>
-
-                                        <div class="col-md-3 mb-3">
-                                            <label class="form-label">
-                                                Penggunaan
-                                            </label>
-                                            <input type="text" class="form-control @error('project_area.' . $index . '.project_area_penggunaan') is-invalid @enderror"
-                                                wire:model="project_area.{{ $index }}.project_area_penggunaan" :disabled="!editing">
-                                            @error('project_area.' . $index . '.project_area_penggunaan')
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control form-control-sm @error('project_area_penggunaan') is-invalid @enderror" wire:model="project_area_penggunaan"
+                                                placeholder="Penggunaan">
+                                            @error('project_area_penggunaan')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
-                                        </div>
-
-                                        <div class="col-md-3 mb-3">
-                                            <label class="form-label">
-                                                Luas
-                                            </label>
-                                            <input type="text" class="form-control @error('project_area.' . $index . '.project_area_luas') is-invalid @enderror"
-                                                wire:model="project_area.{{ $index }}.project_area_luas" :disabled="!editing">
-                                            @error('project_area.' . $index . '.project_area_luas')
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control form-control-sm @error('project_area_luas') is-invalid @enderror" wire:model="project_area_luas"
+                                                placeholder="Luas">
+                                            @error('project_area_luas')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
-                                        </div>
-                                        <div class="col-md-6 mb-3">
-                                            <label class="form-label">
-                                                Keterangan
-                                            </label>
-                                            <input type="text" class="form-control @error('project_area.' . $index . '.project_area_keterangan') is-invalid @enderror"
-                                                wire:model="project_area.{{ $index }}.project_area_keterangan" :disabled="!editing">
-                                            @error('project_area.' . $index . '.project_area_keterangan')
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control form-control-sm @error('project_area_keterangan') is-invalid @enderror" wire:model="project_area_keterangan"
+                                                placeholder="Keterangan">
+                                            @error('project_area_keterangan')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
-                                        </div>
-                                    </div>
-
-                                    <div class="d-flex flex-wrap gap-2 align-items-center">
-                                        {{-- Simpan --}}
-                                        <button type="submit" class="btn btn-primary btn-sm" x-show="editing" @click="editing = false">
-                                            Simpan
-                                        </button>
-
-                                        {{-- Edit / Batal (reset nilai dari DB via method batal) --}}
-                                        <button type="button" class="btn btn-secondary btn-sm" @click="editing = !editing" wire:click="batal({{ $index }})">
-                                            <i class="ri-edit-line"></i>
-                                            <span x-text="editing ? 'Batal' : 'Edit'"></span>
-                                        </button>
-
-                                        {{-- Hapus --}}
-                                        <button type="button" class="btn btn-danger btn-sm text-white" @click.stop="confirmDelete = true">
-                                            <i class="ri-delete-bin-line"></i> Hapus
-                                        </button>
-
-                                        {{-- Alert konfirmasi hapus --}}
-                                        <div x-cloak x-show="confirmDelete" x-transition>
-                                            <span class="me-2">Yakin ingin menghapus data ini?</span>
-                                            <button type="button" class="btn btn-danger btn-sm" @click="confirmDelete = false" wire:click="delete({{ $item['id'] }})">
-                                                Ya
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-success btn-sm text-white text-nowrap" wire:click="store">
+                                                <i class="ri-add-line"></i> Tambah
                                             </button>
-                                            <button type="button" class="btn btn-secondary btn-sm" @click="confirmDelete = false">
-                                                Batal
-                                            </button>
-                                        </div>
-                                    </div>
-
-                                    <hr class="my-3">
-                                </form>
-                            @endforeach
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                     <!-- / Example-->
@@ -127,6 +186,20 @@
 </div>
 @script
     <script>
+        $wire.on('store-success', (event) => {
+            var element = document.getElementById('liveToast');
+            console.log(event.message);
+            const myToast = bootstrap.Toast.getOrCreateInstance(element);
+            setTimeout(function() {
+                myToast.show();
+                document.getElementById('pesan').innerHTML = event.message;
+                element.className += " text-bg-success";
+                console.log(event.message);
+            }, 10);
+            setTimeout(function() {
+                myToast.hide();
+            }, 3000);
+        });
         $wire.on('update-success', (event) => {
             var element = document.getElementById('liveToast');
             console.log(event.message);

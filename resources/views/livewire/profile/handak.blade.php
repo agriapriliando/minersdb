@@ -20,109 +20,174 @@
                         <div class="card-header justify-content-between align-items-center d-flex">
                             <h6 class="card-title m-0">Gudang Bahan Peledak | {{ session('nama_pemegang_perizinan') }}</h6>
                             <div class="d-flex gap-2">
-                                <a href="{{ route('profile.show', session('id_perusahaan')) }}" wire:navigate class="btn btn-primary btn-sm">Kembali</a>
-                                <a href="{{ route('handak.add') }}" wire:navigate class="btn btn-primary btn-sm"><i class="ri-add-line"></i> Tambah</a>
+                                <a href="{{ route('profile.show', session('id_perusahaan')) }}" wire:navigate class="btn btn-primary btn-sm">Profil</a>
                             </div>
                         </div>
-                        <div class="card-body">
-                            @foreach ($handak as $index => $item)
-                                <form wire:submit.prevent="update({{ $item['id'] }})" x-data="{ editing: false, confirmDelete: false }" wire:key="handak-row-{{ $item['id'] }}">
+                        <div class="card-body table-responsive">
+                            <table class="table table-bordered align-middle">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th style="width: 5%">#</th>
+                                        <th class="text-nowrap">No Persetujuan</th>
+                                        <th class="text-nowrap">Tanggal</th>
+                                        <th class="text-nowrap">Jenis Bahan</th>
+                                        <th class="text-nowrap">Kapasitas Gudang</th>
+                                        <th class="text-nowrap">Tanggal Mulai</th>
+                                        <th class="text-nowrap">Tanggal Selesai</th>
+                                        <th style="width: 20%">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($handak as $id => $item)
+                                        <tr wire:key="handak-row-{{ $id }}" x-data="{ confirmDelete: false }">
+                                            <td>{{ $loop->iteration }}</td>
 
-                                    <div class="row">
-                                        <div class="col-md-3 mb-3">
-                                            <label class="form-label">
-                                                <span class="fw-bold">{{ $loop->iteration }}.</span> No Persetujuan
-                                            </label>
-                                            <input type="text" class="form-control @error('handak.' . $index . '.handak_no_persetujuan') is-invalid @enderror"
-                                                wire:model="handak.{{ $index }}.handak_no_persetujuan" :disabled="!editing">
-                                            @error('handak.' . $index . '.handak_no_persetujuan')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-
-                                        <div class="col-md-3 mb-3">
-                                            <label class="form-label">Tanggal</label>
-                                            <input type="date" class="form-control @error('handak.' . $index . '.handak_tgl') is-invalid @enderror"
-                                                wire:model="handak.{{ $index }}.handak_tgl" :disabled="!editing">
-                                            @error('handak.' . $index . '.handak_tgl')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-
-                                        <div class="col-md-3 mb-3">
-                                            <label class="form-label">
-                                                Jenis Bahan Peledak
-                                            </label>
-                                            <input type="text" class="form-control @error('handak.' . $index . '.handak_jenis_bahan') is-invalid @enderror"
-                                                wire:model="handak.{{ $index }}.handak_jenis_bahan" :disabled="!editing">
-                                            @error('handak.' . $index . '.handak_jenis_bahan')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-
-                                        <div class="col-md-3 mb-3">
-                                            <label class="form-label">
-                                                Kapasitas Gudang
-                                            </label>
-                                            <input type="text" class="form-control @error('handak.' . $index . '.handak_kapasitas_gudang') is-invalid @enderror"
-                                                wire:model="handak.{{ $index }}.handak_kapasitas_gudang" :disabled="!editing">
-                                            @error('handak.' . $index . '.handak_kapasitas_gudang')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-2 mb-3">
-                                                <label class="form-label">Tanggal Mulai</label>
-                                                <input type="date" class="form-control @error('handak.' . $index . '.handak_tgl_mulai') is-invalid @enderror"
-                                                    wire:model="handak.{{ $index }}.handak_tgl_mulai" :disabled="!editing">
-                                                @error('handak.' . $index . '.handak_tgl_mulai')
+                                            {{-- No Persetujuan --}}
+                                            <td>
+                                                <input type="text" class="form-control form-control-sm @error('handak.' . $id . '.handak_no_persetujuan') is-invalid @enderror"
+                                                    wire:model="handak.{{ $id }}.handak_no_persetujuan" :disabled="$wire.editingId !== {{ $id }}">
+                                                @error('handak.' . $id . '.handak_no_persetujuan')
                                                     <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
-                                            </div>
+                                            </td>
 
-                                            <div class="col-md-2 mb-3">
-                                                <label class="form-label">Tanggal Selesai</label>
-                                                <input type="date" class="form-control @error('handak.' . $index . '.handak_tgl_selesai') is-invalid @enderror"
-                                                    wire:model="handak.{{ $index }}.handak_tgl_selesai" :disabled="!editing">
-                                                @error('handak.' . $index . '.handak_tgl_selesai')
+                                            {{-- Tanggal --}}
+                                            <td>
+                                                <input type="date" class="form-control form-control-sm @error('handak.' . $id . '.handak_tgl') is-invalid @enderror"
+                                                    wire:model="handak.{{ $id }}.handak_tgl" :disabled="$wire.editingId !== {{ $id }}">
+                                                @error('handak.' . $id . '.handak_tgl')
                                                     <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
-                                            </div>
-                                        </div>
-                                    </div>
+                                            </td>
 
-                                    <div class="d-flex flex-wrap gap-2 align-items-center">
-                                        {{-- Simpan --}}
-                                        <button type="submit" class="btn btn-primary btn-sm" x-show="editing" @click="editing = false">
-                                            Simpan
-                                        </button>
+                                            {{-- Jenis Bahan --}}
+                                            <td>
+                                                <input type="text" class="form-control form-control-sm @error('handak.' . $id . '.handak_jenis_bahan') is-invalid @enderror"
+                                                    wire:model="handak.{{ $id }}.handak_jenis_bahan" :disabled="$wire.editingId !== {{ $id }}">
+                                                @error('handak.' . $id . '.handak_jenis_bahan')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </td>
 
-                                        {{-- Edit / Batal (reset nilai dari DB via method batal) --}}
-                                        <button type="button" class="btn btn-secondary btn-sm" @click="editing = !editing" wire:click="batal({{ $index }})">
-                                            <i class="ri-edit-line"></i>
-                                            <span x-text="editing ? 'Batal' : 'Edit'"></span>
-                                        </button>
+                                            {{-- Kapasitas Gudang --}}
+                                            <td>
+                                                <input type="number" class="form-control form-control-sm @error('handak.' . $id . '.handak_kapasitas_gudang') is-invalid @enderror"
+                                                    wire:model="handak.{{ $id }}.handak_kapasitas_gudang" :disabled="$wire.editingId !== {{ $id }}">
+                                                @error('handak.' . $id . '.handak_kapasitas_gudang')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </td>
 
-                                        {{-- Hapus --}}
-                                        <button type="button" class="btn btn-danger btn-sm text-white" @click.stop="confirmDelete = true">
-                                            <i class="ri-delete-bin-line"></i> Hapus
-                                        </button>
+                                            {{-- Tanggal Mulai --}}
+                                            <td>
+                                                <input type="date" class="form-control form-control-sm @error('handak.' . $id . '.handak_tgl_mulai') is-invalid @enderror"
+                                                    wire:model="handak.{{ $id }}.handak_tgl_mulai" :disabled="$wire.editingId !== {{ $id }}">
+                                                @error('handak.' . $id . '.handak_tgl_mulai')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </td>
 
-                                        {{-- Alert konfirmasi hapus --}}
-                                        <div x-cloak x-show="confirmDelete" x-transition>
-                                            <span class="me-2">Yakin ingin menghapus data ini?</span>
-                                            <button type="button" class="btn btn-danger btn-sm" @click="confirmDelete = false" wire:click="delete({{ $item['id'] }})">
-                                                Ya
+                                            {{-- Tanggal Selesai --}}
+                                            <td>
+                                                <input type="date" class="form-control form-control-sm @error('handak.' . $id . '.handak_tgl_selesai') is-invalid @enderror"
+                                                    wire:model="handak.{{ $id }}.handak_tgl_selesai" :disabled="$wire.editingId !== {{ $id }}">
+                                                @error('handak.' . $id . '.handak_tgl_selesai')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </td>
+
+                                            {{-- Tombol Aksi --}}
+                                            <td>
+                                                <div class="d-flex flex-wrap gap-1">
+                                                    {{-- Simpan --}}
+                                                    <button type="button" class="btn btn-primary btn-sm" wire:click="update({{ $id }})" x-show="$wire.editingId === {{ $id }}">
+                                                        Simpan
+                                                    </button>
+
+                                                    {{-- Edit --}}
+                                                    <button type="button" class="btn btn-secondary btn-sm" @click="$wire.editingId = {{ $id }}"
+                                                        x-show="$wire.editingId !== {{ $id }}">
+                                                        <i class="ri-edit-line"></i>
+                                                    </button>
+
+                                                    {{-- Batal --}}
+                                                    <button type="button" class="btn btn-secondary btn-sm" wire:click="batal({{ $id }})" x-show="$wire.editingId === {{ $id }}">
+                                                        <i class="ri-close-line"></i>
+                                                    </button>
+
+                                                    {{-- Hapus --}}
+                                                    <button type="button" class="btn btn-danger btn-sm text-white" @click.stop="confirmDelete = true"
+                                                        x-show="$wire.editingId !== {{ $id }}">
+                                                        <i class="ri-delete-bin-line"></i>
+                                                    </button>
+                                                </div>
+
+                                                {{-- Konfirmasi hapus --}}
+                                                <div x-cloak x-show="confirmDelete" x-transition class="mt-2">
+                                                    <span class="small d-block mb-1">Yakin hapus?</span>
+                                                    <div class="d-flex gap-1">
+                                                        <button type="button" class="btn btn-danger btn-sm" @click="confirmDelete = false" wire:click="delete({{ $id }})">
+                                                            Ya
+                                                        </button>
+                                                        <button type="button" class="btn btn-secondary btn-sm" @click="confirmDelete = false">
+                                                            Batal
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+
+                                    {{-- Form tambah data baru --}}
+                                    <tr>
+                                        <td>+</td>
+                                        <td>
+                                            <input type="text" class="form-control form-control-sm @error('handak_no_persetujuan') is-invalid @enderror" wire:model="handak_no_persetujuan"
+                                                placeholder="No Persetujuan">
+                                            @error('handak_no_persetujuan')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </td>
+                                        <td>
+                                            <input type="date" class="form-control form-control-sm @error('handak_tgl') is-invalid @enderror" wire:model="handak_tgl">
+                                            @error('handak_tgl')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control form-control-sm @error('handak_jenis_bahan') is-invalid @enderror" wire:model="handak_jenis_bahan"
+                                                placeholder="Jenis Bahan">
+                                            @error('handak_jenis_bahan')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </td>
+                                        <td>
+                                            <input type="number" class="form-control form-control-sm @error('handak_kapasitas_gudang') is-invalid @enderror" wire:model="handak_kapasitas_gudang"
+                                                placeholder="Kapasitas Gudang">
+                                            @error('handak_kapasitas_gudang')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </td>
+                                        <td>
+                                            <input type="date" class="form-control form-control-sm @error('handak_tgl_mulai') is-invalid @enderror" wire:model="handak_tgl_mulai">
+                                            @error('handak_tgl_mulai')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </td>
+                                        <td>
+                                            <input type="date" class="form-control form-control-sm @error('handak_tgl_selesai') is-invalid @enderror" wire:model="handak_tgl_selesai">
+                                            @error('handak_tgl_selesai')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-success btn-sm text-white" wire:click="store">
+                                                <i class="ri-add-line"></i> Tambah
                                             </button>
-                                            <button type="button" class="btn btn-secondary btn-sm" @click="confirmDelete = false">
-                                                Batal
-                                            </button>
-                                        </div>
-                                    </div>
-
-                                    <hr class="my-3">
-                                </form>
-                            @endforeach
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                     <!-- / Example-->

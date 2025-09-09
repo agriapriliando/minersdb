@@ -7,31 +7,28 @@ use Livewire\Component;
 
 class Rr extends Component
 {
-    public $rr;
-    public $original;
+    public $rr = [];
+    public $original = [];
 
+    // field tambah data baru
     public $rr_no_persetujuan;
     public $rr_tgl_persetujuan;
     public $rr_tahun;
     public $rr_nominal_yang_ditetapkan;
     public $rr_nominal_yang_ditempatkan;
 
-    protected $rules = [
-        'rr.*.rr_no_persetujuan'           => 'required|string|max:255',
-        'rr.*.rr_tgl_persetujuan'          => 'required|date',
-        'rr.*.rr_tahun'                    => 'required',
-        'rr.*.rr_nominal_yang_ditetapkan'  => 'required|numeric|min:0',
-        'rr.*.rr_nominal_yang_ditempatkan' => 'required|numeric|min:0',
-    ];
+    public $editingId = null;
 
     protected $messages = [
-        'rr.*.rr_no_persetujuan.required'           => 'Nomor persetujuan wajib diisi.',
-        'rr.*.rr_tgl_persetujuan.required'          => 'Tanggal persetujuan wajib diisi.',
-        'rr.*.rr_tahun.required'                    => 'Tahun wajib diisi.',
-        'rr.*.rr_nominal_yang_ditetapkan.required'  => 'Nominal yang ditetapkan wajib diisi.',
-        'rr.*.rr_nominal_yang_ditetapkan.numeric'   => 'Nominal yang ditetapkan harus berupa angka.',
+        'rr.*.rr_no_persetujuan.required' => 'Nomor persetujuan wajib diisi.',
+        'rr.*.rr_tgl_persetujuan.required' => 'Tanggal persetujuan wajib diisi.',
+        'rr.*.rr_tgl_persetujuan.date' => 'Tanggal persetujuan tidak valid.',
+        'rr.*.rr_tahun.required' => 'Tahun wajib diisi.',
+        'rr.*.rr_tahun.integer' => 'Tahun harus berupa angka.',
+        'rr.*.rr_nominal_yang_ditetapkan.required' => 'Nominal yang ditetapkan wajib diisi.',
+        'rr.*.rr_nominal_yang_ditetapkan.numeric' => 'Nominal yang ditetapkan harus berupa angka.',
         'rr.*.rr_nominal_yang_ditempatkan.required' => 'Nominal yang ditempatkan wajib diisi.',
-        'rr.*.rr_nominal_yang_ditempatkan.numeric'  => 'Nominal yang ditempatkan harus berupa angka.',
+        'rr.*.rr_nominal_yang_ditempatkan.numeric' => 'Nominal yang ditempatkan harus berupa angka.',
     ];
 
     public function mount()
@@ -39,69 +36,103 @@ class Rr extends Component
         $this->rr = ModelsRr::where('profile_id', session('id_perusahaan'))
             ->latest()
             ->get()
+            ->keyBy('id')
             ->toArray();
 
         $this->original = $this->rr;
     }
 
-    protected function rulesForRow($index)
+    protected function rulesForRow($id)
     {
         return [
-            "rr.$index.rr_no_persetujuan"           => 'required|string|max:255',
-            "rr.$index.rr_tgl_persetujuan"          => 'required|date',
-            "rr.$index.rr_tahun"                    => 'required',
-            "rr.$index.rr_nominal_yang_ditetapkan"  => 'required|numeric|min:0',
-            "rr.$index.rr_nominal_yang_ditempatkan" => 'required|numeric|min:0',
+            "rr.$id.rr_no_persetujuan" => 'required',
+            "rr.$id.rr_tgl_persetujuan" => 'required|date',
+            "rr.$id.rr_tahun" => 'required|integer',
+            "rr.$id.rr_nominal_yang_ditetapkan" => 'required|numeric',
+            "rr.$id.rr_nominal_yang_ditempatkan" => 'required|numeric',
         ];
+    }
+
+    protected function rulesForNew()
+    {
+        return [
+            "rr_no_persetujuan" => 'required',
+            "rr_tgl_persetujuan" => 'required|date',
+            "rr_tahun" => 'required|integer',
+            "rr_nominal_yang_ditetapkan" => 'required|numeric',
+            "rr_nominal_yang_ditempatkan" => 'required|numeric',
+        ];
+    }
+
+    public function store()
+    {
+        $this->validate($this->rulesForNew());
+
+        ModelsRr::create([
+            'profile_id' => session('id_perusahaan'),
+            'rr_no_persetujuan' => $this->rr_no_persetujuan,
+            'rr_tgl_persetujuan' => $this->rr_tgl_persetujuan,
+            'rr_tahun' => $this->rr_tahun,
+            'rr_nominal_yang_ditetapkan' => $this->rr_nominal_yang_ditetapkan,
+            'rr_nominal_yang_ditempatkan' => $this->rr_nominal_yang_ditempatkan,
+        ]);
+
+        $this->rr = ModelsRr::where('profile_id', session('id_perusahaan'))
+            ->latest()
+            ->get()
+            ->keyBy('id')
+            ->toArray();
+
+        $this->original = $this->rr;
+
+        $this->reset([
+            'rr_no_persetujuan',
+            'rr_tgl_persetujuan',
+            'rr_tahun',
+            'rr_nominal_yang_ditetapkan',
+            'rr_nominal_yang_ditempatkan',
+        ]);
+
+        $this->dispatch('store-success', message: 'Data RR baru berhasil ditambahkan!');
     }
 
     public function update($id)
     {
-        $index = collect($this->rr)->search(fn($row) => $row['id'] == $id);
+        $this->validate($this->rulesForRow($id));
 
-        $this->validate($this->rulesForRow($index));
-
-        $data = $this->rr[$index];
-
+        $data = $this->rr[$id];
         ModelsRr::find($id)->update($data);
 
-        // refresh data original dari DB
         $this->original = ModelsRr::where('profile_id', session('id_perusahaan'))
             ->latest()
             ->get()
+            ->keyBy('id')
             ->toArray();
 
-        $this->dispatch('update-success', message: 'Data berhasil diperbaharui!');
+        $this->dispatch('update-success', message: 'Data RR berhasil diperbaharui!');
+        $this->editingId = null;
     }
 
-    public function batal($index)
+    public function batal($id)
     {
-        $this->rr[$index] = $this->original[$index];
+        if (isset($this->original[$id])) {
+            $this->rr[$id] = $this->original[$id];
+        }
+        $this->editingId = null;
     }
 
     public function delete($id)
     {
         ModelsRr::whereId($id)->delete();
-        $this->rr = collect($this->rr)
-            ->reject(fn($row) => $row['id'] == $id)
-            ->values()
-            ->toArray();
 
-        $this->dispatch('delete-success', message: 'Data berhasil dihapus!');
+        unset($this->rr[$id]);
+        unset($this->original[$id]);
+
+        $this->dispatch('delete-success', message: 'Data RR berhasil dihapus!');
     }
 
     public function render()
     {
-        $rr = ModelsRr::where('profile_id', session('id_perusahaan'))
-            ->latest()
-            ->get()
-            ->toArray();
-
-        $original = $rr;
-
-        return view('livewire.profile.rr', [
-            'rr' => $rr,
-            'original' => $original,
-        ]);
+        return view('livewire.profile.rr');
     }
 }

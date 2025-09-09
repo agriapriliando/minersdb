@@ -7,87 +7,130 @@ use Livewire\Component;
 
 class Pa extends Component
 {
-    public $project_area;
-    public $original;
+    public $pa = [];
+    public $original = [];
 
+    // field tambah data baru
     public $project_area_nomor;
     public $project_area_tgl;
     public $project_area_penggunaan;
     public $project_area_luas;
     public $project_area_keterangan;
 
-    protected $rules = [
-        'project_area.*.project_area_nomor'      => 'required|string|max:255',
-        'project_area.*.project_area_tgl'        => 'required|date',
-        'project_area.*.project_area_penggunaan' => 'required|string|max:255',
-        'project_area.*.project_area_luas'       => 'required|numeric|min:0',
-        'project_area.*.project_area_keterangan' => 'nullable|string|max:500',
-    ];
+    public $editingId = null;
 
     protected $messages = [
-        'project_area.*.project_area_nomor.required'      => 'Nomor area wajib diisi.',
-        'project_area.*.project_area_tgl.required'        => 'Tanggal wajib diisi.',
-        'project_area.*.project_area_penggunaan.required' => 'Penggunaan wajib diisi.',
-        'project_area.*.project_area_luas.required'       => 'Luas wajib diisi.',
-        'project_area.*.project_area_luas.numeric'        => 'Luas harus berupa angka.',
-        'project_area.*.project_area_keterangan.string'   => 'Keterangan harus berupa teks.',
+        'pa.*.project_area_nomor.required' => 'Nomor area wajib diisi.',
+        'pa.*.project_area_tgl.required' => 'Tanggal wajib diisi.',
+        'pa.*.project_area_tgl.date'     => 'Tanggal tidak valid.',
+        'pa.*.project_area_penggunaan.required' => 'Penggunaan wajib diisi.',
+        'pa.*.project_area_luas.required' => 'Luas wajib diisi.',
+        'pa.*.project_area_luas.numeric'  => 'Luas harus berupa angka.',
+        'pa.*.project_area_keterangan.required' => 'Keterangan wajib diisi.',
     ];
 
     public function mount()
     {
-        $this->project_area = ModelsPa::where('profile_id', session('id_perusahaan'))
+        $this->pa = ModelsPa::where('profile_id', session('id_perusahaan'))
             ->latest()
             ->get()
+            ->keyBy('id')
             ->toArray();
 
-        $this->original = $this->project_area;
+        $this->original = $this->pa;
+    }
+
+    protected function rulesForRow($id)
+    {
+        return [
+            "pa.$id.project_area_nomor" => 'required',
+            "pa.$id.project_area_tgl" => 'required|date',
+            "pa.$id.project_area_penggunaan" => 'required',
+            "pa.$id.project_area_luas" => 'required|numeric|min:0',
+            "pa.$id.project_area_keterangan" => 'required',
+        ];
+    }
+
+    protected function rulesForNew()
+    {
+        return [
+            "project_area_nomor" => 'required',
+            "project_area_tgl" => 'required|date',
+            "project_area_penggunaan" => 'required',
+            "project_area_luas" => 'required|numeric|min:0',
+            "project_area_keterangan" => 'required',
+        ];
+    }
+
+    public function store()
+    {
+        $this->validate($this->rulesForNew());
+
+        ModelsPa::create([
+            'profile_id' => session('id_perusahaan'),
+            'project_area_nomor' => $this->project_area_nomor,
+            'project_area_tgl' => $this->project_area_tgl,
+            'project_area_penggunaan' => $this->project_area_penggunaan,
+            'project_area_luas' => $this->project_area_luas,
+            'project_area_keterangan' => $this->project_area_keterangan,
+        ]);
+
+        $this->pa = ModelsPa::where('profile_id', session('id_perusahaan'))
+            ->latest()
+            ->get()
+            ->keyBy('id')
+            ->toArray();
+
+        $this->original = $this->pa;
+
+        $this->reset([
+            'project_area_nomor',
+            'project_area_tgl',
+            'project_area_penggunaan',
+            'project_area_luas',
+            'project_area_keterangan',
+        ]);
+
+        $this->dispatch('store-success', message: 'Data project area baru berhasil ditambahkan!');
     }
 
     public function update($id)
     {
-        $this->validate();
+        $this->validate($this->rulesForRow($id));
 
-        $data = collect($this->project_area)->firstWhere('id', $id);
-
+        $data = $this->pa[$id];
         ModelsPa::find($id)->update($data);
 
-        // refresh data original dari DB
         $this->original = ModelsPa::where('profile_id', session('id_perusahaan'))
             ->latest()
             ->get()
+            ->keyBy('id')
             ->toArray();
 
-        $this->dispatch('update-success', message: 'Data berhasil diperbaharui!');
+        $this->dispatch('update-success', message: 'Data project area berhasil diperbaharui!');
+        $this->editingId = null;
     }
 
-    public function batal($index)
+    public function batal($id)
     {
-        $this->project_area[$index] = $this->original[$index];
+        if (isset($this->original[$id])) {
+            $this->pa[$id] = $this->original[$id];
+        }
+        $this->editingId = null;
     }
 
     public function delete($id)
     {
         ModelsPa::whereId($id)->delete();
-        $this->project_area = collect($this->project_area)
-            ->reject(fn($row) => $row['id'] == $id)
-            ->values()
-            ->toArray();
 
-        $this->dispatch('delete-success', message: 'Data berhasil dihapus!');
+        unset($this->pa[$id]);
+        unset($this->original[$id]);
+
+        $this->dispatch('delete-success', message: 'Data project area berhasil dihapus!');
     }
 
     public function render()
     {
-        $project_area = ModelsPa::where('profile_id', session('id_perusahaan'))
-            ->latest()
-            ->get()
-            ->toArray();
-
-        $original = $project_area;
-
-        return view('livewire.profile.pa', [
-            'project_area' => $project_area,
-            'original'     => $original,
-        ]);
+        return view('livewire.profile.pa');
     }
 }

@@ -20,80 +20,125 @@
                         <div class="card-header justify-content-between align-items-center d-flex">
                             <h6 class="card-title m-0">Tanda Batas | {{ session('nama_pemegang_perizinan') }}</h6>
                             <div class="d-flex gap-2">
-                                <a href="{{ route('profile.show', session('id_perusahaan')) }}" wire:navigate class="btn btn-primary btn-sm">Kembali</a>
-                                <a href="{{ route('tb.add') }}" wire:navigate class="btn btn-primary btn-sm"><i class="ri-add-line"></i> Tambah</a>
+                                <a href="{{ route('profile.show', session('id_perusahaan')) }}" wire:navigate class="btn btn-primary btn-sm">Profil</a>
                             </div>
                         </div>
-                        <div class="card-body">
-                            @foreach ($tandaBatas as $index => $item)
-                                <form wire:submit.prevent="update({{ $item['id'] }})" x-data="{ editing: false, confirmDelete: false }" wire:key="tb-row-{{ $item['id'] }}">
+                        <div class="card-body table-responsive">
+                            <table class="table table-bordered align-middle">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th style="width: 5%">#</th>
+                                        <th class="text-nowrap">No. SK Tanda Batas</th>
+                                        <th class="text-nowrap">Tanggal SK Tanda Batas</th>
+                                        <th class="text-nowrap">Laporan Pemeliharaan</th>
+                                        <th style="width: 20%">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($tb as $id => $item)
+                                        <tr wire:key="tb-row-{{ $id }}" x-data="{ confirmDelete: false }">
+                                            <td>{{ $loop->iteration }}</td>
 
-                                    <div class="row">
-                                        <div class="col-md-3 mb-3">
-                                            <label class="form-label">
-                                                <span class="fw-bold">{{ $loop->iteration }}.</span> No Persetujuan
-                                            </label>
-                                            <input type="text" class="form-control @error('tandaBatas.' . $index . '.no_sk_tanda_batas') is-invalid @enderror"
-                                                wire:model="tandaBatas.{{ $index }}.no_sk_tanda_batas" :disabled="!editing">
-                                            @error('tandaBatas.' . $index . '.no_sk_tanda_batas')
+                                            {{-- No. SK Tanda Batas --}}
+                                            <td>
+                                                <input type="text" class="form-control form-control-sm @error('tb.' . $id . '.no_sk_tanda_batas') is-invalid @enderror"
+                                                    wire:model="tb.{{ $id }}.no_sk_tanda_batas" :disabled="$wire.editingId !== {{ $id }}">
+                                                @error('tb.' . $id . '.no_sk_tanda_batas')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </td>
+
+                                            {{-- Tanggal SK Tanda Batas --}}
+                                            <td>
+                                                <input type="date" class="form-control form-control-sm @error('tb.' . $id . '.tgl_sk_tanda_batas') is-invalid @enderror"
+                                                    wire:model="tb.{{ $id }}.tgl_sk_tanda_batas" :disabled="$wire.editingId !== {{ $id }}">
+                                                @error('tb.' . $id . '.tgl_sk_tanda_batas')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </td>
+
+                                            {{-- Laporan Pemeliharaan --}}
+                                            <td>
+                                                <input type="text" class="form-control form-control-sm @error('tb.' . $id . '.tanda_batas_laporan_pemeliharaan') is-invalid @enderror"
+                                                    wire:model="tb.{{ $id }}.tanda_batas_laporan_pemeliharaan" :disabled="$wire.editingId !== {{ $id }}">
+                                                @error('tb.' . $id . '.tanda_batas_laporan_pemeliharaan')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </td>
+
+                                            {{-- Tombol Aksi --}}
+                                            <td>
+                                                <div class="d-flex flex-wrap gap-1">
+                                                    {{-- Simpan --}}
+                                                    <button type="button" class="btn btn-primary btn-sm" wire:click="update({{ $id }})" x-show="$wire.editingId === {{ $id }}">
+                                                        Simpan
+                                                    </button>
+
+                                                    {{-- Edit --}}
+                                                    <button type="button" class="btn btn-secondary btn-sm" @click="$wire.editingId = {{ $id }}"
+                                                        x-show="$wire.editingId !== {{ $id }}">
+                                                        <i class="ri-edit-line"></i>
+                                                    </button>
+
+                                                    {{-- Batal --}}
+                                                    <button type="button" class="btn btn-secondary btn-sm" wire:click="batal({{ $id }})" x-show="$wire.editingId === {{ $id }}">
+                                                        <i class="ri-close-line"></i>
+                                                    </button>
+
+                                                    {{-- Hapus --}}
+                                                    <button type="button" class="btn btn-danger btn-sm text-white" @click.stop="confirmDelete = true"
+                                                        x-show="$wire.editingId !== {{ $id }}">
+                                                        <i class="ri-delete-bin-line"></i>
+                                                    </button>
+                                                </div>
+
+                                                {{-- Konfirmasi hapus --}}
+                                                <div x-cloak x-show="confirmDelete" x-transition class="mt-2">
+                                                    <span class="small d-block mb-1">Yakin hapus?</span>
+                                                    <div class="d-flex gap-1">
+                                                        <button type="button" class="btn btn-danger btn-sm" @click="confirmDelete = false" wire:click="delete({{ $id }})">
+                                                            Ya
+                                                        </button>
+                                                        <button type="button" class="btn btn-secondary btn-sm" @click="confirmDelete = false">
+                                                            Batal
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+
+                                    {{-- Form tambah data baru --}}
+                                    <tr>
+                                        <td>+</td>
+                                        <td>
+                                            <input type="text" class="form-control form-control-sm @error('no_sk_tanda_batas') is-invalid @enderror" wire:model="no_sk_tanda_batas"
+                                                placeholder="No. SK Tanda Batas">
+                                            @error('no_sk_tanda_batas')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
-                                        </div>
-
-                                        <div class="col-md-3 mb-3">
-                                            <label class="form-label">Tanggal</label>
-                                            <input type="date" class="form-control @error('tandaBatas.' . $index . '.tgl_sk_tanda_batas') is-invalid @enderror"
-                                                wire:model="tandaBatas.{{ $index }}.tgl_sk_tanda_batas" :disabled="!editing">
-                                            @error('tandaBatas.' . $index . '.tgl_sk_tanda_batas')
+                                        </td>
+                                        <td>
+                                            <input type="date" class="form-control form-control-sm @error('tgl_sk_tanda_batas') is-invalid @enderror" wire:model="tgl_sk_tanda_batas">
+                                            @error('tgl_sk_tanda_batas')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
-                                        </div>
-
-                                        <div class="col-md-5 mb-3">
-                                            <label class="form-label">
-                                                Tanda Batas Laporan Pemeliharaan
-                                            </label>
-                                            <input type="text" class="form-control @error('tandaBatas.' . $index . '.tanda_batas_laporan_pemeliharaan') is-invalid @enderror"
-                                                wire:model="tandaBatas.{{ $index }}.tanda_batas_laporan_pemeliharaan" :disabled="!editing">
-                                            @error('tandaBatas.' . $index . '.tanda_batas_laporan_pemeliharaan')
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control form-control-sm @error('tanda_batas_laporan_pemeliharaan') is-invalid @enderror"
+                                                wire:model="tanda_batas_laporan_pemeliharaan" placeholder="Laporan Pemeliharaan">
+                                            @error('tanda_batas_laporan_pemeliharaan')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
-                                        </div>
-
-                                    </div>
-
-                                    <div class="d-flex flex-wrap gap-2 align-items-center">
-                                        {{-- Simpan --}}
-                                        <button type="submit" class="btn btn-primary btn-sm" x-show="editing" @click="editing = false">
-                                            Simpan
-                                        </button>
-
-                                        {{-- Edit / Batal (reset nilai dari DB via method batal) --}}
-                                        <button type="button" class="btn btn-secondary btn-sm" @click="editing = !editing" wire:click="batal({{ $index }})">
-                                            <i class="ri-edit-line"></i>
-                                            <span x-text="editing ? 'Batal' : 'Edit'"></span>
-                                        </button>
-
-                                        {{-- Hapus --}}
-                                        <button type="button" class="btn btn-danger btn-sm text-white" @click.stop="confirmDelete = true">
-                                            <i class="ri-delete-bin-line"></i> Hapus
-                                        </button>
-
-                                        {{-- Alert konfirmasi hapus --}}
-                                        <div x-cloak x-show="confirmDelete" x-transition>
-                                            <span class="me-2">Yakin ingin menghapus data ini?</span>
-                                            <button type="button" class="btn btn-danger btn-sm" @click="confirmDelete = false" wire:click="delete({{ $item['id'] }})">
-                                                Ya
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-success btn-sm text-white text-nowrap" wire:click="store">
+                                                <i class="ri-add-line"></i> Tambah
                                             </button>
-                                            <button type="button" class="btn btn-secondary btn-sm" @click="confirmDelete = false">
-                                                Batal
-                                            </button>
-                                        </div>
-                                    </div>
-
-                                    <hr class="my-3">
-                                </form>
-                            @endforeach
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                     <!-- / Example-->
@@ -107,6 +152,20 @@
 </div>
 @script
     <script>
+        $wire.on('store-success', (event) => {
+            var element = document.getElementById('liveToast');
+            console.log(event.message);
+            const myToast = bootstrap.Toast.getOrCreateInstance(element);
+            setTimeout(function() {
+                myToast.show();
+                document.getElementById('pesan').innerHTML = event.message;
+                element.className += " text-bg-success";
+                console.log(event.message);
+            }, 10);
+            setTimeout(function() {
+                myToast.hide();
+            }, 3000);
+        });
         $wire.on('update-success', (event) => {
             var element = document.getElementById('liveToast');
             console.log(event.message);

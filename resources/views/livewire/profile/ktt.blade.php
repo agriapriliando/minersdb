@@ -20,79 +20,124 @@
                         <div class="card-header justify-content-between align-items-center d-flex">
                             <h6 class="card-title m-0">Kepala Teknik Tambang | {{ session('nama_pemegang_perizinan') }}</h6>
                             <div class="d-flex gap-2">
-                                <a href="{{ route('profile.show', session('id_perusahaan')) }}" wire:navigate class="btn btn-primary btn-sm">Kembali</a>
-                                <a href="{{ route('ktt.add') }}" wire:navigate class="btn btn-primary btn-sm"><i class="ri-add-line"></i> Tambah</a>
+                                <a href="{{ route('profile.show', session('id_perusahaan')) }}" wire:navigate class="btn btn-primary btn-sm">Profil</a>
                             </div>
                         </div>
-                        <div class="card-body">
-                            @foreach ($ktt as $index => $item)
-                                <form wire:submit.prevent="update({{ $item['id'] }})" x-data="{ editing: false, confirmDelete: false }" wire:key="ktt-row-{{ $item['id'] }}">
+                        <div class="card-body table-responsive">
+                            <table class="table table-bordered align-middle">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th style="width: 5%">#</th>
+                                        <th>No. Pengesahan</th>
+                                        <th>Tanggal Pengesahan</th>
+                                        <th>Nama KTT</th>
+                                        <th style="width: 20%">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($ktt as $id => $item)
+                                        <tr wire:key="ktt-row-{{ $id }}" x-data="{ confirmDelete: false }">
+                                            <td>{{ $loop->iteration }}</td>
 
-                                    <div class="row">
-                                        <div class="col-md-4 mb-3">
-                                            <label class="form-label">
-                                                <span class="fw-bold">{{ $loop->iteration }}.</span> No Pengesahan
-                                            </label>
-                                            <input type="text" class="form-control @error('ktt.' . $index . '.ktt_no_pengesahan') is-invalid @enderror"
-                                                wire:model="ktt.{{ $index }}.ktt_no_pengesahan" :disabled="!editing">
-                                            @error('ktt.' . $index . '.ktt_no_pengesahan')
+                                            {{-- No. Pengesahan --}}
+                                            <td>
+                                                <input type="text" class="form-control form-control-sm @error('ktt.' . $id . '.ktt_no_pengesahan') is-invalid @enderror"
+                                                    wire:model="ktt.{{ $id }}.ktt_no_pengesahan" :disabled="$wire.editingId !== {{ $id }}">
+                                                @error('ktt.' . $id . '.ktt_no_pengesahan')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </td>
+
+                                            {{-- Tanggal Pengesahan --}}
+                                            <td>
+                                                <input type="date" class="form-control form-control-sm @error('ktt.' . $id . '.ktt_tgl_pengesahan') is-invalid @enderror"
+                                                    wire:model="ktt.{{ $id }}.ktt_tgl_pengesahan" :disabled="$wire.editingId !== {{ $id }}">
+                                                @error('ktt.' . $id . '.ktt_tgl_pengesahan')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </td>
+
+                                            {{-- Nama KTT --}}
+                                            <td>
+                                                <input type="text" class="form-control form-control-sm @error('ktt.' . $id . '.nama_ktt') is-invalid @enderror"
+                                                    wire:model="ktt.{{ $id }}.nama_ktt" :disabled="$wire.editingId !== {{ $id }}">
+                                                @error('ktt.' . $id . '.nama_ktt')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </td>
+
+                                            {{-- Tombol Aksi --}}
+                                            <td>
+                                                <div class="d-flex flex-wrap gap-1">
+                                                    {{-- Simpan --}}
+                                                    <button type="button" class="btn btn-primary btn-sm" wire:click="update({{ $id }})" x-show="$wire.editingId === {{ $id }}">
+                                                        Simpan
+                                                    </button>
+
+                                                    {{-- Edit --}}
+                                                    <button type="button" class="btn btn-secondary btn-sm" @click="$wire.editingId = {{ $id }}"
+                                                        x-show="$wire.editingId !== {{ $id }}">
+                                                        <i class="ri-edit-line"></i>
+                                                    </button>
+
+                                                    {{-- Batal --}}
+                                                    <button type="button" class="btn btn-secondary btn-sm" wire:click="batal({{ $id }})" x-show="$wire.editingId === {{ $id }}">
+                                                        <i class="ri-close-line"></i>
+                                                    </button>
+
+                                                    {{-- Hapus --}}
+                                                    <button type="button" class="btn btn-danger btn-sm text-white" @click.stop="confirmDelete = true"
+                                                        x-show="$wire.editingId !== {{ $id }}">
+                                                        <i class="ri-delete-bin-line"></i>
+                                                    </button>
+                                                </div>
+
+                                                {{-- Konfirmasi hapus --}}
+                                                <div x-cloak x-show="confirmDelete" x-transition class="mt-2">
+                                                    <span class="small d-block mb-1">Yakin hapus?</span>
+                                                    <div class="d-flex gap-1">
+                                                        <button type="button" class="btn btn-danger btn-sm" @click="confirmDelete = false" wire:click="delete({{ $id }})">
+                                                            Ya
+                                                        </button>
+                                                        <button type="button" class="btn btn-secondary btn-sm" @click="confirmDelete = false">
+                                                            Batal
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+
+                                    {{-- Form tambah data baru --}}
+                                    <tr>
+                                        <td>+</td>
+                                        <td>
+                                            <input type="text" class="form-control form-control-sm @error('ktt_no_pengesahan') is-invalid @enderror" wire:model="ktt_no_pengesahan"
+                                                placeholder="No. Pengesahan">
+                                            @error('ktt_no_pengesahan')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
-                                        </div>
-
-                                        <div class="col-md-4 mb-3">
-                                            <label class="form-label">Tanggal</label>
-                                            <input type="date" class="form-control @error('ktt.' . $index . '.ktt_tgl_pengesahan') is-invalid @enderror"
-                                                wire:model="ktt.{{ $index }}.ktt_tgl_pengesahan" :disabled="!editing">
-                                            @error('ktt.' . $index . '.ktt_tgl_pengesahan')
+                                        </td>
+                                        <td>
+                                            <input type="date" class="form-control form-control-sm @error('ktt_tgl_pengesahan') is-invalid @enderror" wire:model="ktt_tgl_pengesahan">
+                                            @error('ktt_tgl_pengesahan')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
-                                        </div>
-
-                                        <div class="col-md-4 mb-3">
-                                            <label class="form-label">
-                                                <span class="fw-bold">{{ $loop->iteration }}.</span> Nama KTT
-                                            </label>
-                                            <input type="text" class="form-control @error('ktt.' . $index . '.nama_ktt') is-invalid @enderror" wire:model="ktt.{{ $index }}.nama_ktt"
-                                                :disabled="!editing">
-                                            @error('ktt.' . $index . '.nama_ktt')
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control form-control-sm @error('nama_ktt') is-invalid @enderror" wire:model="nama_ktt" placeholder="Nama KTT">
+                                            @error('nama_ktt')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
-                                        </div>
-                                    </div>
-
-                                    <div class="d-flex flex-wrap gap-2 align-items-center">
-                                        {{-- Simpan --}}
-                                        <button type="submit" class="btn btn-primary btn-sm" x-show="editing" @click="editing = false">
-                                            Simpan
-                                        </button>
-
-                                        {{-- Edit / Batal (reset nilai dari DB via method batal) --}}
-                                        <button type="button" class="btn btn-secondary btn-sm" @click="editing = !editing" wire:click="batal({{ $index }})">
-                                            <i class="ri-edit-line"></i>
-                                            <span x-text="editing ? 'Batal' : 'Edit'"></span>
-                                        </button>
-
-                                        {{-- Hapus --}}
-                                        <button type="button" class="btn btn-danger btn-sm text-white" @click.stop="confirmDelete = true">
-                                            <i class="ri-delete-bin-line"></i> Hapus
-                                        </button>
-
-                                        {{-- Alert konfirmasi hapus --}}
-                                        <div x-cloak x-show="confirmDelete" x-transition>
-                                            <span class="me-2">Yakin ingin menghapus data ini?</span>
-                                            <button type="button" class="btn btn-danger btn-sm" @click="confirmDelete = false" wire:click="delete({{ $item['id'] }})">
-                                                Ya
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-success btn-sm text-white" wire:click="store">
+                                                <i class="ri-add-line"></i> Tambah
                                             </button>
-                                            <button type="button" class="btn btn-secondary btn-sm" @click="confirmDelete = false">
-                                                Batal
-                                            </button>
-                                        </div>
-                                    </div>
-
-                                    <hr class="my-3">
-                                </form>
-                            @endforeach
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                     <!-- / Example-->
@@ -106,6 +151,20 @@
 </div>
 @script
     <script>
+        $wire.on('store-success', (event) => {
+            var element = document.getElementById('liveToast');
+            console.log(event.message);
+            const myToast = bootstrap.Toast.getOrCreateInstance(element);
+            setTimeout(function() {
+                myToast.show();
+                document.getElementById('pesan').innerHTML = event.message;
+                element.className += " text-bg-success";
+                console.log(event.message);
+            }, 10);
+            setTimeout(function() {
+                myToast.hide();
+            }, 3000);
+        });
         $wire.on('update-success', (event) => {
             var element = document.getElementById('liveToast');
             console.log(event.message);

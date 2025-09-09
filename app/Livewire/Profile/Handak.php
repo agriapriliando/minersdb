@@ -7,9 +7,10 @@ use Livewire\Component;
 
 class Handak extends Component
 {
-    public $handak;
-    public $original;
+    public $handak = [];
+    public $original = [];
 
+    // field tambah data baru
     public $handak_no_persetujuan;
     public $handak_tgl;
     public $handak_jenis_bahan;
@@ -17,24 +18,19 @@ class Handak extends Component
     public $handak_tgl_mulai;
     public $handak_tgl_selesai;
 
-    protected $rules = [
-        'handak.*.handak_no_persetujuan'   => 'required|string|max:255',
-        'handak.*.handak_tgl'              => 'required|date',
-        'handak.*.handak_jenis_bahan'      => 'required|string|max:255',
-        'handak.*.handak_kapasitas_gudang' => 'required|numeric|min:0',
-        'handak.*.handak_tgl_mulai'        => 'required|date',
-        'handak.*.handak_tgl_selesai'      => 'required|date|after_or_equal:handak.*.handak_tgl_mulai',
-    ];
+    public $editingId = null;
 
     protected $messages = [
-        'handak.*.handak_no_persetujuan.required'   => 'Nomor persetujuan wajib diisi.',
-        'handak.*.handak_tgl.required'              => 'Tanggal wajib diisi.',
-        'handak.*.handak_jenis_bahan.required'      => 'Jenis bahan wajib diisi.',
+        'handak.*.handak_no_persetujuan.required' => 'Nomor persetujuan wajib diisi.',
+        'handak.*.handak_tgl.required'            => 'Tanggal wajib diisi.',
+        'handak.*.handak_tgl.date'                => 'Tanggal tidak valid.',
+        'handak.*.handak_jenis_bahan.required'    => 'Jenis bahan wajib diisi.',
         'handak.*.handak_kapasitas_gudang.required' => 'Kapasitas gudang wajib diisi.',
         'handak.*.handak_kapasitas_gudang.numeric'  => 'Kapasitas gudang harus berupa angka.',
-        'handak.*.handak_tgl_mulai.required'        => 'Tanggal mulai wajib diisi.',
-        'handak.*.handak_tgl_selesai.required'      => 'Tanggal selesai wajib diisi.',
-        'handak.*.handak_tgl_selesai.after_or_equal' => 'Tanggal selesai harus setelah atau sama dengan tanggal mulai.',
+        'handak.*.handak_tgl_mulai.required'      => 'Tanggal mulai wajib diisi.',
+        'handak.*.handak_tgl_mulai.date'          => 'Tanggal mulai tidak valid.',
+        'handak.*.handak_tgl_selesai.required'    => 'Tanggal selesai wajib diisi.',
+        'handak.*.handak_tgl_selesai.date'        => 'Tanggal selesai tidak valid.',
     ];
 
     public function mount()
@@ -42,56 +38,107 @@ class Handak extends Component
         $this->handak = ModelsHandak::where('profile_id', session('id_perusahaan'))
             ->latest()
             ->get()
+            ->keyBy('id')
             ->toArray();
 
         $this->original = $this->handak;
     }
 
+    protected function rulesForRow($id)
+    {
+        return [
+            "handak.$id.handak_no_persetujuan" => 'required',
+            "handak.$id.handak_tgl"            => 'required|date',
+            "handak.$id.handak_jenis_bahan"    => 'required',
+            "handak.$id.handak_kapasitas_gudang" => 'required|numeric',
+            "handak.$id.handak_tgl_mulai"      => 'required|date',
+            "handak.$id.handak_tgl_selesai"    => 'required|date',
+        ];
+    }
+
+    protected function rulesForNew()
+    {
+        return [
+            "handak_no_persetujuan"   => 'required',
+            "handak_tgl"              => 'required|date',
+            "handak_jenis_bahan"      => 'required',
+            "handak_kapasitas_gudang" => 'required|numeric',
+            "handak_tgl_mulai"        => 'required|date',
+            "handak_tgl_selesai"      => 'required|date',
+        ];
+    }
+
+    public function store()
+    {
+        $this->validate($this->rulesForNew());
+
+        ModelsHandak::create([
+            'profile_id'             => session('id_perusahaan'),
+            'handak_no_persetujuan'  => $this->handak_no_persetujuan,
+            'handak_tgl'             => $this->handak_tgl,
+            'handak_jenis_bahan'     => $this->handak_jenis_bahan,
+            'handak_kapasitas_gudang' => $this->handak_kapasitas_gudang,
+            'handak_tgl_mulai'       => $this->handak_tgl_mulai,
+            'handak_tgl_selesai'     => $this->handak_tgl_selesai,
+        ]);
+
+        $this->handak = ModelsHandak::where('profile_id', session('id_perusahaan'))
+            ->latest()
+            ->get()
+            ->keyBy('id')
+            ->toArray();
+
+        $this->original = $this->handak;
+
+        $this->reset([
+            'handak_no_persetujuan',
+            'handak_tgl',
+            'handak_jenis_bahan',
+            'handak_kapasitas_gudang',
+            'handak_tgl_mulai',
+            'handak_tgl_selesai',
+        ]);
+
+        $this->dispatch('store-success', message: 'Data handak baru berhasil ditambahkan!');
+    }
+
     public function update($id)
     {
-        $this->validate();
+        $this->validate($this->rulesForRow($id));
 
-        $data = collect($this->handak)->firstWhere('id', $id);
-
+        $data = $this->handak[$id];
         ModelsHandak::find($id)->update($data);
 
-        // refresh data original dari DB
         $this->original = ModelsHandak::where('profile_id', session('id_perusahaan'))
             ->latest()
             ->get()
+            ->keyBy('id')
             ->toArray();
 
-        $this->dispatch('update-success', message: 'Data berhasil diperbaharui!');
+        $this->dispatch('update-success', message: 'Data handak berhasil diperbaharui!');
+        $this->editingId = null;
     }
 
-    public function batal($index)
+    public function batal($id)
     {
-        $this->handak[$index] = $this->original[$index];
+        if (isset($this->original[$id])) {
+            $this->handak[$id] = $this->original[$id];
+        }
+        $this->editingId = null;
     }
 
     public function delete($id)
     {
         ModelsHandak::whereId($id)->delete();
-        $this->handak = collect($this->handak)
-            ->reject(fn($row) => $row['id'] == $id)
-            ->values()
-            ->toArray();
 
-        $this->dispatch('delete-success', message: 'Data berhasil dihapus!');
+        unset($this->handak[$id]);
+        unset($this->original[$id]);
+
+        $this->dispatch('delete-success', message: 'Data handak berhasil dihapus!');
     }
 
     public function render()
     {
-        $handak = ModelsHandak::where('profile_id', session('id_perusahaan'))
-            ->latest()
-            ->get()
-            ->toArray();
-
-        $original = $handak;
-
-        return view('livewire.profile.handak', [
-            'handak' => $handak,
-            'original' => $original,
-        ]);
+        return view('livewire.profile.handak');
     }
 }

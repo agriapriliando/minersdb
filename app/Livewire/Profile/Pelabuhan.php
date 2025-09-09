@@ -7,26 +7,26 @@ use Livewire\Component;
 
 class Pelabuhan extends Component
 {
-    public $pelabuhan;
-    public $original;
+    public $pelabuhan = [];
+    public $original = [];
 
+    // field tambah data baru
     public $pelabuhan_no_persetujuan;
     public $pelabuhan_tgl_persetujuan;
     public $pelabuhan_status_tuks_terum;
 
-    protected $rules = [
-        'pelabuhan.*.pelabuhan_no_persetujuan'   => 'required|string|max:255',
-        'pelabuhan.*.pelabuhan_tgl_persetujuan'  => 'required|date',
-        'pelabuhan.*.pelabuhan_status_tuks_terum' => 'required|string|max:255',
-    ];
+    public $editingId = null;
 
     protected $messages = [
         'pelabuhan.*.pelabuhan_no_persetujuan.required'   => 'Nomor persetujuan wajib diisi.',
-        'pelabuhan.*.pelabuhan_no_persetujuan.string'     => 'Nomor persetujuan harus berupa teks.',
-        'pelabuhan.*.pelabuhan_tgl_persetujuan.required'  => 'Tanggal wajib diisi.',
-        'pelabuhan.*.pelabuhan_tgl_persetujuan.date'      => 'Tanggal tidak valid.',
-        'pelabuhan.*.pelabuhan_status_tuks_terum.required' => 'Status TUKS/TERUM wajib diisi.',
-        'pelabuhan.*.pelabuhan_status_tuks_terum.string'   => 'Status harus berupa teks.',
+        'pelabuhan.*.pelabuhan_tgl_persetujuan.required'  => 'Tanggal persetujuan wajib diisi.',
+        'pelabuhan.*.pelabuhan_tgl_persetujuan.date'      => 'Tanggal persetujuan tidak valid.',
+        'pelabuhan.*.pelabuhan_status_tuks_terum.required' => 'Status TUKS Terum wajib diisi.',
+
+        'pelabuhan_no_persetujuan.required'   => 'Nomor persetujuan wajib diisi.',
+        'pelabuhan_tgl_persetujuan.required'  => 'Tanggal persetujuan wajib diisi.',
+        'pelabuhan_tgl_persetujuan.date'      => 'Tanggal persetujuan tidak valid.',
+        'pelabuhan_status_tuks_terum.required' => 'Status TUKS Terum wajib diisi.',
     ];
 
     public function mount()
@@ -34,58 +34,92 @@ class Pelabuhan extends Component
         $this->pelabuhan = ModelsPelabuhan::where('profile_id', session('id_perusahaan'))
             ->latest()
             ->get()
+            ->keyBy('id')
             ->toArray();
 
-        $this->original = $this->pelabuhan; // simpan salinan asli
+        $this->original = $this->pelabuhan;
+    }
+
+    protected function rulesForRow($id)
+    {
+        return [
+            "pelabuhan.$id.pelabuhan_no_persetujuan"   => 'required',
+            "pelabuhan.$id.pelabuhan_tgl_persetujuan"  => 'required|date',
+            "pelabuhan.$id.pelabuhan_status_tuks_terum" => 'required',
+        ];
+    }
+
+    protected function rulesForNew()
+    {
+        return [
+            "pelabuhan_no_persetujuan"   => 'required',
+            "pelabuhan_tgl_persetujuan"  => 'required|date',
+            "pelabuhan_status_tuks_terum" => 'required',
+        ];
+    }
+
+    public function store()
+    {
+        $this->validate($this->rulesForNew());
+
+        ModelsPelabuhan::create([
+            'profile_id'                  => session('id_perusahaan'),
+            'pelabuhan_no_persetujuan'    => $this->pelabuhan_no_persetujuan,
+            'pelabuhan_tgl_persetujuan'   => $this->pelabuhan_tgl_persetujuan,
+            'pelabuhan_status_tuks_terum' => $this->pelabuhan_status_tuks_terum,
+        ]);
+
+        // refresh data
+        $this->pelabuhan = ModelsPelabuhan::where('profile_id', session('id_perusahaan'))
+            ->latest()
+            ->get()
+            ->keyBy('id')
+            ->toArray();
+
+        $this->original = $this->pelabuhan;
+
+        $this->reset(['pelabuhan_no_persetujuan', 'pelabuhan_tgl_persetujuan', 'pelabuhan_status_tuks_terum']);
+
+        $this->dispatch('store-success', message: 'Data pelabuhan baru berhasil ditambahkan!');
     }
 
     public function update($id)
     {
-        $this->validate();
+        $this->validate($this->rulesForRow($id));
 
-        $data = collect($this->pelabuhan)->firstWhere('id', $id);
-
+        $data = $this->pelabuhan[$id];
         ModelsPelabuhan::find($id)->update($data);
 
-        // refresh data original dari DB
         $this->original = ModelsPelabuhan::where('profile_id', session('id_perusahaan'))
             ->latest()
             ->get()
+            ->keyBy('id')
             ->toArray();
 
-        $this->dispatch('update-success', message: 'Data berhasil diperbaharui!');
+        $this->dispatch('update-success', message: 'Data pelabuhan berhasil diperbaharui!');
+        $this->editingId = null;
     }
 
-    public function batal($index)
+    public function batal($id)
     {
-        // reset satu baris ke data awal
-        $this->pelabuhan[$index] = $this->original[$index];
+        if (isset($this->original[$id])) {
+            $this->pelabuhan[$id] = $this->original[$id];
+        }
+        $this->editingId = null;
     }
 
     public function delete($id)
     {
         ModelsPelabuhan::whereId($id)->delete();
 
-        $this->pelabuhan = collect($this->pelabuhan)
-            ->reject(fn($row) => $row['id'] == $id)
-            ->values()
-            ->toArray();
+        unset($this->pelabuhan[$id]);
+        unset($this->original[$id]);
 
-        $this->dispatch('delete-success', message: 'Data berhasil dihapus!');
+        $this->dispatch('delete-success', message: 'Data pelabuhan berhasil dihapus!');
     }
 
     public function render()
     {
-        $pelabuhan = ModelsPelabuhan::where('profile_id', session('id_perusahaan'))
-            ->latest()
-            ->get()
-            ->toArray();
-
-        $original = $pelabuhan;
-
-        return view('livewire.profile.pelabuhan', [
-            'pelabuhan' => $pelabuhan,
-            'original'  => $original
-        ]);
+        return view('livewire.profile.pelabuhan');
     }
 }

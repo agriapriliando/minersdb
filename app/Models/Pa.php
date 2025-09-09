@@ -14,4 +14,13 @@ class Pa extends Model
         'project_area_luas',
         'project_area_keterangan',
     ];
+
+    protected $casts = [
+        'project_area_tgl' => 'date:Y-m-d',
+    ];
+
+    public function profile()
+    {
+        return $this->belongsTo(Profile::class);
+    }
 }

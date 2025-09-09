@@ -7,41 +7,27 @@ use Livewire\Component;
 
 class Kim extends Component
 {
-    public $kim;
-    public $original;
+    public $kim = [];
+    public $original = [];
 
+    // field tambah data baru
     public $kim_no_persetujuan;
     public $kim_tgl_persetujuan;
     public $kim_nama_juru_ledak;
     public $kim_tgl_mulai;
     public $kim_tgl_selesai;
 
-    protected $rules = [
-        'kim.*.kim_no_persetujuan'    => 'required|string|max:100',
-        'kim.*.kim_tgl_persetujuan'   => 'required|date',
-        'kim.*.kim_nama_juru_ledak'   => 'required|string|max:150',
-        'kim.*.kim_tgl_mulai'         => 'required|date',
-        'kim.*.kim_tgl_selesai'       => 'required|date|after_or_equal:kim.*.kim_tgl_mulai',
-    ];
+    public $editingId = null;
 
     protected $messages = [
-        'kim.*.kim_no_persetujuan.required'   => 'Nomor persetujuan wajib diisi.',
-        'kim.*.kim_no_persetujuan.string'     => 'Nomor persetujuan harus berupa teks.',
-        'kim.*.kim_no_persetujuan.max'        => 'Nomor persetujuan maksimal 100 karakter.',
-
-        'kim.*.kim_tgl_persetujuan.required'  => 'Tanggal persetujuan wajib diisi.',
-        'kim.*.kim_tgl_persetujuan.date'      => 'Tanggal persetujuan tidak valid.',
-
-        'kim.*.kim_nama_juru_ledak.required'  => 'Nama juru ledak wajib diisi.',
-        'kim.*.kim_nama_juru_ledak.string'    => 'Nama juru ledak harus berupa teks.',
-        'kim.*.kim_nama_juru_ledak.max'       => 'Nama juru ledak maksimal 150 karakter.',
-
-        'kim.*.kim_tgl_mulai.required'        => 'Tanggal mulai wajib diisi.',
-        'kim.*.kim_tgl_mulai.date'            => 'Tanggal mulai tidak valid.',
-
-        'kim.*.kim_tgl_selesai.required'      => 'Tanggal selesai wajib diisi.',
-        'kim.*.kim_tgl_selesai.date'          => 'Tanggal selesai tidak valid.',
-        'kim.*.kim_tgl_selesai.after_or_equal' => 'Tanggal selesai harus setelah atau sama dengan tanggal mulai.',
+        'kim.*.kim_no_persetujuan.required'     => 'Nomor persetujuan wajib diisi.',
+        'kim.*.kim_tgl_persetujuan.required'    => 'Tanggal persetujuan wajib diisi.',
+        'kim.*.kim_tgl_persetujuan.date'        => 'Tanggal persetujuan tidak valid.',
+        'kim.*.kim_nama_juru_ledak.required'    => 'Nama juru ledak wajib diisi.',
+        'kim.*.kim_tgl_mulai.required'          => 'Tanggal mulai wajib diisi.',
+        'kim.*.kim_tgl_mulai.date'              => 'Tanggal mulai tidak valid.',
+        'kim.*.kim_tgl_selesai.required'        => 'Tanggal selesai wajib diisi.',
+        'kim.*.kim_tgl_selesai.date'            => 'Tanggal selesai tidak valid.',
     ];
 
     public function mount()
@@ -49,57 +35,104 @@ class Kim extends Component
         $this->kim = ModelsKim::where('profile_id', session('id_perusahaan'))
             ->latest()
             ->get()
+            ->keyBy('id')
             ->toArray();
 
         $this->original = $this->kim;
     }
 
+    protected function rulesForRow($id)
+    {
+        return [
+            "kim.$id.kim_no_persetujuan"     => 'required',
+            "kim.$id.kim_tgl_persetujuan"    => 'required|date',
+            "kim.$id.kim_nama_juru_ledak"    => 'required',
+            "kim.$id.kim_tgl_mulai"          => 'required|date',
+            "kim.$id.kim_tgl_selesai"        => 'required|date',
+        ];
+    }
+
+    protected function rulesForNew()
+    {
+        return [
+            "kim_no_persetujuan"     => 'required',
+            "kim_tgl_persetujuan"    => 'required|date',
+            "kim_nama_juru_ledak"    => 'required',
+            "kim_tgl_mulai"          => 'required|date',
+            "kim_tgl_selesai"        => 'required|date',
+        ];
+    }
+
+    public function store()
+    {
+        $this->validate($this->rulesForNew());
+
+        ModelsKim::create([
+            'profile_id'            => session('id_perusahaan'),
+            'kim_no_persetujuan'    => $this->kim_no_persetujuan,
+            'kim_tgl_persetujuan'   => $this->kim_tgl_persetujuan,
+            'kim_nama_juru_ledak'   => $this->kim_nama_juru_ledak,
+            'kim_tgl_mulai'         => $this->kim_tgl_mulai,
+            'kim_tgl_selesai'       => $this->kim_tgl_selesai,
+        ]);
+
+        // refresh data
+        $this->kim = ModelsKim::where('profile_id', session('id_perusahaan'))
+            ->latest()
+            ->get()
+            ->keyBy('id')
+            ->toArray();
+
+        $this->original = $this->kim;
+
+        $this->reset([
+            'kim_no_persetujuan',
+            'kim_tgl_persetujuan',
+            'kim_nama_juru_ledak',
+            'kim_tgl_mulai',
+            'kim_tgl_selesai'
+        ]);
+
+        $this->dispatch('store-success', message: 'Data KIM baru berhasil ditambahkan!');
+    }
+
     public function update($id)
     {
-        $this->validate();
+        $this->validate($this->rulesForRow($id));
 
-        $data = collect($this->kim)->firstWhere('id', $id);
-
+        $data = $this->kim[$id];
         ModelsKim::find($id)->update($data);
 
-        // refresh data original dari DB
         $this->original = ModelsKim::where('profile_id', session('id_perusahaan'))
             ->latest()
             ->get()
+            ->keyBy('id')
             ->toArray();
 
         $this->dispatch('update-success', message: 'Data KIM berhasil diperbaharui!');
+        $this->editingId = null;
     }
 
-    public function batal($index)
+    public function batal($id)
     {
-        $this->kim[$index] = $this->original[$index];
+        if (isset($this->original[$id])) {
+            $this->kim[$id] = $this->original[$id];
+        }
+        $this->editingId = null;
     }
 
     public function delete($id)
     {
         ModelsKim::whereId($id)->delete();
 
-        $this->kim = collect($this->kim)
-            ->reject(fn($row) => $row['id'] == $id)
-            ->values()
-            ->toArray();
+        unset($this->kim[$id]);
+        unset($this->original[$id]);
 
         $this->dispatch('delete-success', message: 'Data KIM berhasil dihapus!');
     }
 
     public function render()
     {
-        $kim = ModelsKim::where('profile_id', session('id_perusahaan'))
-            ->latest()
-            ->get()
-            ->toArray();
-
-        $original = $kim;
-
-        return view('livewire.profile.kim', [
-            'kim' => $kim,
-            'original' => $original,
-        ]);
+        return view('livewire.profile.kim');
     }
 }
