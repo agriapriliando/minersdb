@@ -11,12 +11,16 @@
                             <input wire:model.live="search" class="form-control border-0 bg-transparent px-0 py-2 me-5 fw-bolder" type="search" placeholder="Search" aria-label="Search">
                             <button class="btn btn-link p-0 text-muted" type="submit"><i class="ri-search-2-line"></i></button>
                         </form>
-                        <select class="form-select me-2 mb-2 rounded">
+                        <select wire:model.live="komoditasSearch" class="form-select me-2 mb-2 rounded">
                             <option value="">==Komoditas==</option>
+                            @foreach ($komoditas as $key => $value)
+                                <option value="{{ $key }}">{{ $value }}</option>
+                            @endforeach
                         </select>
                         <select wire:model.live="perPage" class="form-select me-2 mb-2 rounded">
                             <option value="5">5</option>
                             <option value="10">10</option>
+                            <option value="{{ $profiles->total() }}">{{ $profiles->total() }}</option>
                         </select>
                         <div class="d-flex justify-content-end mb-2">
                             <a href="#" class="btn btn-outline-secondary btn-sm text-body me-2"><i class="ri-download-fill align-bottom"></i> Export</a>

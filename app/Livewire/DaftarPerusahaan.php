@@ -12,6 +12,8 @@ class DaftarPerusahaan extends Component
 
     public $search = '';
     public $perPage = 5;
+
+    public $komoditasSearch = '';
     public function mount()
     {
         session(['id_perusahaan' => null]);
@@ -22,12 +24,18 @@ class DaftarPerusahaan extends Component
     {
         $this->resetPage();
     }
+    public function updatingKomoditasSearch()
+    {
+        $this->resetPage();
+    }
     public function render()
     {
         return view('livewire.daftar-perusahaan', [
             'profiles' => Profile::search($this->search)
+                ->komoditas($this->komoditasSearch)
                 ->latest()
                 ->paginate($this->perPage),
+            'komoditas' => Profile::select('komoditas')->distinct()->pluck('komoditas', 'komoditas'),
         ]);
     }
 }

@@ -48,6 +48,15 @@ class Profile extends Model
         }
         return $query;
     }
+    public function scopeKomoditas($query, $term)
+    {
+        if ($term) {
+            return $query->where(function ($q) use ($term) {
+                $q->where('komoditas', 'like', "%{$term}%");
+            });
+        }
+        return $query;
+    }
 
     // Define the relationship for 'Ktt'
     public function ktts()
