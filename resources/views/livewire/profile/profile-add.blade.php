@@ -18,26 +18,19 @@
                     <!-- Example-->
                     <div class="card mb-4">
                         <div class="card-header justify-content-between align-items-center d-flex">
-                            <h6 class="card-title m-0">{{ $nama_pemegang_perizinan }}</h6>
+                            <h6 class="card-title m-0">Tambah Profil Perusahaan</h6>
                             <div class="d-flex gap-2">
                                 <a href="{{ route('home') }}" class="btn btn-primary btn-sm">Dashboard</a>
-
-                                @if (!$isEditing)
-                                    <button type="button" class="btn btn-sm btn-primary" wire:click="edit({{ $id }})">
-                                        <i class="ri-edit-line"></i> Edit
-                                    </button>
-                                @endif
                             </div>
                         </div>
 
                         <div class="card-body">
-                            <form wire:submit.prevent="update">
+                            <form wire:submit.prevent="store">
                                 <div class="row">
                                     {{-- Nama Pemegang Perizinan --}}
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label">Nama Pemegang Perizinan</label>
-                                        <input type="text" class="form-control @error('nama_pemegang_perizinan') is-invalid @enderror" wire:model.live="nama_pemegang_perizinan"
-                                            @disabled(!$isEditing)>
+                                        <input type="text" class="form-control @error('nama_pemegang_perizinan') is-invalid @enderror" wire:model="nama_pemegang_perizinan">
                                         @error('nama_pemegang_perizinan')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -46,7 +39,7 @@
                                     {{-- Kabupaten / Kota --}}
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label">Kabupaten / Kota</label>
-                                        <input type="text" class="form-control @error('kabupaten_kota') is-invalid @enderror" wire:model="kabupaten_kota" @disabled(!$isEditing)>
+                                        <input type="text" class="form-control @error('kabupaten_kota') is-invalid @enderror" wire:model="kabupaten_kota">
                                         @error('kabupaten_kota')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -55,7 +48,7 @@
                                     {{-- Kecamatan --}}
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label">Kecamatan</label>
-                                        <input type="text" class="form-control @error('kecamatan') is-invalid @enderror" wire:model="kecamatan" @disabled(!$isEditing)>
+                                        <input type="text" class="form-control @error('kecamatan') is-invalid @enderror" wire:model="kecamatan">
                                         @error('kecamatan')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -64,7 +57,7 @@
                                     {{-- Desa / Kelurahan --}}
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label">Desa / Kelurahan</label>
-                                        <input type="text" class="form-control @error('desa_kelurahan') is-invalid @enderror" wire:model="desa_kelurahan" @disabled(!$isEditing)>
+                                        <input type="text" class="form-control @error('desa_kelurahan') is-invalid @enderror" wire:model="desa_kelurahan">
                                         @error('desa_kelurahan')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -73,7 +66,7 @@
                                     {{-- Luas Ha --}}
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label">Luas (Ha)</label>
-                                        <input type="text" class="form-control @error('luas_ha') is-invalid @enderror" wire:model="luas_ha" @disabled(!$isEditing)>
+                                        <input type="text" class="form-control @error('luas_ha') is-invalid @enderror" wire:model="luas_ha">
                                         @error('luas_ha')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -82,7 +75,7 @@
                                     {{-- Tahapan IUP --}}
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label">Tahapan IUP</label>
-                                        <input type="text" class="form-control @error('tahapan_iup') is-invalid @enderror" wire:model="tahapan_iup" @disabled(!$isEditing)>
+                                        <input type="text" class="form-control @error('tahapan_iup') is-invalid @enderror" wire:model="tahapan_iup">
                                         @error('tahapan_iup')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -91,7 +84,7 @@
                                     {{-- Komoditas --}}
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label">Komoditas</label>
-                                        <input type="text" class="form-control @error('komoditas') is-invalid @enderror" wire:model="komoditas" @disabled(!$isEditing)>
+                                        <input type="text" class="form-control @error('komoditas') is-invalid @enderror" wire:model="komoditas">
                                         @error('komoditas')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -100,8 +93,7 @@
                                     {{-- NIB --}}
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label">Nomor Induk Berusaha (NIB)</label>
-                                        <input type="text" class="form-control @error('nomor_induk_berusaha_nib') is-invalid @enderror" wire:model="nomor_induk_berusaha_nib"
-                                            @disabled(!$isEditing)>
+                                        <input type="text" class="form-control @error('nomor_induk_berusaha_nib') is-invalid @enderror" wire:model="nomor_induk_berusaha_nib">
                                         @error('nomor_induk_berusaha_nib')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -110,7 +102,7 @@
                                     {{-- NPWP --}}
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label">Nomor NPWP</label>
-                                        <input type="text" class="form-control @error('nomor_npwp') is-invalid @enderror" wire:model="nomor_npwp" @disabled(!$isEditing)>
+                                        <input type="text" class="form-control @error('nomor_npwp') is-invalid @enderror" wire:model="nomor_npwp">
                                         @error('nomor_npwp')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -119,7 +111,7 @@
                                     {{-- Status NPWP --}}
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label">Status NPWP</label>
-                                        <input type="text" class="form-control @error('status_npwp') is-invalid @enderror" wire:model="status_npwp" @disabled(!$isEditing)>
+                                        <input type="text" class="form-control @error('status_npwp') is-invalid @enderror" wire:model="status_npwp">
                                         @error('status_npwp')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -128,7 +120,7 @@
                                     {{-- Jenis Izin --}}
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label">Jenis Izin</label>
-                                        <select class="form-control @error('jenis_izin') is-invalid @enderror" wire:model="jenis_izin" @disabled(!$isEditing)>
+                                        <select class="form-control @error('jenis_izin') is-invalid @enderror" wire:model="jenis_izin">
                                             <option value="">-- Pilih Jenis Izin --</option>
                                             <option value="IUP">IUP</option>
                                             <option value="SIPB">SIPB</option>
@@ -141,7 +133,7 @@
                                     {{-- Nomor SK Izin --}}
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label">Nomor SK Izin</label>
-                                        <input type="text" class="form-control @error('nomor_sk_izin') is-invalid @enderror" wire:model="nomor_sk_izin" @disabled(!$isEditing)>
+                                        <input type="text" class="form-control @error('nomor_sk_izin') is-invalid @enderror" wire:model="nomor_sk_izin">
                                         @error('nomor_sk_izin')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -150,7 +142,7 @@
                                     {{-- Tanggal Terbit Izin --}}
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label">Tanggal Terbit Izin</label>
-                                        <input type="date" class="form-control @error('tgl_terbit_izin') is-invalid @enderror" wire:model="tgl_terbit_izin" @disabled(!$isEditing)>
+                                        <input type="date" class="form-control @error('tgl_terbit_izin') is-invalid @enderror" wire:model="tgl_terbit_izin">
                                         @error('tgl_terbit_izin')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -159,7 +151,7 @@
                                     {{-- Tanggal Berakhir Izin --}}
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label">Tanggal Berakhir Izin</label>
-                                        <input type="date" class="form-control @error('tgl_berakhir_izin') is-invalid @enderror" wire:model="tgl_berakhir_izin" @disabled(!$isEditing)>
+                                        <input type="date" class="form-control @error('tgl_berakhir_izin') is-invalid @enderror" wire:model="tgl_berakhir_izin">
                                         @error('tgl_berakhir_izin')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -168,7 +160,7 @@
                                     {{-- Alamat Perusahaan --}}
                                     <div class="col-md-12 mb-3">
                                         <label class="form-label">Alamat Perusahaan (Sesuai SK Izin)</label>
-                                        <textarea class="form-control @error('alamat_perusahaan_berdasarkan_sk_izin') is-invalid @enderror" rows="3" wire:model="alamat_perusahaan_berdasarkan_sk_izin" @disabled(!$isEditing)></textarea>
+                                        <textarea class="form-control @error('alamat_perusahaan_berdasarkan_sk_izin') is-invalid @enderror" rows="3" wire:model="alamat_perusahaan_berdasarkan_sk_izin"></textarea>
                                         @error('alamat_perusahaan_berdasarkan_sk_izin')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -177,8 +169,7 @@
                                     {{-- Nama Direktur --}}
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label">Nama Direktur (Sesuai SK Izin)</label>
-                                        <input type="text" class="form-control @error('nama_direktur_sesuai_sk_izin') is-invalid @enderror" wire:model="nama_direktur_sesuai_sk_izin"
-                                            @disabled(!$isEditing)>
+                                        <input type="text" class="form-control @error('nama_direktur_sesuai_sk_izin') is-invalid @enderror" wire:model="nama_direktur_sesuai_sk_izin">
                                         @error('nama_direktur_sesuai_sk_izin')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -187,7 +178,7 @@
                                     {{-- Dewan Direksi --}}
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label">Dewan Direksi (BOD)</label>
-                                        <input type="text" class="form-control @error('dewan_direksi_bod') is-invalid @enderror" wire:model="dewan_direksi_bod" @disabled(!$isEditing)>
+                                        <input type="text" class="form-control @error('dewan_direksi_bod') is-invalid @enderror" wire:model="dewan_direksi_bod">
                                         @error('dewan_direksi_bod')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -196,7 +187,7 @@
                                     {{-- Modal Kerja --}}
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label">Modal Kerja</label>
-                                        <input type="text" class="form-control @error('modal_kerja') is-invalid @enderror" wire:model="modal_kerja" @disabled(!$isEditing)>
+                                        <input type="text" class="form-control @error('modal_kerja') is-invalid @enderror" wire:model="modal_kerja">
                                         @error('modal_kerja')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -205,7 +196,7 @@
                                     {{-- Nama PIC --}}
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label">Nama PIC</label>
-                                        <input type="text" class="form-control @error('nama_pic') is-invalid @enderror" wire:model="nama_pic" @disabled(!$isEditing)>
+                                        <input type="text" class="form-control @error('nama_pic') is-invalid @enderror" wire:model="nama_pic">
                                         @error('nama_pic')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -214,7 +205,7 @@
                                     {{-- No HP PIC --}}
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label">No. HP PIC</label>
-                                        <input type="text" class="form-control @error('no_hp_pic') is-invalid @enderror" wire:model="no_hp_pic" @disabled(!$isEditing)>
+                                        <input type="text" class="form-control @error('no_hp_pic') is-invalid @enderror" wire:model="no_hp_pic">
                                         @error('no_hp_pic')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -223,8 +214,7 @@
                                     {{-- Email Perusahaan --}}
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label">Email Resmi Perusahaan</label>
-                                        <input type="email" class="form-control @error('email_resmi_perusahaan') is-invalid @enderror" wire:model="email_resmi_perusahaan"
-                                            @disabled(!$isEditing)>
+                                        <input type="email" class="form-control @error('email_resmi_perusahaan') is-invalid @enderror" wire:model="email_resmi_perusahaan">
                                         @error('email_resmi_perusahaan')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -233,7 +223,7 @@
                                     {{-- NIB Email OSS --}}
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label">Email OSS</label>
-                                        <input type="email" class="form-control @error('nib_email_oss') is-invalid @enderror" wire:model="nib_email_oss" @disabled(!$isEditing)>
+                                        <input type="email" class="form-control @error('nib_email_oss') is-invalid @enderror" wire:model="nib_email_oss">
                                         @error('nib_email_oss')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -242,7 +232,7 @@
                                     {{-- NIB Nomor HP OSS --}}
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label">Nomor HP OSS</label>
-                                        <input type="text" class="form-control @error('nib_nomor_hp_oss') is-invalid @enderror" wire:model="nib_nomor_hp_oss" @disabled(!$isEditing)>
+                                        <input type="text" class="form-control @error('nib_nomor_hp_oss') is-invalid @enderror" wire:model="nib_nomor_hp_oss">
                                         @error('nib_nomor_hp_oss')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -251,7 +241,7 @@
                                     {{-- Keterangan --}}
                                     <div class="col-md-12 mb-3">
                                         <label class="form-label">Keterangan</label>
-                                        <textarea class="form-control @error('keterangan') is-invalid @enderror" rows="3" wire:model="keterangan" @disabled(!$isEditing)></textarea>
+                                        <textarea class="form-control @error('keterangan') is-invalid @enderror" rows="3" wire:model="keterangan"></textarea>
                                         @error('keterangan')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -260,20 +250,9 @@
 
                                 <div class="d-flex">
                                     <a href="{{ route('home') }}" class="btn btn-secondary btn-sm me-2">Dashboard</a>
-                                    @if (!$isEditing)
-                                        <button type="button" class="btn btn-sm btn-primary" wire:click="edit({{ $id }})">
-                                            <i class="ri-edit-line"></i> Edit
-                                        </button>
-                                    @endif
-
-                                    @if ($isEditing)
-                                        <button type="button" class="btn btn-success btn-sm me-2" wire:click="cancel">
-                                            <i class="ri-close-circle-line"></i> Batal
-                                        </button>
-                                        <button type="submit" class="btn btn-success btn-sm">
-                                            <i class="ri-save-3-line"></i> Simpan
-                                        </button>
-                                    @endif
+                                    <button type="submit" class="btn btn-success btn-sm">
+                                        <i class="ri-save-3-line"></i> Simpan Profil
+                                    </button>
                                 </div>
                             </form>
                         </div>
@@ -289,7 +268,7 @@
 </div>
 @script
     <script>
-        $wire.on('update-success', (event) => {
+        $wire.on('store-success', (event) => {
             var element = document.getElementById('liveToast');
             console.log(event.message);
             const myToast = bootstrap.Toast.getOrCreateInstance(element);

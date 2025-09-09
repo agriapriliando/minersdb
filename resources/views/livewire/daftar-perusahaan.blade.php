@@ -20,7 +20,7 @@
                         </select>
                         <div class="d-flex justify-content-end mb-2">
                             <a href="#" class="btn btn-outline-secondary btn-sm text-body me-2"><i class="ri-download-fill align-bottom"></i> Export</a>
-                            <a class="btn btn-sm btn-primary" href="#"><i class="ri-add-circle-line align-bottom"></i> Tambah</a>
+                            <a class="btn btn-sm btn-primary" href="{{ route('profile.create') }}"><i class="ri-add-circle-line align-bottom"></i> Tambah</a>
                         </div>
                     </div>
                     <!-- /Actions-->

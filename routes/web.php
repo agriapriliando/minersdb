@@ -13,6 +13,7 @@ use App\Livewire\Profile\Pa;
 use App\Livewire\Profile\Pelabuhan;
 use App\Livewire\Profile\Pl;
 use App\Livewire\Profile\Profile;
+use App\Livewire\Profile\ProfileAdd;
 use App\Livewire\Profile\Rippm;
 use App\Livewire\Profile\RippmDetail;
 use App\Livewire\Profile\Rpt;
@@ -28,6 +29,8 @@ Route::get('/', function () {
 // Route::get('/profile', [ProfileController::class, 'index']);
 
 Route::get('/home', DaftarPerusahaan::class)->name('home');
+
+Route::get('/profile/create', ProfileAdd::class)->name('profile.create');
 Route::get('/profile/{id}', Profile::class)->name('profile.show');
 
 Route::get('/iuran', Iuran::class)->name('iuran.show');

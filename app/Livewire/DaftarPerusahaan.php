@@ -25,7 +25,9 @@ class DaftarPerusahaan extends Component
     public function render()
     {
         return view('livewire.daftar-perusahaan', [
-            'profiles' => Profile::search($this->search)->paginate($this->perPage)
+            'profiles' => Profile::search($this->search)
+                ->latest()
+                ->paginate($this->perPage),
         ]);
     }
 }
