@@ -11,8 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('rippm_contents', function (Blueprint $table) {
+        Schema::create('rippm_details', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('profile_id')->constrained()->onUpdate('cascade')
+                ->onDelete('cascade');
             $table->foreignId('rippm_id')->constrained()->onUpdate('cascade')
                 ->onDelete('cascade');
             $table->string('rippm_tahun')->nullable();
@@ -41,6 +43,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('rippm_contents');
+        Schema::dropIfExists('rippm_details');
     }
 };

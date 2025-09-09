@@ -54,7 +54,7 @@ class DatabaseSeeder extends Seeder
             RrSeeder::class,
             RptSeeder::class,
             RippmSeeder::class,
-            RippmContentSeeder::class,
+            RippmDetailSeeder::class,
             RkabopSeeder::class,
             RkabopPeralatanSeeder::class,
             ReportmonthSeeder::class,

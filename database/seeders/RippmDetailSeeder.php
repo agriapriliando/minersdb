@@ -2,13 +2,12 @@
 
 namespace Database\Seeders;
 
-use App\Models\RippmContent;
-use Carbon\Carbon;
+use App\Models\RippmDetail;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\File;
 
-class RippmContentSeeder extends Seeder
+class RippmDetailSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -19,7 +18,8 @@ class RippmContentSeeder extends Seeder
         $data = json_decode($json, true);
 
         foreach ($data as $item) {
-            RippmContent::create([
+            RippmDetail::create([
+                'profile_id'              => $item['profile_id'],
                 'rippm_id'                        => $item['profile_id'],
                 'rippm_tahun'                     => $item['rippm_tahun'],
                 'rippm_pendidikan_rencana'        => $item['rippm_pendidikan_rencana'] ?? null,

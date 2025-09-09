@@ -7,23 +7,26 @@ use Livewire\Component;
 
 class Rippm extends Component
 {
-    public $rippm;
-    public $original;
+    public $rippm = [];
+    public $original = [];
 
+    // field tambah data baru
     public $rippm_no_persetujuan;
     public $rippm_tgl_persetujuan;
     public $rippm_keterangan;
 
-    protected $rules = [
-        'rippm.*.rippm_no_persetujuan'  => 'required|string|max:255',
-        'rippm.*.rippm_tgl_persetujuan' => 'required|date',
-        'rippm.*.rippm_keterangan'      => 'nullable|string',
-    ];
+    public $editingId = null;
 
     protected $messages = [
-        'rippm.*.rippm_no_persetujuan.required'  => 'Nomor persetujuan wajib diisi.',
+        'rippm.*.rippm_no_persetujuan.required' => 'Nomor persetujuan wajib diisi.',
         'rippm.*.rippm_tgl_persetujuan.required' => 'Tanggal persetujuan wajib diisi.',
-        'rippm.*.rippm_tgl_persetujuan.date'     => 'Tanggal tidak valid.',
+        'rippm.*.rippm_tgl_persetujuan.date'     => 'Tanggal persetujuan tidak valid.',
+        'rippm.*.rippm_keterangan.required'      => 'Keterangan wajib diisi.',
+
+        'rippm_no_persetujuan.required' => 'Nomor persetujuan wajib diisi.',
+        'rippm_tgl_persetujuan.required' => 'Tanggal persetujuan wajib diisi.',
+        'rippm_tgl_persetujuan.date'     => 'Tanggal persetujuan tidak valid.',
+        'rippm_keterangan.required'      => 'Keterangan wajib diisi.',
     ];
 
     public function mount()
@@ -31,67 +34,92 @@ class Rippm extends Component
         $this->rippm = ModelsRippm::where('profile_id', session('id_perusahaan'))
             ->latest()
             ->get()
+            ->keyBy('id')
             ->toArray();
 
         $this->original = $this->rippm;
     }
 
-    protected function rulesForRow($index)
+    protected function rulesForRow($id)
     {
         return [
-            "rippm.$index.rippm_no_persetujuan"  => 'required|string|max:255',
-            "rippm.$index.rippm_tgl_persetujuan" => 'required|date',
-            "rippm.$index.rippm_keterangan"      => 'nullable|string',
+            "rippm.$id.rippm_no_persetujuan" => 'required',
+            "rippm.$id.rippm_tgl_persetujuan" => 'required|date',
+            "rippm.$id.rippm_keterangan" => 'required',
         ];
+    }
+
+    protected function rulesForNew()
+    {
+        return [
+            "rippm_no_persetujuan" => 'required',
+            "rippm_tgl_persetujuan" => 'required|date',
+            "rippm_keterangan" => 'required',
+        ];
+    }
+
+    public function store()
+    {
+        $this->validate($this->rulesForNew());
+
+        ModelsRippm::create([
+            'profile_id' => session('id_perusahaan'),
+            'rippm_no_persetujuan' => $this->rippm_no_persetujuan,
+            'rippm_tgl_persetujuan' => $this->rippm_tgl_persetujuan,
+            'rippm_keterangan' => $this->rippm_keterangan,
+        ]);
+
+        // refresh data
+        $this->rippm = ModelsRippm::where('profile_id', session('id_perusahaan'))
+            ->latest()
+            ->get()
+            ->keyBy('id')
+            ->toArray();
+
+        $this->original = $this->rippm;
+
+        $this->reset(['rippm_no_persetujuan', 'rippm_tgl_persetujuan', 'rippm_keterangan']);
+
+        $this->dispatch('store-success', message: 'Data Rippm baru berhasil ditambahkan!');
     }
 
     public function update($id)
     {
-        $index = collect($this->rippm)->search(fn($row) => $row['id'] == $id);
+        $this->validate($this->rulesForRow($id));
 
-        $this->validate($this->rulesForRow($index));
-
-        $data = $this->rippm[$index];
-
+        $data = $this->rippm[$id];
         ModelsRippm::find($id)->update($data);
 
-        // refresh data original dari DB
         $this->original = ModelsRippm::where('profile_id', session('id_perusahaan'))
             ->latest()
             ->get()
+            ->keyBy('id')
             ->toArray();
 
-        $this->dispatch('update-success', message: 'Data berhasil diperbaharui!');
+        $this->dispatch('update-success', message: 'Data Rippm berhasil diperbaharui!');
+        $this->editingId = null;
     }
 
-    public function batal($index)
+    public function batal($id)
     {
-        $this->rippm[$index] = $this->original[$index];
+        if (isset($this->original[$id])) {
+            $this->rippm[$id] = $this->original[$id];
+        }
+        $this->editingId = null;
     }
 
     public function delete($id)
     {
         ModelsRippm::whereId($id)->delete();
-        $this->rippm = collect($this->rippm)
-            ->reject(fn($row) => $row['id'] == $id)
-            ->values()
-            ->toArray();
 
-        $this->dispatch('delete-success', message: 'Data berhasil dihapus!');
+        unset($this->rippm[$id]);
+        unset($this->original[$id]);
+
+        $this->dispatch('delete-success', message: 'Data Rippm berhasil dihapus!');
     }
 
     public function render()
     {
-        $rippm = ModelsRippm::where('profile_id', session('id_perusahaan'))
-            ->latest()
-            ->get()
-            ->toArray();
-
-        $original = $rippm;
-
-        return view('livewire.profile.rippm', [
-            'rippm'    => $rippm,
-            'original' => $original,
-        ]);
+        return view('livewire.profile.rippm');
     }
 }

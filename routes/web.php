@@ -14,7 +14,7 @@ use App\Livewire\Profile\Pelabuhan;
 use App\Livewire\Profile\Pl;
 use App\Livewire\Profile\Profile;
 use App\Livewire\Profile\Rippm;
-use App\Livewire\Profile\RippmAdd;
+use App\Livewire\Profile\RippmDetail;
 use App\Livewire\Profile\Rpt;
 use App\Livewire\Profile\Rr;
 use App\Livewire\Profile\Stk;
@@ -58,4 +58,6 @@ Route::get('/stk', Stk::class)->name('stk.show'); // studi kelayakan
 
 Route::get('/tb', Tb::class)->name('tb.show'); //
 
-// Route::get('/profile/rippm/{id}', Rippm::class)->name('rippm.show');
+Route::get('/rippm', Rippm::class)->name('rippm.show');
+
+Route::get('/rippmdetail/{id}', RippmDetail::class)->name('rippm.detail.show');

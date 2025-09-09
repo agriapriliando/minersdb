@@ -4,9 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class RippmContent extends Model
+class RippmDetail extends Model
 {
     protected $fillable = [
+        'profile_id',
         'rippm_id',
         'rippm_tahun',
         'rippm_pendidikan_rencana',

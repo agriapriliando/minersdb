@@ -18,20 +18,40 @@
                     <!-- Example-->
                     <div class="card mb-4">
                         <div class="card-header justify-content-between align-items-center d-flex">
-                            <h6 class="card-title m-0">RIPPM | {{ session('nama_pemegang_perizinan') }}</h6>
+                            <h6 class="card-title m-0">RIPPM Detail | {{ session('nama_pemegang_perizinan') }}</h6>
                             <div class="d-flex gap-2">
                                 <a href="{{ route('profile.show', session('id_perusahaan')) }}" class="btn btn-primary btn-sm">Profil</a>
+                                <a href="{{ route('rippm.show') }}" class="btn btn-primary btn-sm">Kembali</a>
                             </div>
                         </div>
                         <div class="card-body table-responsive">
+                            <div class="mb-2">
+                                <span class="badge text-bg-success">Nomor Persetujuan : {{ $rippm_utama->rippm_no_persetujuan }}</span>
+                                <span class="badge text-bg-success">Tgl : {{ $rippm_utama->rippm_tgl_persetujuan->format('d-m-Y') }}</span>
+                                <span class="badge text-bg-success">Keterangan : {{ $rippm_utama->rippm_keterangan }}</span>
+                            </div>
                             <table class="table table-bordered align-middle">
                                 <thead class="table-light">
                                     <tr>
                                         <th style="width: 5%">#</th>
-                                        <th class="text-nowrap">No. Persetujuan</th>
-                                        <th class="text-nowrap">Tanggal Persetujuan</th>
-                                        <th class="text-nowrap">Keterangan</th>
-                                        <th style="width: 20%">Aksi</th>
+                                        <th class="text-nowrap">Tahun</th>
+                                        <th class="text-nowrap">Pendidikan (Rencana)</th>
+                                        <th class="text-nowrap">Pendidikan (Realisasi)</th>
+                                        <th class="text-nowrap">Kesehatan (Rencana)</th>
+                                        <th class="text-nowrap">Kesehatan (Realisasi)</th>
+                                        <th class="text-nowrap">Kemandirian (Rencana)</th>
+                                        <th class="text-nowrap">Kemandirian (Realisasi)</th>
+                                        <th class="text-nowrap">Tenaga Kerja (Rencana)</th>
+                                        <th class="text-nowrap">Tenaga Kerja (Realisasi)</th>
+                                        <th class="text-nowrap">Sosial Budaya (Rencana)</th>
+                                        <th class="text-nowrap">Sosial Budaya (Realisasi)</th>
+                                        <th class="text-nowrap">Lingkungan (Rencana)</th>
+                                        <th class="text-nowrap">Lingkungan (Realisasi)</th>
+                                        <th class="text-nowrap">Lembaga Komunitas (Rencana)</th>
+                                        <th class="text-nowrap">Lembaga Komunitas (Realisasi)</th>
+                                        <th class="text-nowrap">Infrastruktur (Rencana)</th>
+                                        <th class="text-nowrap">Infrastruktur (Realisasi)</th>
+                                        <th style="width: 15%">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -39,40 +59,29 @@
                                         <tr wire:key="rippm-row-{{ $id }}" x-data="{ confirmDelete: false }">
                                             <td>{{ $loop->iteration }}</td>
 
-                                            {{-- No Persetujuan --}}
-                                            <td>
-                                                <input type="text" class="form-control form-control-sm @error('rippm.' . $id . '.rippm_no_persetujuan') is-invalid @enderror"
-                                                    wire:model="rippm.{{ $id }}.rippm_no_persetujuan" :disabled="$wire.editingId !== {{ $id }}">
-                                                @error('rippm.' . $id . '.rippm_no_persetujuan')
+                                            {{-- Tahun --}}
+                                            <td class="text-nowrap" style="min-width: 100px">
+                                                <input type="text" class="form-control form-control-sm @error('rippm.' . $id . '.rippm_tahun') is-invalid @enderror"
+                                                    wire:model="rippm.{{ $id }}.rippm_tahun" :disabled="$wire.editingId !== {{ $id }}">
+                                                @error('rippm.' . $id . '.rippm_tahun')
                                                     <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
                                             </td>
 
-                                            {{-- Tanggal Persetujuan --}}
-                                            <td>
-                                                <input type="date" class="form-control form-control-sm @error('rippm.' . $id . '.rippm_tgl_persetujuan') is-invalid @enderror"
-                                                    wire:model="rippm.{{ $id }}.rippm_tgl_persetujuan" :disabled="$wire.editingId !== {{ $id }}">
-                                                @error('rippm.' . $id . '.rippm_tgl_persetujuan')
-                                                    <div class="invalid-feedback">{{ $message }}</div>
-                                                @enderror
-                                            </td>
-
-                                            {{-- Keterangan --}}
-                                            <td>
-                                                <input type="text" class="form-control form-control-sm @error('rippm.' . $id . '.rippm_keterangan') is-invalid @enderror"
-                                                    wire:model="rippm.{{ $id }}.rippm_keterangan" :disabled="$wire.editingId !== {{ $id }}">
-                                                @error('rippm.' . $id . '.rippm_keterangan')
-                                                    <div class="invalid-feedback">{{ $message }}</div>
-                                                @enderror
-                                            </td>
+                                            {{-- Loop semua kolom angka --}}
+                                            @foreach (['pendidikan_rencana', 'pendidikan_realisasi', 'kesehatan_rencana', 'kesehatan_realisasi', 'kemandirian_rencana', 'kemandirian_realisasi', 'tenaga_kerja_rencana', 'tenaga_kerja_realisasi', 'sosbud_rencana', 'sosbud_realisasi', 'lingkungan_rencana', 'lingkungan_realisasi', 'lembaga_komunitas_rencana', 'lembaga_komunitas_realisasi', 'infrastruktur_rencana', 'infrastruktur_realisasi'] as $field)
+                                                <td>
+                                                    <input type="number" class="form-control form-control-sm @error('rippm.' . $id . '.rippm_' . $field) is-invalid @enderror"
+                                                        wire:model="rippm.{{ $id }}.rippm_{{ $field }}" :disabled="$wire.editingId !== {{ $id }}">
+                                                    @error('rippm.' . $id . '.rippm_' . $field)
+                                                        <div class="invalid-feedback">{{ $message }}</div>
+                                                    @enderror
+                                                </td>
+                                            @endforeach
 
                                             {{-- Tombol Aksi --}}
                                             <td>
                                                 <div class="d-flex flex-wrap gap-1">
-                                                    {{-- Detail --}}
-                                                    <a href="{{ route('rippm.detail.show', $id) }}" class="btn btn-primary btn-sm" x-show="$wire.editingId !== {{ $id }}">
-                                                        <i class="ri-eye-line"></i>
-                                                    </a>
                                                     {{-- Simpan --}}
                                                     <button type="button" class="btn btn-primary btn-sm" wire:click="update({{ $id }})" x-show="$wire.editingId === {{ $id }}">
                                                         Simpan
@@ -116,25 +125,22 @@
                                     <tr>
                                         <td>+</td>
                                         <td>
-                                            <input type="text" class="form-control form-control-sm @error('rippm_no_persetujuan') is-invalid @enderror" wire:model="rippm_no_persetujuan"
-                                                placeholder="No. Persetujuan">
-                                            @error('rippm_no_persetujuan')
+                                            <input type="text" class="form-control form-control-sm @error('rippm_tahun') is-invalid @enderror" wire:model="rippm_tahun" placeholder="Tahun">
+                                            @error('rippm_tahun')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
                                         </td>
-                                        <td>
-                                            <input type="date" class="form-control form-control-sm @error('rippm_tgl_persetujuan') is-invalid @enderror" wire:model="rippm_tgl_persetujuan">
-                                            @error('rippm_tgl_persetujuan')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
-                                        </td>
-                                        <td>
-                                            <input type="text" class="form-control form-control-sm @error('rippm_keterangan') is-invalid @enderror" wire:model="rippm_keterangan"
-                                                placeholder="Keterangan">
-                                            @error('rippm_keterangan')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
-                                        </td>
+
+                                        @foreach (['pendidikan_rencana', 'pendidikan_realisasi', 'kesehatan_rencana', 'kesehatan_realisasi', 'kemandirian_rencana', 'kemandirian_realisasi', 'tenaga_kerja_rencana', 'tenaga_kerja_realisasi', 'sosbud_rencana', 'sosbud_realisasi', 'lingkungan_rencana', 'lingkungan_realisasi', 'lembaga_komunitas_rencana', 'lembaga_komunitas_realisasi', 'infrastruktur_rencana', 'infrastruktur_realisasi'] as $field)
+                                            <td>
+                                                <input type="number" class="form-control form-control-sm @error('rippm_' . $field) is-invalid @enderror" wire:model="rippm_{{ $field }}"
+                                                    placeholder="{{ ucfirst(str_replace('_', ' ', $field)) }}">
+                                                @error('rippm_' . $field)
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </td>
+                                        @endforeach
+
                                         <td>
                                             <button type="button" class="btn btn-success btn-sm text-white text-nowrap" wire:click="store">
                                                 <i class="ri-add-line"></i> Tambah
