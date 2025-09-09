@@ -16,6 +16,7 @@ use App\Livewire\Profile\Profile;
 use App\Livewire\Profile\ProfileAdd;
 use App\Livewire\Profile\Rippm;
 use App\Livewire\Profile\RippmDetail;
+use App\Livewire\Profile\Rkabop;
 use App\Livewire\Profile\Rpt;
 use App\Livewire\Profile\Rr;
 use App\Livewire\Profile\Stk;
@@ -64,3 +65,5 @@ Route::get('/tb', Tb::class)->name('tb.show'); //
 Route::get('/rippm', Rippm::class)->name('rippm.show');
 
 Route::get('/rippmdetail/{id}', RippmDetail::class)->name('rippm.detail.show');
+
+Route::get('/rkabop', Rkabop::class)->name('rkabop.show');
