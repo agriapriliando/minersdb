@@ -15,126 +15,24 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <div class="card mb-4" x-data="{ open: false, progress: 0 }" x-on:livewire-upload-progress="progress = $event.detail.progress" x-on:livewire-upload-finish="progress = 0"
+                    <div class="card mb-4" x-data="{ opendokumen: false, progress: 0 }" x-on:livewire-upload-progress="progress = $event.detail.progress" x-on:livewire-upload-finish="progress = 0"
                         x-on:livewire-upload-error="progress = 0">
-                        <div class="card-header justify-content-between align-items-center d-flex">
+                        <div class="card-header justify-content-between align-items-center d-md-flex">
                             <h6 class="card-title m-0">Iuran Tetap Tahunan | {{ session('nama_pemegang_perizinan') }}</h6>
-                            <div class="d-flex gap-2">
+                            <div class="d-flex gap-1 mt-md-0 mt-2">
+                                <button type="button" @click="opendokumen = !opendokumen" class="btn btn-primary btn-sm"><i class="ri-menu-line"></i> Lihat Dokumen</button>
                                 <a href="{{ route('profile.show', session('id_perusahaan')) }}" wire:navigate class="btn btn-primary btn-sm mx-3">PROFIL</a>
                             </div>
                         </div>
-                        <div class="card-body table-responsive">
-                            <table class="table table-bordered align-middle">
-                                <thead class="table-light">
-                                    <tr>
-                                        <th style="width: 5%">#</th>
-                                        <th>Nominal Iuran (Rp)</th>
-                                        <th>Tanggal Bayar</th>
-                                        <th style="width: 20%">Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($iuran as $id => $item)
-                                        <tr wire:key="iuran-row-{{ $id }}" x-data="{ confirmDelete: false }">
-                                            <td>{{ $loop->iteration }}</td>
-
-                                            {{-- Nominal Iuran --}}
-                                            <td>
-                                                <input type="text" class="form-control form-control-sm @error('iuran.' . $id . '.iuran_tetap_per_tahun_nominal') is-invalid @enderror"
-                                                    wire:model="iuran.{{ $id }}.iuran_tetap_per_tahun_nominal" :disabled="$wire.editingId !== {{ $id }}">
-                                                @error('iuran.' . $id . '.iuran_tetap_per_tahun_nominal')
-                                                    <div class="invalid-feedback">{{ $message }}</div>
-                                                @enderror
-                                            </td>
-
-                                            {{-- Tanggal Bayar --}}
-                                            <td>
-                                                <input type="date" class="form-control form-control-sm @error('iuran.' . $id . '.iuran_tetap_per_tahun_tgl_bayar') is-invalid @enderror"
-                                                    wire:model="iuran.{{ $id }}.iuran_tetap_per_tahun_tgl_bayar" :disabled="$wire.editingId !== {{ $id }}">
-                                                @error('iuran.' . $id . '.iuran_tetap_per_tahun_tgl_bayar')
-                                                    <div class="invalid-feedback">{{ $message }}</div>
-                                                @enderror
-                                            </td>
-
-                                            {{-- Tombol Aksi --}}
-                                            <td>
-                                                <div class="d-flex flex-wrap gap-1">
-                                                    {{-- Simpan --}}
-                                                    <button type="button" class="btn btn-primary btn-sm" wire:click="update({{ $id }})" x-show="$wire.editingId === {{ $id }}">
-                                                        Simpan
-                                                    </button>
-
-                                                    {{-- Edit --}}
-                                                    <button type="button" class="btn btn-secondary btn-sm" @click="$wire.editingId = {{ $id }}"
-                                                        x-show="$wire.editingId !== {{ $id }}">
-                                                        <i class="ri-edit-line"></i>
-                                                    </button>
-
-                                                    {{-- Batal --}}
-                                                    <button type="button" class="btn btn-secondary btn-sm" wire:click="batal({{ $id }})" x-show="$wire.editingId === {{ $id }}">
-                                                        <i class="ri-close-line"></i>
-                                                    </button>
-
-                                                    {{-- Hapus --}}
-                                                    <button type="button" class="btn btn-danger btn-sm text-white" @click.stop="confirmDelete = true"
-                                                        x-show="$wire.editingId !== {{ $id }}">
-                                                        <i class="ri-delete-bin-line"></i>
-                                                    </button>
-                                                </div>
-
-                                                {{-- Konfirmasi hapus --}}
-                                                <div x-cloak x-show="confirmDelete" x-transition class="mt-2">
-                                                    <span class="small d-block mb-1">Yakin hapus?</span>
-                                                    <div class="d-flex gap-1">
-                                                        <button type="button" class="btn btn-danger btn-sm" @click="confirmDelete = false" wire:click="delete({{ $id }})">
-                                                            Ya
-                                                        </button>
-                                                        <button type="button" class="btn btn-secondary btn-sm" @click="confirmDelete = false">
-                                                            Batal
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-
-                                    {{-- Form tambah data baru --}}
-                                    <tr>
-                                        <td>+</td>
-                                        <td>
-                                            <input type="text" class="form-control form-control-sm @error('iuran_tetap_per_tahun_nominal') is-invalid @enderror"
-                                                wire:model="iuran_tetap_per_tahun_nominal" placeholder="Nominal Iuran">
-                                            @error('iuran_tetap_per_tahun_nominal')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
-                                        </td>
-                                        <td>
-                                            <input type="date" class="form-control form-control-sm @error('iuran_tetap_per_tahun_tgl_bayar') is-invalid @enderror"
-                                                wire:model="iuran_tetap_per_tahun_tgl_bayar">
-                                            @error('iuran_tetap_per_tahun_tgl_bayar')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
-                                        </td>
-                                        <td>
-                                            <button type="button" class="btn btn-success btn-sm text-white" wire:click="store">
-                                                <i class="ri-add-line"></i> Tambah
-                                            </button>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-
                         {{-- start daftar dokumen --}}
-                        <button type="button" @click="open = !open" class="btn btn-primary btn-sm"><i class="ri-menu-line"></i> Lihat Dokumen</button>
                         @if (session('success'))
                             <div class="alert alert-success alert-dismissible fade show" role="alert">
                                 {{ session('success') }}
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             </div>
                         @endif
-                        <div class="card-body table-responsive">
-                            <div class="row" x-show="open" x-transition>
+                        <div class="card-body table-responsive" x-show="opendokumen" x-transition>
+                            <div class="row">
                                 <div class="col-12 mb-2">
                                     <form wire:submit.prevent="saveDokumen">
                                         <div class="mb-1">
@@ -207,6 +105,109 @@
                             </div>
                         </div>
                         {{-- end daftar dokumen --}}
+                        <div class="card-body table-responsive">
+                            <table class="table table-bordered align-middle">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th style="width: 5%">#</th>
+                                        <th>Nominal Iuran (Rp)</th>
+                                        <th>Tanggal Bayar</th>
+                                        <th style="width: 20%">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($iuran as $id => $item)
+                                        <tr wire:key="iuran-row-{{ $id }}" x-data="{ confirmDelete: false }">
+                                            <td>{{ $loop->iteration }}</td>
+
+                                            {{-- Nominal Iuran --}}
+                                            <td>
+                                                <input type="text" class="form-control form-control-sm @error('iuran.' . $id . '.iuran_tetap_per_tahun_nominal') is-invalid @enderror"
+                                                    wire:model="iuran.{{ $id }}.iuran_tetap_per_tahun_nominal" :disabled="$wire.editingId !== {{ $id }}">
+                                                @error('iuran.' . $id . '.iuran_tetap_per_tahun_nominal')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </td>
+
+                                            {{-- Tanggal Bayar --}}
+                                            <td>
+                                                <input type="date" class="form-control form-control-sm @error('iuran.' . $id . '.iuran_tetap_per_tahun_tgl_bayar') is-invalid @enderror"
+                                                    wire:model="iuran.{{ $id }}.iuran_tetap_per_tahun_tgl_bayar" :disabled="$wire.editingId !== {{ $id }}">
+                                                @error('iuran.' . $id . '.iuran_tetap_per_tahun_tgl_bayar')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </td>
+
+                                            {{-- Tombol Aksi --}}
+                                            <td>
+                                                <div class="d-flex flex-wrap gap-1">
+                                                    {{-- Simpan --}}
+                                                    <button type="button" class="btn btn-primary btn-sm" wire:click="update({{ $id }})"
+                                                        x-show="$wire.editingId === {{ $id }}">
+                                                        Simpan
+                                                    </button>
+
+                                                    {{-- Edit --}}
+                                                    <button type="button" class="btn btn-secondary btn-sm" @click="$wire.editingId = {{ $id }}"
+                                                        x-show="$wire.editingId !== {{ $id }}">
+                                                        <i class="ri-edit-line"></i>
+                                                    </button>
+
+                                                    {{-- Batal --}}
+                                                    <button type="button" class="btn btn-secondary btn-sm" wire:click="batal({{ $id }})"
+                                                        x-show="$wire.editingId === {{ $id }}">
+                                                        <i class="ri-close-line"></i>
+                                                    </button>
+
+                                                    {{-- Hapus --}}
+                                                    <button type="button" class="btn btn-danger btn-sm text-white" @click.stop="confirmDelete = true"
+                                                        x-show="$wire.editingId !== {{ $id }}">
+                                                        <i class="ri-delete-bin-line"></i>
+                                                    </button>
+                                                </div>
+
+                                                {{-- Konfirmasi hapus --}}
+                                                <div x-cloak x-show="confirmDelete" x-transition class="mt-2">
+                                                    <span class="small d-block mb-1">Yakin hapus?</span>
+                                                    <div class="d-flex gap-1">
+                                                        <button type="button" class="btn btn-danger btn-sm" @click="confirmDelete = false" wire:click="delete({{ $id }})">
+                                                            Ya
+                                                        </button>
+                                                        <button type="button" class="btn btn-secondary btn-sm" @click="confirmDelete = false">
+                                                            Batal
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+
+                                    {{-- Form tambah data baru --}}
+                                    <tr>
+                                        <td>+</td>
+                                        <td>
+                                            <input type="text" class="form-control form-control-sm @error('iuran_tetap_per_tahun_nominal') is-invalid @enderror"
+                                                wire:model="iuran_tetap_per_tahun_nominal" placeholder="Nominal Iuran">
+                                            @error('iuran_tetap_per_tahun_nominal')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </td>
+                                        <td>
+                                            <input type="date" class="form-control form-control-sm @error('iuran_tetap_per_tahun_tgl_bayar') is-invalid @enderror"
+                                                wire:model="iuran_tetap_per_tahun_tgl_bayar">
+                                            @error('iuran_tetap_per_tahun_tgl_bayar')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-success btn-sm text-white" wire:click="store">
+                                                <i class="ri-add-line"></i> Tambah
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
 
                 </div>
