@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Middleware\CekIdPerusahaan;
 use App\Livewire\DaftarPerusahaan;
 use App\Livewire\Profile\Bbc;
 use App\Livewire\Profile\Handak;
@@ -34,7 +35,10 @@ Route::get('/home', DaftarPerusahaan::class)->name('home');
 Route::get('/profile/create', ProfileAdd::class)->name('profile.create');
 Route::get('/profile/{id}', Profile::class)->name('profile.show');
 
-Route::get('/iuran', Iuran::class)->name('iuran.show');
+Route::middleware([CekIdPerusahaan::class])->group(function () {
+    Route::get('/iuran', Iuran::class)->name('iuran.show');
+});
+
 
 Route::get('/iui', Iui::class)->name('iui.show');
 

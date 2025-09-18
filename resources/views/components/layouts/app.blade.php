@@ -230,7 +230,7 @@
                                         <li><a href="#"><span class="menu-icon"><i class="ri-road-map-line"></i></span>Rencana Penambangan</a></li>
                                         <li><a href="{{ route('rr.show') }}"><span class="menu-icon"><i class="ri-seedling-line"></i></span>Rencana Reklamasi RR</a></li>
                                         <li><a href="#"><span class="menu-icon"><i class="ri-tools-line"></i></span>Rencana Teknis Penambangan</a></li>
-                                        <li><a href="#"><span class="menu-icon"><i class="ri-government-line"></i></span>RIPPM</a></li>
+                                        <li><a href="{{ route('rippm.show') }}"><span class="menu-icon"><i class="ri-government-line"></i></span>RIPPM</a></li>
                                         <li><a href="#"><span class="menu-icon"><i class="ri-clipboard-line"></i></span>RKAB Eksplorasi</a></li>
                                         <li><a href="#"><span class="menu-icon"><i class="ri-briefcase-4-line"></i></span>RKAB Operasi Produksi</a></li>
                                         <li><a href="{{ route('stk.show') }}"><span class="menu-icon"><i class="ri-book-2-line"></i></span>Studi Kelayakan (Persetujuan

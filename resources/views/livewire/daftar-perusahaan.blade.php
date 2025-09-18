@@ -5,6 +5,12 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
+                    @session('error')
+                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                            <strong>{{ session('error') }}</strong>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    @endsession
                     <!-- Actions-->
                     <div class="d-md-flex justify-content-between align-items-center mb-3">
                         <form class="bg-light rounded px-3 py-1 flex-shrink-0 d-flex align-items-center me-2 mb-2">

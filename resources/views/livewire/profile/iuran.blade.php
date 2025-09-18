@@ -15,12 +15,12 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <!-- Example-->
-                    <div class="card mb-4">
+                    <div class="card mb-4" x-data="{ open: false, progress: 0 }" x-on:livewire-upload-progress="progress = $event.detail.progress" x-on:livewire-upload-finish="progress = 0"
+                        x-on:livewire-upload-error="progress = 0">
                         <div class="card-header justify-content-between align-items-center d-flex">
                             <h6 class="card-title m-0">Iuran Tetap Tahunan | {{ session('nama_pemegang_perizinan') }}</h6>
                             <div class="d-flex gap-2">
-                                <a href="{{ route('profile.show', session('id_perusahaan')) }}" wire:navigate class="btn btn-primary btn-sm">Kembali</a>
+                                <a href="{{ route('profile.show', session('id_perusahaan')) }}" wire:navigate class="btn btn-primary btn-sm mx-3">PROFIL</a>
                             </div>
                         </div>
                         <div class="card-body table-responsive">
@@ -124,8 +124,91 @@
                                 </tbody>
                             </table>
                         </div>
+
+                        {{-- start daftar dokumen --}}
+                        <button type="button" @click="open = !open" class="btn btn-primary btn-sm"><i class="ri-menu-line"></i> Lihat Dokumen</button>
+                        @if (session('success'))
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                {{ session('success') }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        @endif
+                        <div class="card-body table-responsive">
+                            <div class="row" x-show="open" x-transition>
+                                <div class="col-12 mb-2">
+                                    <form wire:submit.prevent="saveDokumen">
+                                        <div class="mb-1">
+                                            <span class="text-muted">Size Maksimal: 10 MB (10240 KB)
+                                                <br> Ekstensi: .jpg, .jpeg, .png, .pdf, .doc, .docx, .xls, .xlsx
+                                            </span>
+                                        </div>
+                                        <div class="mb-2">
+                                            <input type="file" class="form-control" wire:model="file">
+                                            @error('file')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+
+                                        {{-- Progress bar --}}
+                                        <div x-show="progress > 0" class="progress mb-2">
+                                            <div class="progress-bar" role="progressbar" :style="`width: ${progress}%`" x-text="progress + '%'"></div>
+                                        </div>
+                                        <div class="d-grid">
+                                            <button type="submit" class="btn btn-success btn-sm text-white" wire:loading.attr="disabled">
+                                                <span wire:loading wire:target="file">Mengunggah...</span>
+                                                <span wire:loading.remove wire:target="file">Unggah Dokumen</span>
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+
+                                <hr>
+
+                                <div class="col-12">
+                                    <div class="justify-content-between align-items-center d-flex">
+                                        <h5>Daftar Dokumen Iuran</h5>
+                                        <div class="my-2">
+                                            <input type="text" class="form-control form-control-sm" wire:model.live.debounce.500ms="searchdok" placeholder="Cari Dokumen">
+                                        </div>
+                                    </div>
+                                    <ul class="list-group">
+                                        @forelse($dokumens as $dok)
+                                            <li class="list-group-item" x-data="{ confirmDelete: false }">
+                                                <span>{{ $loop->iteration + ($dokumens->currentPage() - 1) * $dokumens->perPage() }}. </span>
+                                                {{ $dok->judul_dokumen }}.{{ $dok->ext_dokumen }}
+                                                ({{ number_format($dok->size_dokumen / 1024, 2) }} KB)
+                                                <div class="d-flex gap-1 float-end" @click.outside="confirmDelete = false">
+                                                    <a class="btn btn-success btn-sm text-white" href="{{ asset($dok->link_dokumen) }}" target="_blank"><i class="ri-download-2-line"></i></a>
+                                                    {{-- Konfirmasi hapus --}}
+                                                    <div x-cloak x-show="confirmDelete" x-transition>
+                                                        <div class="d-flex">
+                                                            <button type="button" class="btn text-white btn-danger btn-sm" @click="confirmDelete = false"
+                                                                wire:click="deleteDokumen({{ $dok->id }})">
+                                                                Hapus
+                                                            </button>
+                                                            <button type="button" class="btn btn-secondary btn-sm" @click="confirmDelete = false">
+                                                                Batal
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <button x-show="!confirmDelete" type="button" class="btn btn-danger btn-sm text-white" @click.stop="confirmDelete = true">
+                                                        <i class="ri-delete-bin-line"></i>
+                                                    </button>
+                                                </div>
+                                            </li>
+                                        @empty
+                                            <li class="text-muted">Belum ada dokumen.</li>
+                                        @endforelse
+                                    </ul>
+                                    <div class="d-flex justify-content-end mt-2">
+                                        {{ $dokumens->links() }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {{-- end daftar dokumen --}}
                     </div>
-                    <!-- / Example-->
+
                 </div>
             </div>
         </div>

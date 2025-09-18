@@ -2,13 +2,24 @@
 
 namespace App\Livewire\Profile;
 
+use App\Models\Dokumen;
 use App\Models\Iuran as ModelsIuran;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
+use Livewire\WithFileUploads;
+use Livewire\WithPagination;
 
 class Iuran extends Component
 {
+    // untuk dokumen
+    use WithFileUploads, WithPagination;
+    protected $paginationTheme = 'bootstrap';
+    public $file;
+    public $searchdok = '';
+
     public $iuran = [];
     public $original = [];
+
 
     // field tambah data baru
     public $iuran_tetap_per_tahun_nominal;
@@ -34,6 +45,59 @@ class Iuran extends Component
             ->toArray();
 
         $this->original = $this->iuran;
+    }
+
+    // Fungsi untuk tambah dokumen
+    public function saveDokumen()
+    {
+        $this->validate([
+            'file' => 'required|file|max:10240', // max 5MB
+        ]);
+
+        // Simpan file ke storage/app/public/dokumens
+        $path = $this->file->store('dokumens', 'public');
+
+        Dokumen::create([
+            'profile_id'    => session('id_perusahaan'),
+            'model_dokumen' => 'iuran',
+            'judul_dokumen' => pathinfo($this->file->getClientOriginalName(), PATHINFO_FILENAME),
+            'ket_dokumen'   => null,
+            'link_dokumen'  => 'storage/' . $path,
+            'size_dokumen'  => $this->file->getSize(),
+            'ext_dokumen'   => $this->file->getClientOriginalExtension(),
+        ]);
+
+        // Reset input file
+        $this->reset('file');
+
+        session()->flash('success', 'Dokumen berhasil diunggah!');
+    }
+
+    public function deleteDokumen($id)
+    {
+        // Cari dokumen berdasarkan ID
+        $dokumen = Dokumen::find($id);
+        if (!$dokumen) {
+            session()->flash('error', 'Dokumen tidak ditemukan.');
+            // Refresh daftar dokumen
+            $this->loadDokumens();
+            return;
+        }
+        // Hapus file fisik jika ada
+        if ($dokumen->link_dokumen && Storage::disk('public')->exists(str_replace('storage/', '', $dokumen->link_dokumen))) {
+            Storage::disk('public')->delete(str_replace('storage/', '', $dokumen->link_dokumen));
+        }
+
+        // Hapus record dari database
+        $dokumen->delete();
+
+        // Kirim notifikasi sukses
+        session()->flash('success', 'Dokumen berhasil dihapus.');
+    }
+
+    public function updatedSearchdok()
+    {
+        $this->resetPage();
     }
 
     protected function rulesForRow($id)
@@ -113,6 +177,12 @@ class Iuran extends Component
 
     public function render()
     {
-        return view('livewire.profile.iuran');
+        return view('livewire.profile.iuran', [
+            'dokumens' => Dokumen::where('profile_id', session('id_perusahaan'))
+                ->iuran()
+                ->where('judul_dokumen', 'like', '%' . $this->searchdok . '%')
+                ->latest()
+                ->paginate(5)
+        ]);
     }
 }
