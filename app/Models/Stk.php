@@ -27,4 +27,13 @@ class Stk extends Model
         'stk_target_produksi_m3',
         'stk_target_produksi_mt',
     ];
+
+    protected $casts = [
+        'stk_tgl_persetujuan' => 'date:Y-m-d',
+    ];
+
+    public function profile()
+    {
+        return $this->belongsTo(Profile::class);
+    }
 }
