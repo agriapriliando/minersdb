@@ -2,8 +2,12 @@
 
 namespace App\Livewire\Profile;
 
+use App\Models\Dokumen;
 use App\Models\Rkabop as ModelsRkabop;
+use App\Traits\WithDokumen;
 use Livewire\Component;
+use Livewire\WithFileUploads;
+use Livewire\WithPagination;
 
 class Rkabop extends Component
 {
@@ -199,8 +203,20 @@ class Rkabop extends Component
         $this->dispatch('delete-success', message: 'Data RKABOP berhasil dihapus!');
     }
 
+    // untuk dokumen
+    use WithFileUploads, WithPagination, WithDokumen;
     public function render()
     {
-        return view('livewire.profile.rkabop');
+        $input_model_dokumen = 'rkabop';
+        return view('livewire.profile.' . $input_model_dokumen, [
+            'dokumens' => Dokumen::where('profile_id', session('id_perusahaan'))
+                ->where('model_dokumen', $input_model_dokumen)
+                ->where('judul_dokumen', 'like', '%' . $this->searchdok . '%')
+                ->latest()
+                ->paginate(5),
+            'jenis_dokumens' => ['Persetujuan', 'Non Persetujuan'],
+            'judul_menu' => 'RKAB Operasi Produksi',
+            'input_model_dokumen' => $input_model_dokumen,
+        ]);
     }
 }

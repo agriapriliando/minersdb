@@ -227,15 +227,14 @@
                                         <li><a href="{{ route('pl.show') }}"><span class="menu-icon"><i class="ri-leaf-line"></i></span>Persetujuan Lingkungan (PKPLH/SKKL)</a></li>
                                         <li><a href="{{ route('pa.show') }}"><span class="menu-icon"><i class="ri-map-pin-line"></i></span>Project Area</a></li>
                                         <li><a href="{{ route('rpt.show') }}"><span class="menu-icon"><i class="ri-earth-line"></i></span>Rencana Pascatambang RPT</a></li>
-                                        <li><a href="#"><span class="menu-icon"><i class="ri-road-map-line"></i></span>Rencana Penambangan</a></li>
                                         <li><a href="{{ route('rr.show') }}"><span class="menu-icon"><i class="ri-seedling-line"></i></span>Rencana Reklamasi RR</a></li>
-                                        <li><a href="#"><span class="menu-icon"><i class="ri-tools-line"></i></span>Rencana Teknis Penambangan</a></li>
-                                        <li><a href="{{ route('rippm.show') }}"><span class="menu-icon"><i class="ri-government-line"></i></span>RIPPM</a></li>
-                                        <li><a href="#"><span class="menu-icon"><i class="ri-clipboard-line"></i></span>RKAB Eksplorasi</a></li>
-                                        <li><a href="#"><span class="menu-icon"><i class="ri-briefcase-4-line"></i></span>RKAB Operasi Produksi</a></li>
-                                        <li><a href="{{ route('stk.show') }}"><span class="menu-icon"><i class="ri-book-2-line"></i></span>Studi Kelayakan (Persetujuan
-                                                Tekno-Ekonomi)</a></li>
+                                        <li><a href="{{ route('stk.show') }}"><span class="menu-icon"><i class="ri-book-2-line"></i></span>Studi Kelayakan (PersetujuanTekno-Ekonomi)</a></li>
                                         <li><a href="{{ route('tb.show') }}"><span class="menu-icon"><i class="ri-flag-line"></i></span>Tanda Batas</a></li>
+                                        <li><a href="{{ route('rippm.show') }}"><span class="menu-icon"><i class="ri-government-line"></i></span>RIPPM</a></li>
+                                        <li><a href="{{ route('rkabop.show') }}"><span class="menu-icon"><i class="ri-briefcase-4-line"></i></span>RKAB Operasi Produksi</a></li>
+                                        <li><a href="#"><span class="menu-icon"><i class="ri-road-map-line"></i></span>Rencana Penambangan</a></li>
+                                        <li><a href="#"><span class="menu-icon"><i class="ri-tools-line"></i></span>Rencana Teknis Penambangan</a></li>
+                                        {{-- <li><a href="#"><span class="menu-icon"><i class="ri-clipboard-line"></i></span>RKAB Eksplorasi</a></li> --}}
                                     </ul>
                                 </div>
                             </li>
