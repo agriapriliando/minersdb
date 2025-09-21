@@ -156,7 +156,7 @@
                             </div>
                             <table class="table table-bordered align-middle">
                                 <thead class="table-light">
-                                    <tr>
+                                    <tr x-show="!tambah">
                                         <th>#</th>
                                         <th>No Persetujuan</th>
                                         <th>Tgl Persetujuan</th>
@@ -259,7 +259,7 @@
                                 </style>
                                 <tbody>
                                     @foreach ($rkabop as $id => $item)
-                                        <tr wire:key="rkabop-row-{{ $id }}" x-data="{ confirmDelete: false }">
+                                        <tr x-show="!tambah" wire:key="rkabop-row-{{ $id }}" x-data="{ confirmDelete: false }">
                                             <td>{{ $loop->iteration }}</td>
 
                                             {{-- Persetujuan --}}
@@ -423,6 +423,10 @@
                                             {{-- Tombol Aksi --}}
                                             <td>
                                                 <div class="d-flex flex-wrap gap-1">
+                                                    {{-- Detail --}}
+                                                    <a href="{{ route('rkabop.peralatan.show', $id) }}" class="btn btn-primary btn-sm" x-show="$wire.editingId !== {{ $id }}">
+                                                        <i class="ri-eye-line"></i>
+                                                    </a>
                                                     {{-- Simpan --}}
                                                     <button type="button" class="btn btn-primary btn-sm" wire:click="update({{ $id }})"
                                                         x-show="$wire.editingId === {{ $id }}">

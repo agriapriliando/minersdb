@@ -18,6 +18,7 @@ use App\Livewire\Profile\ProfileAdd;
 use App\Livewire\Profile\Rippm;
 use App\Livewire\Profile\RippmDetail;
 use App\Livewire\Profile\Rkabop;
+use App\Livewire\Profile\RkabopPeralatan;
 use App\Livewire\Profile\Rpt;
 use App\Livewire\Profile\Rr;
 use App\Livewire\Profile\Sipbrp;
@@ -55,6 +56,7 @@ Route::middleware([CekIdPerusahaan::class])->group(function () {
     Route::get('/rippm', Rippm::class)->name('rippm.show');
     Route::get('/rippmdetail/{id}', RippmDetail::class)->name('rippm.detail.show');
     Route::get('/rkabop', Rkabop::class)->name('rkabop.show');
+    Route::get('/rkabopperalatan/{id}', RkabopPeralatan::class)->name('rkabop.peralatan.show');
     Route::get('/sipbrp', Sipbrp::class)->name('sipbrp.show');
     Route::get('/sipbrtp', Sipbrtp::class)->name('sipbrtp.show');
 });

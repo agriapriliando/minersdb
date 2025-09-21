@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class RkabopPeralatan extends Model
 {
     protected $fillable = [
+        'profile_id',
         'rkabop_id',
         'rkab_peralatan_pilih_tahun',
         'rkab_peralatan_jenis',
