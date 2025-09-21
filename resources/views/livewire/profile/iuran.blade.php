@@ -18,9 +18,10 @@
                     <div class="card mb-4" x-data="{ opendokumen: false, progress: 0 }" x-on:livewire-upload-progress="progress = $event.detail.progress" x-on:livewire-upload-finish="progress = 0"
                         x-on:livewire-upload-error="progress = 0">
                         <div class="card-header justify-content-between align-items-center d-md-flex">
-                            <h6 class="card-title m-0">Iuran Tetap Tahunan | {{ session('nama_pemegang_perizinan') }}</h6>
+                            <h5 class="card-title m-0">Daftar {{ $judul_menu . ' | ' . session('nama_pemegang_perizinan') }}</h5>
                             <div class="d-flex gap-1 mt-md-0 mt-2">
-                                <button type="button" @click="opendokumen = !opendokumen" class="btn btn-primary btn-sm"><i class="ri-menu-line"></i> Lihat Dokumen</button>
+                                <button type="button" @click="opendokumen = !opendokumen" class="btn btn-primary btn-sm"><i class="ri-menu-line"></i> <span
+                                        x-text="opendokumen ? 'Tutup Dokumen' : 'Lihat Dokumen'"></span></button>
                                 <a href="{{ route('profile.show', session('id_perusahaan')) }}" wire:navigate class="btn btn-primary btn-sm mx-3">PROFIL</a>
                             </div>
                         </div>
@@ -34,22 +35,37 @@
                         <div class="card-body table-responsive" x-show="opendokumen" x-transition>
                             <div class="row">
                                 <div class="col-12 mb-2">
-                                    <form wire:submit.prevent="saveDokumen">
-                                        <div class="mb-1">
-                                            <span class="text-muted">Size Maksimal: 10 MB (10240 KB)
-                                                <br> Ekstensi: .jpg, .jpeg, .png, .pdf, .doc, .docx, .xls, .xlsx
-                                            </span>
-                                        </div>
-                                        <div class="mb-2">
-                                            <input type="file" class="form-control" wire:model="file">
-                                            @error('file')
-                                                <span class="text-danger">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-
-                                        {{-- Progress bar --}}
-                                        <div x-show="progress > 0" class="progress mb-2">
-                                            <div class="progress-bar" role="progressbar" :style="`width: ${progress}%`" x-text="progress + '%'"></div>
+                                    <form wire:submit.prevent="saveDokumen('{{ $input_model_dokumen }}')">
+                                        <div class="row">
+                                            <div class="col-12 col-md-4 mb-2">
+                                                <label for="jenis_dokumen">Jenis Dokumen</label>
+                                                <select id="jenis_dokumen" class="form-control" wire:model="jenis_dokumen" required>
+                                                    <option value="">-- Pilih Jenis Dokumen --</option>
+                                                    @foreach ($jenis_dokumens as $d)
+                                                        <option value="{{ $d }}">{{ $d }}</option>
+                                                    @endforeach
+                                                </select>
+                                                @error('jenis_dokumen')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                @enderror
+                                            </div>
+                                            <div class="col-12 col-md-8 mb-2">
+                                                <div class="mb-1">
+                                                    <span class="text-muted">Size Maksimal: 10 MB (10240 KB)
+                                                        <br> Ekstensi: .jpg, .jpeg, .png, .pdf, .doc, .docx, .xls, .xlsx
+                                                    </span>
+                                                </div>
+                                                <div class="mb-2">
+                                                    <input type="file" class="form-control" wire:model="file">
+                                                    @error('file')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                                {{-- Progress bar --}}
+                                                <div x-show="progress > 0" class="progress mb-2">
+                                                    <div class="progress-bar" role="progressbar" :style="`width: ${progress}%`" x-text="progress + '%'"></div>
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="d-grid">
                                             <button type="submit" class="btn btn-success btn-sm text-white" wire:loading.attr="disabled">
@@ -63,8 +79,8 @@
                                 <hr>
 
                                 <div class="col-12">
-                                    <div class="justify-content-between align-items-center d-flex">
-                                        <h5>Daftar Dokumen Iuran</h5>
+                                    <div class="justify-content-between align-items-center d-md-flex">
+                                        <h5>Daftar Dokumen {{ $judul_menu }}</h5>
                                         <div class="my-2">
                                             <input type="text" class="form-control form-control-sm" wire:model.live.debounce.500ms="searchdok" placeholder="Cari Dokumen">
                                         </div>
@@ -74,7 +90,8 @@
                                             <li class="list-group-item" x-data="{ confirmDelete: false }">
                                                 <span>{{ $loop->iteration + ($dokumens->currentPage() - 1) * $dokumens->perPage() }}. </span>
                                                 {{ $dok->judul_dokumen }}.{{ $dok->ext_dokumen }}
-                                                ({{ number_format($dok->size_dokumen / 1024, 2) }} KB)
+                                                <span class="badge text-bg-success">{{ $dok->jenis_dokumen }}</span>
+                                                <span class="badge text-bg-success">({{ number_format($dok->size_dokumen / 1024, 2) }} KB)</span>
                                                 <div class="d-flex gap-1 float-end" @click.outside="confirmDelete = false">
                                                     <a class="btn btn-success btn-sm text-white" href="{{ asset($dok->link_dokumen) }}" target="_blank"><i class="ri-download-2-line"></i></a>
                                                     {{-- Konfirmasi hapus --}}
@@ -95,7 +112,7 @@
                                                 </div>
                                             </li>
                                         @empty
-                                            <li class="text-muted">Belum ada dokumen.</li>
+                                            <li class="list-group-item text-muted">Belum ada dokumen.</li>
                                         @endforelse
                                     </ul>
                                     <div class="d-flex justify-content-end mt-2">
@@ -104,13 +121,15 @@
                                 </div>
                             </div>
                         </div>
+                        <hr>
                         {{-- end daftar dokumen --}}
+                        {{-- tabel data --}}
                         <div class="card-body table-responsive">
                             <table class="table table-bordered align-middle">
                                 <thead class="table-light">
                                     <tr>
                                         <th style="width: 5%">#</th>
-                                        <th>Nominal Iuran (Rp)</th>
+                                        <th style="white-space: nowrap">Nominal Iuran (Rp)</th>
                                         <th>Tanggal Bayar</th>
                                         <th style="width: 20%">Aksi</th>
                                     </tr>
@@ -208,6 +227,7 @@
                                 </tbody>
                             </table>
                         </div>
+                        {{-- tabel data --}}
                     </div>
 
                 </div>

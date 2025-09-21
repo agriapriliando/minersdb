@@ -37,37 +37,20 @@ Route::get('/profile/{id}', Profile::class)->name('profile.show');
 
 Route::middleware([CekIdPerusahaan::class])->group(function () {
     Route::get('/iuran', Iuran::class)->name('iuran.show');
+    Route::get('/iui', Iui::class)->name('iui.show');
+    Route::get('/ktt', Ktt::class)->name('ktt.show');
+    Route::get('/kim', Kim::class)->name('kim.show');
+    Route::get('/handak', Handak::class)->name('handak.show');
+    Route::get('/bbc', Bbc::class)->name('bbc.show');
+    Route::get('/le', Le::class)->name('le.show');
+    Route::get('/pelabuhan', Pelabuhan::class)->name('pelabuhan.show');
+    Route::get('/pl', Pl::class)->name('pl.show'); // persetujuan lingkungan
+    Route::get('/pa', Pa::class)->name('pa.show'); // project area
+    Route::get('/rpt', Rpt::class)->name('rpt.show'); // rencana pascatambang
+    Route::get('/rr', Rr::class)->name('rr.show'); // rencana reklamasi
+    Route::get('/stk', Stk::class)->name('stk.show'); // studi kelayakan
+    Route::get('/tb', Tb::class)->name('tb.show'); //
+    Route::get('/rippm', Rippm::class)->name('rippm.show');
+    Route::get('/rippmdetail/{id}', RippmDetail::class)->name('rippm.detail.show');
+    Route::get('/rkabop', Rkabop::class)->name('rkabop.show');
 });
-
-
-Route::get('/iui', Iui::class)->name('iui.show');
-
-Route::get('/ktt', Ktt::class)->name('ktt.show');
-
-Route::get('/kim', Kim::class)->name('kim.show');
-
-Route::get('/handak', Handak::class)->name('handak.show');
-
-Route::get('/bbc', Bbc::class)->name('bbc.show');
-
-Route::get('/le', Le::class)->name('le.show');
-
-Route::get('/pelabuhan', Pelabuhan::class)->name('pelabuhan.show');
-
-Route::get('/pl', Pl::class)->name('pl.show'); // persetujuan lingkungan
-
-Route::get('/pa', Pa::class)->name('pa.show'); // project area
-
-Route::get('/rpt', Rpt::class)->name('rpt.show'); // rencana pascatambang
-
-Route::get('/rr', Rr::class)->name('rr.show'); // rencana reklamasi
-
-Route::get('/stk', Stk::class)->name('stk.show'); // studi kelayakan
-
-Route::get('/tb', Tb::class)->name('tb.show'); //
-
-Route::get('/rippm', Rippm::class)->name('rippm.show');
-
-Route::get('/rippmdetail/{id}', RippmDetail::class)->name('rippm.detail.show');
-
-Route::get('/rkabop', Rkabop::class)->name('rkabop.show');

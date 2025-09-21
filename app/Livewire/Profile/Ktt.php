@@ -2,8 +2,12 @@
 
 namespace App\Livewire\Profile;
 
+use App\Models\Dokumen;
 use App\Models\Ktt as ModelsKtt;
+use App\Traits\WithDokumen;
 use Livewire\Component;
+use Livewire\WithFileUploads;
+use Livewire\WithPagination;
 
 class Ktt extends Component
 {
@@ -117,8 +121,20 @@ class Ktt extends Component
         $this->dispatch('delete-success', message: 'Data KTT berhasil dihapus!');
     }
 
+    // untuk dokumen
+    use WithFileUploads, WithPagination, WithDokumen;
     public function render()
     {
-        return view('livewire.profile.ktt');
+        $input_model_dokumen = 'ktt';
+        return view('livewire.profile.' . $input_model_dokumen, [
+            'dokumens' => Dokumen::where('profile_id', session('id_perusahaan'))
+                ->where('model_dokumen', $input_model_dokumen)
+                ->where('judul_dokumen', 'like', '%' . $this->searchdok . '%')
+                ->latest()
+                ->paginate(5),
+            'jenis_dokumens' => ['Persetujuan', 'Non Persetujuan'],
+            'judul_menu' => 'Kepala Teknik Tambang',
+            'input_model_dokumen' => $input_model_dokumen,
+        ]);
     }
 }

@@ -22,10 +22,4 @@ class Dokumen extends Model
     {
         return $this->belongsTo(Profile::class, 'profile_id');
     }
-
-    // Fungsi untuk load dokumen
-    public function scopeIuran($query)
-    {
-        return $query->where('model_dokumen', 'iuran');
-    }
 }
