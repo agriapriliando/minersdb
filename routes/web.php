@@ -24,6 +24,7 @@ use App\Livewire\Profile\Rr;
 use App\Livewire\Profile\Sipbrp;
 use App\Livewire\Profile\Sipbrtp;
 use App\Livewire\Profile\Stk;
+use App\Livewire\Profile\Surat;
 use App\Livewire\Profile\Tb;
 use Illuminate\Support\Facades\Route;
 
@@ -59,4 +60,5 @@ Route::middleware([CekIdPerusahaan::class])->group(function () {
     Route::get('/rkabopperalatan/{id}', RkabopPeralatan::class)->name('rkabop.peralatan.show');
     Route::get('/sipbrp', Sipbrp::class)->name('sipbrp.show');
     Route::get('/sipbrtp', Sipbrtp::class)->name('sipbrtp.show');
+    Route::get('/surat', Surat::class)->name('surat.show');
 });

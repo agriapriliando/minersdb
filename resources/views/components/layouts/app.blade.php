@@ -249,7 +249,7 @@
                             </li>
                             <!-- / Pelaporan Section-->
                             <!-- Surat Menyurat Section-->
-                            <li class="menu-item"><a class="d-flex align-items-center" href="./index.html">
+                            <li class="menu-item"><a class="d-flex align-items-center" href="{{ route('surat.show') }}">
                                     <span class="menu-icon">
                                         <i class="ri-archive-drawer-line"></i>
                                     </span>
