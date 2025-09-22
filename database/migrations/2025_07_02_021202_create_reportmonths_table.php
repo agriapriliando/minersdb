@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('profile_id')->constrained()->onUpdate('cascade')
                 ->onDelete('cascade');
+            $table->string('tahun_laporan', 4);
             // Kolom laporan per bulan (1-12)
             for ($i = 1; $i <= 12; $i++) {
                 $table->string("laporan_{$i}_rencana_produksi_utama", 15)->nullable();

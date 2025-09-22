@@ -8,6 +8,7 @@ class Reportmonth extends Model
 {
     protected $fillable = [
         'profile_id',
+        'tahun_laporan',
         // Kolom laporan per bulan (1-12)
         'laporan_1_rencana_produksi_utama',
         'laporan_1_rencana_produksi_sampingan',

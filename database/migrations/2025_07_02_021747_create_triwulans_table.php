@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('profile_id')->constrained()->onUpdate('cascade')
                 ->onDelete('cascade');
+            $table->string('triwulan_tahun', 4);
             $table->string('laporan_triwulan_i')->nullable();
             $table->string('laporan_triwulan_ii')->nullable();
             $table->string('laporan_triwulan_iii')->nullable();

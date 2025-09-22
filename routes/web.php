@@ -15,6 +15,7 @@ use App\Livewire\Profile\Pelabuhan;
 use App\Livewire\Profile\Pl;
 use App\Livewire\Profile\Profile;
 use App\Livewire\Profile\ProfileAdd;
+use App\Livewire\Profile\Reportmonth;
 use App\Livewire\Profile\Rippm;
 use App\Livewire\Profile\RippmDetail;
 use App\Livewire\Profile\Rkabop;
@@ -26,6 +27,7 @@ use App\Livewire\Profile\Sipbrtp;
 use App\Livewire\Profile\Stk;
 use App\Livewire\Profile\Surat;
 use App\Livewire\Profile\Tb;
+use App\Livewire\Profile\Triwulan;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -61,4 +63,6 @@ Route::middleware([CekIdPerusahaan::class])->group(function () {
     Route::get('/sipbrp', Sipbrp::class)->name('sipbrp.show');
     Route::get('/sipbrtp', Sipbrtp::class)->name('sipbrtp.show');
     Route::get('/surat', Surat::class)->name('surat.show');
+    Route::get('/reportmonth', Reportmonth::class)->name('reportmonth.show');
+    Route::get('/triwulan', Triwulan::class)->name('triwulan.show');
 });

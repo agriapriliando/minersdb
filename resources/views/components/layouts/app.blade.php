@@ -239,12 +239,20 @@
                                 </div>
                             </li>
                             <!-- Pelaporan Section-->
-                            <li class="menu-item"><a class="d-flex align-items-center" href="./index.html">
+                            <li class="menu-item"><a class="d-flex align-items-center" href="{{ route('reportmonth.show') }}">
                                     <span class="menu-icon">
                                         <i class="ri-file-list-2-line"></i>
                                     </span>
                                     <span class="menu-link">
-                                        Pelaporan
+                                        Bulanan
+                                    </span></a>
+                            </li>
+                            <li class="menu-item"><a class="d-flex align-items-center" href="{{ route('triwulan.show') }}">
+                                    <span class="menu-icon">
+                                        <i class="ri-file-list-2-line"></i>
+                                    </span>
+                                    <span class="menu-link">
+                                        Triwulan
                                     </span></a>
                             </li>
                             <!-- / Pelaporan Section-->
