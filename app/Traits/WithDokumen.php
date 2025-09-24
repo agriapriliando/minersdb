@@ -9,15 +9,22 @@ trait WithDokumen
 {
     protected $paginationTheme = 'bootstrap';
     public $file;
-    public $jenis_dokumen = 'Lainnya';
+    public $jenis_dokumen = '';
     public $searchdok;
 
     public function saveDokumen($model = 'profil')
     {
-        $this->validate([
-            'file'          => 'required|file|max:10240',
-            'jenis_dokumen' => 'required|string|max:100',
-        ]);
+        if ($model == 'pelaporan') {
+            $this->validate([
+                'file'          => 'required|file|max:110000',
+                'jenis_dokumen' => 'required|string|max:150',
+            ]);
+        } else {
+            $this->validate([
+                'file'          => 'required|file|max:10240',
+                'jenis_dokumen' => 'required|string|max:150',
+            ]);
+        }
 
         $path = $this->file->store('dokumens/' . session('id_perusahaan'), 'public');
 

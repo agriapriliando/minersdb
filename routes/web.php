@@ -12,6 +12,7 @@ use App\Livewire\Profile\Ktt;
 use App\Livewire\Profile\Le;
 use App\Livewire\Profile\Pa;
 use App\Livewire\Profile\Pelabuhan;
+use App\Livewire\Profile\Pelaporan;
 use App\Livewire\Profile\Pl;
 use App\Livewire\Profile\Profile;
 use App\Livewire\Profile\ProfileAdd;
@@ -65,4 +66,5 @@ Route::middleware([CekIdPerusahaan::class])->group(function () {
     Route::get('/surat', Surat::class)->name('surat.show');
     Route::get('/reportmonth', Reportmonth::class)->name('reportmonth.show');
     Route::get('/triwulan', Triwulan::class)->name('triwulan.show');
+    Route::get('/pelaporan', Pelaporan::class)->name('pelaporan.show');
 });
