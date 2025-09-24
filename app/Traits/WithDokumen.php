@@ -4,10 +4,12 @@ namespace App\Traits;
 
 use App\Models\Dokumen;
 use Illuminate\Support\Facades\Storage;
+use Livewire\Attributes\Validate;
 
 trait WithDokumen
 {
     protected $paginationTheme = 'bootstrap';
+    #[Validate('required|max:150000')]
     public $file;
     public $jenis_dokumen = '';
     public $searchdok;
@@ -16,7 +18,7 @@ trait WithDokumen
     {
         if ($model == 'pelaporan') {
             $this->validate([
-                'file'          => 'required|file|max:110000',
+                'file'          => 'required|file|max:150000',
                 'jenis_dokumen' => 'required|string|max:150',
             ]);
         } else {

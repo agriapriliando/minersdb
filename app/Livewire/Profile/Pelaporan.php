@@ -12,13 +12,21 @@ class Pelaporan extends Component
 {
     // untuk dokumen
     use WithFileUploads, WithPagination, WithDokumen;
+
+    public function updatedSearchdok()
+    {
+        $this->resetPage();
+    }
     public function render()
     {
         $input_model_dokumen = 'pelaporan';
         return view('livewire.profile.' . $input_model_dokumen, [
             'dokumens' => Dokumen::where('profile_id', session('id_perusahaan'))
                 ->where('model_dokumen', $input_model_dokumen)
-                ->where('judul_dokumen', 'like', '%' . $this->searchdok . '%')
+                ->where(function ($query) {
+                    $query->where('judul_dokumen', 'like', '%' . $this->searchdok . '%')
+                        ->orWhere('jenis_dokumen', 'like', '%' . $this->searchdok . '%');
+                })
                 ->latest()
                 ->paginate(5),
             // ambil daftar unik jenis_dokumen
