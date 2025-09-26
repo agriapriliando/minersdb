@@ -214,9 +214,13 @@ class Profile extends Model
         return $this->hasOne(Rippm::class)->latestOfMany();
     }
 
-    // Relationship with Rkabop model
-    // public function rkabops()
-    // {
-    //     return $this->hasMany(Rkabop::class);
-    // }
+    public function rkabops()
+    {
+        return $this->hasMany(Rkabop::class);
+    }
+
+    public function latestRkabop()
+    {
+        return $this->hasOne(Rkabop::class)->latestOfMany();
+    }
 }

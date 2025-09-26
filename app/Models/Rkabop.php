@@ -87,4 +87,9 @@ class Rkabop extends Model
         'rkab_tenaga_kerja_thn_iii_non_lokal',
         'rkab_tenaga_kerja_thn_iii_tka',
     ];
+
+    public function peralatans()
+    {
+        return $this->hasMany(RkabopPeralatan::class, 'rkabop_id');
+    }
 }

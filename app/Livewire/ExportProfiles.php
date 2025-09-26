@@ -17,6 +17,8 @@ use App\Models\Profile;
 use App\Models\Reportmonth;
 use App\Models\Rippm;
 use App\Models\RippmDetail;
+use App\Models\Rkabop;
+use App\Models\RkabopPeralatan;
 use App\Models\Rpt;
 use App\Models\Stk;
 use App\Models\Tb;
@@ -153,6 +155,21 @@ class ExportProfiles extends Component
                 'relation' => 'latestRippmDetails', // ini kita handle khusus di atas
                 'columns' => array_values(
                     array_diff((new RippmDetail())->getFillable(), ['profile_id', 'rippm_id'])
+                ),
+            ],
+            'RKABOP' => [
+                'type' => 'relation',
+                'relation' => 'latestRkabop',
+                'columns' => array_values(
+                    array_diff((new Rkabop())->getFillable(), ['profile_id'])
+                ),
+            ],
+
+            'RKABOP Peralatan' => [
+                'type' => 'relation',
+                'relation' => 'latestRkabopPeralatans', // penanda khusus, handle manual di export
+                'columns' => array_values(
+                    array_diff((new RkabopPeralatan())->getFillable(), ['profile_id', 'rkabop_id'])
                 ),
             ],
         ];

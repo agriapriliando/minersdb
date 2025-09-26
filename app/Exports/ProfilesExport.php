@@ -26,17 +26,28 @@ class ProfilesExport implements FromCollection, WithHeadings, WithColumnFormatti
         // kumpulkan relasi apa saja yang dipilih
         $relations = [];
         foreach ($this->selectedColumns as $pil) {
-            if (isset($this->mapping[$pil]) && $this->mapping[$pil]['type'] === 'relation') {
-                $rel = $this->mapping[$pil]['relation'];
+            if (!isset($this->mapping[$pil]) || $this->mapping[$pil]['type'] !== 'relation') {
+                continue;
+            }
 
-                // kalau yang dipilih RIPPM Detail → pakai nested eager load
-                if ($rel === 'latestRippmDetails') {
-                    $relations[] = 'latestRippm.details';
-                } else {
-                    $relations[] = $rel;
-                }
+            $rel = $this->mapping[$pil]['relation'];
+
+            // === kalau RIPPM Detail → nested eager load
+            if ($rel === 'latestRippmDetails') {
+                $relations[] = 'latestRippm.details';
+            }
+            // === kalau RKABOP Peralatan → nested eager load
+            elseif ($rel === 'latestRkabopPeralatans') {
+                $relations[] = 'latestRkabop.peralatans';
+            }
+            // === default (hasOne / hasMany langsung)
+            else {
+                $relations[] = $rel;
             }
         }
+
+        // hilangkan duplikat relasi biar query lebih efisien
+        $relations = array_unique($relations);
 
         // eager load relasi
         $profiles = Profile::with($relations)->get();
@@ -88,6 +99,17 @@ class ProfilesExport implements FromCollection, WithHeadings, WithColumnFormatti
                             $row[$pil . '_' . $col] = $value ?: null;
                         }
                     }
+                    // === khusus untuk latestRkabopPeralatans ===
+                    elseif ($rel === 'latestRkabopPeralatans') {
+                        $peralatans = $profile->latestRkabop
+                            ? $profile->latestRkabop->peralatans
+                            : collect();
+
+                        foreach ($map['columns'] as $col) {
+                            $value = $peralatans->pluck($col)->implode(', ');
+                            $row[$pil . '_' . $col] = $value ?: null;
+                        }
+                    }
                     // === kalau relasi hasMany biasa ===
                     elseif ($profile->$rel instanceof \Illuminate\Support\Collection) {
                         foreach ($map['columns'] as $col) {
@@ -97,8 +119,9 @@ class ProfilesExport implements FromCollection, WithHeadings, WithColumnFormatti
                     }
                     // === kalau relasi hasOne / belongsTo ===
                     else {
+                        $relationData = $profile->$rel ?? null;
                         foreach ($map['columns'] as $col) {
-                            $value = $profile->$rel->$col ?? null;
+                            $value = $relationData->$col ?? null;
 
                             if ($value && (str_contains(strtolower($col), 'tanggal') || str_contains(strtolower($col), 'tgl'))) {
                                 $value = \Carbon\Carbon::parse($value)->toDateString();
