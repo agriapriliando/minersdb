@@ -46,7 +46,7 @@
     @endif
 </head>
 
-<body class="">
+<body class="gradient-bg">
 
     <!-- Navbar-->
     <nav class="navbar navbar-expand-lg navbar-light border-bottom py-0 fixed-top bg-white">
@@ -56,7 +56,7 @@
                     <div class="me-2">
                         <img src="{{ asset('assets/logo/android-chrome-192x192.png') }}" width="30" alt="">
                     </div>
-                    <span class="fw-black text-uppercase tracking-wide fs-6 lh-1">DESDM KAlteng</span>
+                    <span class="fw-black tracking-wide fs-6 lh-1">DESDM Kalteng</span>
                 </div>
             </a>
             <div class="d-flex justify-content-between align-items-center flex-grow-1 navbar-actions">
@@ -78,39 +78,19 @@
                 <div class="d-flex align-items-center">
 
                     <!-- Profile Menu-->
-                    <div class="dropdown ms-1">
-                        <button class="btn btn-link p-0 position-relative" type="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                            <picture>
-                                <img class="f-w-10 rounded-circle" src="{{ asset('') }}assets/images/profile-small.jpeg" alt="HTML Bootstrap Admin Template by Pixel Rocket">
-                            </picture>
-                            <span class="position-absolute bottom-0 start-75 p-1 bg-success border border-3 border-white rounded-circle">
-                                <span class="visually-hidden">New alerts</span>
-                            </span>
-                        </button>
-                        <ul class="dropdown-menu dropdown-md dropdown-menu-end" aria-labelledby="profileDropdown">
-                            <li><a class="dropdown-item d-flex align-items-center" href="#">Set Visibility</a></li>
-                            <li><a class="dropdown-item d-flex align-items-center" href="#">Edit Profile</a></li>
-                            <li><a class="dropdown-item d-flex align-items-center" href="#">Edit Settings</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li class="d-flex py-2 align-items-start">
-                                <button class="btn-icon bg-primary-faded text-primary fw-bolder me-3">J</button>
-                                <div class="d-flex align-items-start justify-content-between flex-grow-1">
-                                    <div>
-                                        <p class="lh-1 mb-2 fw-semibold text-body">John Daniels</p>
-                                        <p class="text-muted lh-1 mb-2 small">john@email.com</p>
-                                    </div>
-                                    <small class="badge bg-success-faded text-success rounded-pill">Pro</small>
-                                </div>
-                            </li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item d-flex align-items-center" href="#">Account Settings</a></li>
-                            <li><a class="dropdown-item d-flex align-items-center" href="#">Logout</a></li>
-                        </ul>
-                    </div> <!-- / Profile Menu-->
+                    @if (session('user'))
+                        <span class="fw-medium badge bg-primary me-1">
+                            Hai, {{ session('user')['name'] }}
+                        </span>
+                        <form action="{{ route('auth.logout') }}" method="POST">
+                            @csrf
+                            <button type="submit" class="btn badge bg-danger"><i class="ri-logout-circle-line"></i> Logout</button>
+                        </form>
+                    @else
+                        <span class="fw-medium badge bg-primary">
+                            <a href="{{ route('auth.login') }}" class="btn btn-primary btn-sm">Login</a>
+                        </span>
+                    @endif
 
                 </div>
                 <!-- / Notifications & Profile-->
@@ -141,11 +121,10 @@
 
         <!-- Content-->
         <section class="container-fluid mt-4">
-
             {{ $slot }}
 
             <!-- Footer -->
-            <footer class="  footer">
+            <footer class="footer" style="background-color: white !important;">
                 <p class="small text-muted m-0">All rights reserved | © 2025</p>
                 <p class="small text-muted m-0">Template created by <a href="https://www.ditaria.com">Ditaria</a></p>
             </footer>
@@ -186,14 +165,16 @@
 
                         <!-- Dashboard Menu Section-->
                         <li class="menu-section mt-2">Menu</li>
-                        <li class="menu-item"><a class="d-flex align-items-center" href="{{ route('home') }}">
-                                <span class="menu-icon">
-                                    <i class="ri-dashboard-line"></i>
-                                </span>
-                                <span class="menu-link">
-                                    Dashboard
-                                </span></a>
-                        </li>
+                        @if (session('user'))
+                            <li class="menu-item"><a class="d-flex align-items-center" href="{{ route('home') }}">
+                                    <span class="menu-icon">
+                                        <i class="ri-dashboard-line"></i>
+                                    </span>
+                                    <span class="menu-link">
+                                        D A F T A R
+                                    </span></a>
+                            </li>
+                        @endif
                         <!-- / Dashboard Menu Section-->
                         @if (session('id_perusahaan') != null)
                             <!-- Menu Perusahaan Section-->
@@ -278,7 +259,6 @@
                             <!-- / Surat Menyurat Section-->
                             <!-- / Menu Perusahaan Section-->
                         @endif
-
                     </ul>
                 </div>
             </div>

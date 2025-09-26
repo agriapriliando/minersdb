@@ -1,7 +1,8 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\AuthApiController;
 use App\Http\Middleware\CekIdPerusahaan;
+use App\Http\Middleware\CekApiAuth;
 use App\Livewire\DaftarPerusahaan;
 use App\Livewire\Profile\Bbc;
 use App\Livewire\Profile\Handak;
@@ -32,17 +33,21 @@ use App\Livewire\Profile\Triwulan;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/home');
 });
 
 // Route::get('/profile', [ProfileController::class, 'index']);
 
-Route::get('/home', DaftarPerusahaan::class)->name('home');
 
-Route::get('/profile/create', ProfileAdd::class)->name('profile.create');
-Route::get('/profile/{id}', Profile::class)->name('profile.show');
+Route::get('/login', [AuthApiController::class, 'showLoginForm'])->name('login.form');
+Route::post('/login', [AuthApiController::class, 'login'])->name('auth.login');
+Route::post('/logout', [AuthApiController::class, 'logout'])->name('auth.logout');
 
-Route::middleware([CekIdPerusahaan::class])->group(function () {
+Route::middleware([CekIdPerusahaan::class, CekApiAuth::class])->group(function () {
+    Route::get('/home', DaftarPerusahaan::class)->name('home')->withoutMiddleware([CekIdPerusahaan::class]);
+
+    Route::get('/profile/create', ProfileAdd::class)->name('profile.create')->withoutMiddleware([CekIdPerusahaan::class]);;
+    Route::get('/profile/{id}', Profile::class)->name('profile.show')->withoutMiddleware([CekIdPerusahaan::class]);;
     Route::get('/iuran', Iuran::class)->name('iuran.show');
     Route::get('/iui', Iui::class)->name('iui.show');
     Route::get('/ktt', Ktt::class)->name('ktt.show');
