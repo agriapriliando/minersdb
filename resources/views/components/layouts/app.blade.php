@@ -121,7 +121,10 @@
 
         <!-- Content-->
         <section class="container-fluid mt-4">
-            {{ $slot }}
+            @if ($slot)
+                {{ $slot }}
+            @endif
+            @yield('content')
 
             <!-- Footer -->
             <footer class="footer" style="background-color: white !important;">

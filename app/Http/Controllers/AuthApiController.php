@@ -20,10 +20,12 @@ class AuthApiController extends Controller
         ]);
 
         // Panggil API login dari miners.kalteng.go.id
-        $response = Http::post('https://miners.kalteng.go.id/api/login', [
-            'username' => $request->username,
-            'password' => $request->password,
-        ]);
+        $response = Http::withoutVerifying()
+            ->timeout(30)
+            ->post('https://miners.kalteng.go.id/api/login', [
+                'username' => $request->username,
+                'password' => $request->password,
+            ]);
 
         if ($response->successful()) {
             $data = $response->json();

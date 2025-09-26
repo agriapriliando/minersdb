@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthApiController;
 use App\Http\Middleware\CekIdPerusahaan;
 use App\Http\Middleware\CekApiAuth;
 use App\Livewire\DaftarPerusahaan;
+use App\Livewire\ExportProfiles;
 use App\Livewire\Profile\Bbc;
 use App\Livewire\Profile\Handak;
 use App\Livewire\Profile\Iui;
@@ -36,8 +37,10 @@ Route::get('/', function () {
     return redirect('/home');
 });
 
-// Route::get('/profile', [ProfileController::class, 'index']);
-
+Route::get('/profiles/view', ExportProfiles::class)->name('exports.view');
+Route::get('/profiles/export', function () {
+    return view('exports.profiles');
+})->name('profiles.export');
 
 Route::get('/login', [AuthApiController::class, 'showLoginForm'])->name('login.form');
 Route::post('/login', [AuthApiController::class, 'login'])->name('auth.login');
@@ -48,28 +51,29 @@ Route::middleware([CekIdPerusahaan::class, CekApiAuth::class])->group(function (
 
     Route::get('/profile/create', ProfileAdd::class)->name('profile.create')->withoutMiddleware([CekIdPerusahaan::class]);;
     Route::get('/profile/{id}', Profile::class)->name('profile.show')->withoutMiddleware([CekIdPerusahaan::class]);;
-    Route::get('/iuran', Iuran::class)->name('iuran.show');
-    Route::get('/iui', Iui::class)->name('iui.show');
-    Route::get('/ktt', Ktt::class)->name('ktt.show');
-    Route::get('/kim', Kim::class)->name('kim.show');
-    Route::get('/handak', Handak::class)->name('handak.show');
-    Route::get('/bbc', Bbc::class)->name('bbc.show');
-    Route::get('/le', Le::class)->name('le.show');
-    Route::get('/pelabuhan', Pelabuhan::class)->name('pelabuhan.show');
+    Route::get('/iuran', Iuran::class)->name('iuran.show'); // iuran tetap tahunan
+    Route::get('/iui', Iui::class)->name('iui.show'); // izin usaha industri
+    Route::get('/ktt', Ktt::class)->name('ktt.show');  // kepala teknik tambang
+    Route::get('/kim', Kim::class)->name('kim.show'); // kartu izin meledakan
+    Route::get('/handak', Handak::class)->name('handak.show'); // gudang handak
+    Route::get('/bbc', Bbc::class)->name('bbc.show'); // tangki BBC
+    Route::get('/le', Le::class)->name('le.show'); // laporan eksplorasi
+    Route::get('/pelabuhan', Pelabuhan::class)->name('pelabuhan.show'); // pelabuhan
     Route::get('/pl', Pl::class)->name('pl.show'); // persetujuan lingkungan
     Route::get('/pa', Pa::class)->name('pa.show'); // project area
     Route::get('/rpt', Rpt::class)->name('rpt.show'); // rencana pascatambang
     Route::get('/rr', Rr::class)->name('rr.show'); // rencana reklamasi
-    Route::get('/stk', Stk::class)->name('stk.show'); // studi kelayakan
-    Route::get('/tb', Tb::class)->name('tb.show'); //
+    Route::get('/stk', Stk::class)->name('stk.show'); // studi kelayakan IUP dan SIPB juga
+    Route::get('/tb', Tb::class)->name('tb.show'); // tanda batas
+    Route::get('/reportmonth', Reportmonth::class)->name('reportmonth.show'); // laporan bulanan
+    Route::get('/triwulan', Triwulan::class)->name('triwulan.show'); // laporan triwulan
+    Route::get('/surat', Surat::class)->name('surat.show'); // surat masuk keluar
+
     Route::get('/rippm', Rippm::class)->name('rippm.show');
     Route::get('/rippmdetail/{id}', RippmDetail::class)->name('rippm.detail.show');
     Route::get('/rkabop', Rkabop::class)->name('rkabop.show');
     Route::get('/rkabopperalatan/{id}', RkabopPeralatan::class)->name('rkabop.peralatan.show');
     Route::get('/sipbrp', Sipbrp::class)->name('sipbrp.show');
     Route::get('/sipbrtp', Sipbrtp::class)->name('sipbrtp.show');
-    Route::get('/surat', Surat::class)->name('surat.show');
-    Route::get('/reportmonth', Reportmonth::class)->name('reportmonth.show');
-    Route::get('/triwulan', Triwulan::class)->name('triwulan.show');
     Route::get('/pelaporan', Pelaporan::class)->name('pelaporan.show');
 });

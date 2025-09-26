@@ -58,115 +58,165 @@ class Profile extends Model
         return $query;
     }
 
-    // Define the relationship for 'Ktt'
-    public function ktts()
-    {
-        return $this->hasMany(Ktt::class);
-    }
-
-    // Relationship with Kim model
-    public function kims()
-    {
-        return $this->hasMany(Kim::class);
-    }
-
-    // Relationship with Handak model
-    public function handaks()
-    {
-        return $this->hasMany(Handak::class);
-    }
-
-    // Relationship with Bbc model
-    public function bbcs()
-    {
-        return $this->hasMany(Bbc::class);
-    }
-
-    // Relationship with Le model
-    public function les()
-    {
-        return $this->hasMany(Le::class);
-    }
-
-    // Relationship with Stk model
-    public function stks()
-    {
-        return $this->hasMany(Stk::class);
-    }
-
-    // Relationship with Rr model
-    public function rrs()
-    {
-        return $this->hasMany(Rr::class);
-    }
-
-    // Relationship with Rpt model
-    public function rpts()
-    {
-        return $this->hasMany(Rpt::class);
-    }
-
-    // Relationship with Rippm model
-    public function rippms()
-    {
-        return $this->hasMany(Rippm::class);
-    }
-
-    // Relationship with RippmContent model
-
-    // Relationship with Rkabop model
-    public function rkabops()
-    {
-        return $this->hasMany(Rkabop::class);
-    }
-
-    // Relationship with RkabopPeralatan model
-
-    // Relationship with Reportmonth model
-    public function reportmonths()
-    {
-        return $this->hasMany(Reportmonth::class);
-    }
-
-    // Relationship with Triwulan model
-    public function triwulans()
-    {
-        return $this->hasMany(Triwulan::class);
-    }
-
-    // Relationship with Iuran model
+    // Relationship with Iuran Tetap model
     public function iurans()
     {
         return $this->hasMany(Iuran::class);
     }
 
-    // Relationship with Tb model
-    public function tbs()
+    public function latestIuran()
     {
-        return $this->hasMany(Tb::class);
+        return $this->hasOne(Iuran::class)->latestOfMany();
     }
 
-    // Relationship with Pa model
-    public function pas()
-    {
-        return $this->hasMany(Pa::class);
-    }
-
-    // Relationship with Pl model
-    public function pls()
-    {
-        return $this->hasMany(Pl::class);
-    }
-
-    // Relationship with Pelabuhan model
-    public function pelabuhans()
-    {
-        return $this->hasMany(Pelabuhan::class);
-    }
-
-    // Relationship with Iui model
     public function iuis()
     {
         return $this->hasMany(Iui::class);
     }
+    public function latestIui()
+    {
+        return $this->hasOne(Iui::class)->latestOfMany();
+    }
+
+    public function kims()
+    {
+        return $this->hasMany(Kim::class);
+    }
+    public function latestKim()
+    {
+        return $this->hasOne(Kim::class)->latestOfMany();
+    }
+
+    public function ktts()
+    {
+        return $this->hasMany(Ktt::class);
+    }
+    public function latestKtt()
+    {
+        return $this->hasOne(Ktt::class)->latestOfMany();
+    }
+
+    public function handaks()
+    {
+        return $this->hasMany(Handak::class);
+    }
+
+    public function latestHandak()
+    {
+        return $this->hasOne(Handak::class)->latestOfMany();
+    }
+
+    public function bbcs()
+    {
+        return $this->hasMany(Bbc::class);
+    }
+    public function latestBbc()
+    {
+        return $this->hasOne(Bbc::class)->latestOfMany();
+    }
+
+    public function les()
+    {
+        return $this->hasMany(Le::class);
+    }
+    public function latestLe()
+    {
+        return $this->hasOne(Le::class)->latestOfMany();
+    }
+
+    public function pelabuhans()
+    {
+        return $this->hasMany(Pelabuhan::class);
+    }
+    public function latestPelabuhan()
+    {
+        return $this->hasOne(Pelabuhan::class)->latestOfMany();
+    }
+    public function pls()
+    {
+        return $this->hasMany(Pl::class);
+    }
+    public function latestPl()
+    {
+        return $this->hasOne(Pl::class)->latestOfMany();
+    }
+
+    public function pas()
+    {
+        return $this->hasMany(Pa::class);
+    }
+    public function latestPa()
+    {
+        return $this->hasOne(Pa::class)->latestOfMany();
+    }
+
+    public function rpts()
+    {
+        return $this->hasMany(Rpt::class);
+    }
+    public function latestRpt()
+    {
+        return $this->hasOne(Rpt::class)->latestOfMany();
+    }
+    public function rrs()
+    {
+        return $this->hasMany(Rr::class);
+    }
+    public function latestRr()
+    {
+        return $this->hasOne(Rr::class)->latestOfMany();
+    }
+
+    public function stks()
+    {
+        return $this->hasMany(Stk::class);
+    }
+    public function latestStk()
+    {
+        return $this->hasOne(Stk::class)->latestOfMany();
+    }
+
+    public function tbs()
+    {
+        return $this->hasMany(Tb::class);
+    }
+    public function latestTb()
+    {
+        return $this->hasOne(Tb::class)->latestOfMany();
+    }
+
+    public function reportmonths()
+    {
+        return $this->hasMany(Reportmonth::class);
+    }
+
+    public function latestReportmonth()
+    {
+        return $this->hasOne(Reportmonth::class)->latestOfMany();
+    }
+    public function triwulans()
+    {
+        return $this->hasMany(Triwulan::class);
+    }
+
+    public function latestTriwulan()
+    {
+        return $this->hasOne(Triwulan::class)->latestOfMany();
+    }
+
+    public function rippms()
+    {
+        return $this->hasMany(Rippm::class);
+    }
+
+    public function latestRippm()
+    {
+        return $this->hasOne(Rippm::class)->latestOfMany();
+    }
+
+    // Relationship with Rkabop model
+    // public function rkabops()
+    // {
+    //     return $this->hasMany(Rkabop::class);
+    // }
 }

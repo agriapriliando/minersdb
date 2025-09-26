@@ -21,4 +21,9 @@ class Rippm extends Model
     {
         return $this->belongsTo(Profile::class);
     }
+
+    public function details()
+    {
+        return $this->hasMany(RippmDetail::class, 'rippm_id');
+    }
 }
