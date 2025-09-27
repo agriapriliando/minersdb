@@ -1,7 +1,11 @@
 <div class="container">
-    <h3 class="mb-4">Export Data Profile ke Excel</h3>
+    <div class="d-flex justify-content-between">
+        <h3>Export Data Profile ke Excel</h3>
+        <a href="{{ route('home') }}" class="btn btn-primary">Kembali</a>
+    </div>
 
     <div>
+        <p>Data export adalah data terakhir / terbaru.</p>
         <div class="mb-3">
             <label class="form-label fw-bold">Pilih Data untuk Export:</label>
             <div class="mb-2">
@@ -26,6 +30,14 @@
         </div>
         <div class="mb-3">
             <label class="form-label fw-bold">Pilih Perusahaan:</label>
+            <div class="mb-2">
+                <button wire:click="selectAllPerusahaan" type="button" class="btn btn-sm btn-outline-primary">
+                    Pilih Semua
+                </button>
+                <button wire:click="deselectAllPerusahaan" type="button" class="btn btn-sm btn-outline-danger">
+                    Hapus Semua
+                </button>
+            </div>
             <div class="d-flex flex-wrap gap-3">
                 @foreach ($perusahaanList as $perusahaan)
                     <div class="form-check">

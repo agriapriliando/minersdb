@@ -194,11 +194,19 @@ class ExportProfiles extends Component
     {
         $this->selectedColumns = $this->pilihan;
     }
-
     public function deselectAll()
     {
         $this->selectedColumns = [];
     }
+    public function selectAllPerusahaan()
+    {
+        $this->selectedPerusahaan = $this->perusahaanList;
+    }
+    public function deselectAllPerusahaan()
+    {
+        $this->selectedPerusahaan = [];
+    }
+
 
     public function export()
     {

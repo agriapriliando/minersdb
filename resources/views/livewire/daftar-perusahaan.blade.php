@@ -4,7 +4,22 @@
         <!-- Tabel Perusahaan-->
         <div class="col-12">
             <div class="card">
-                <div class="card-body">
+                <div class="card-body" x-data="{
+                    copyTable() {
+                        let rows = Array.from(document.querySelectorAll('#tabel-perusahaan tr'));
+                        let text = rows.map(row => {
+                            // Ambil hanya data dari <td> (atau <th> kalau mau)
+                            return Array.from(row.querySelectorAll('th,td'))
+                                .map(cell => cell.innerText)
+                                .join('\t'); // Tab sebagai pemisah kolom
+                        }).join('\n'); // Enter sebagai pemisah baris
+                
+                        // Copy ke clipboard
+                        navigator.clipboard.writeText(text).then(() => {
+                            alert('Data tabel berhasil disalin!');
+                        });
+                    },
+                }">
                     @session('error')
                         <div class="alert alert-warning alert-dismissible fade show" role="alert">
                             <strong>{{ session('error') }}</strong>
@@ -13,7 +28,7 @@
                     @endsession
                     <!-- Actions-->
                     <div class="d-md-flex align-items-center mb-3">
-                        <button class="btn btn-outline-secondary btn-sm text-body me-2" type="button" wire:click="resetFilters"><i class="ri-download-fill align-bottom"></i> Reset</button>
+                        <button class="btn btn-outline-secondary text-body me-2" type="button" wire:click="resetFilters"><i class="ri-refresh-line align-bottom"></i> Reset</button>
                         <div class="bg-light rounded px-3 py-1 flex-shrink-0 d-flex align-items-center me-2 mb-2">
                             <input wire:model.live="search" class="form-control border-0 bg-transparent px-0 py-2 me-5 fw-bolder" placeholder="Cari Nama Perusahaan">
                         </div>
@@ -47,13 +62,17 @@
                         </div>
                         <div class="d-md-flex align-items-center">
                             <select wire:model.live="perPage" class="form-select me-2 mb-2 rounded" style="max-width: 200px">
+                                <option>==Halaman==</option>
                                 <option value="5">5</option>
                                 <option value="10">10</option>
+                                <option value="20">20</option>
+                                <option value="50">50</option>
                                 <option value="{{ $profiles->total() }}">{{ $profiles->total() }} All</option>
                             </select>
                             <div class="d-flex justify-content-end mb-2">
                                 <a href="{{ route('exports.view') }}" class="btn btn-outline-secondary btn-sm text-body me-2"><i class="ri-download-fill align-bottom"></i> Export</a>
-                                <a class="btn btn-sm btn-primary" href="{{ route('profile.create') }}"><i class="ri-add-circle-line align-bottom"></i> Tambah</a>
+                                <a class="btn btn-sm btn-primary me-2" href="{{ route('profile.create') }}"><i class="ri-add-circle-line align-bottom"></i> Tambah</a>
+                                <button class="d-none btn btn-success btn-sm text-white" @click="copyTable">Copy Data</button>
                             </div>
                         </div>
                     </div>
@@ -61,12 +80,13 @@
 
                     <!-- Table-->
                     <div class="table-responsive">
-                        <table class="table m-0 table-striped">
+                        <table class="table m-0 table-striped" id="tabel-perusahaan">
                             <thead>
                                 <tr>
                                     <th width="1">No</th>
                                     <th>Nama Perusahaan</th>
                                     <th>Kabupaten/Kota</th>
+                                    <th>Komoditas</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -80,6 +100,7 @@
                                             {{ $item->nama_pemegang_perizinan }}
                                         </td>
                                         <td>{{ $item->kabupaten_kota }}</td>
+                                        <td>{{ $item->komoditas }}</td>
                                         <td>
                                             <a href="{{ route('profile.show', $item->id) }}" class="btn btn-sm btn-primary"> <i class="ri-eye-fill"></i></a>
                                         </td>

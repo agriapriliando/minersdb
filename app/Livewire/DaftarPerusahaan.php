@@ -11,7 +11,7 @@ class DaftarPerusahaan extends Component
     use WithPagination;
 
     public $search = '';
-    public $perPage = 5;
+    public $perPage = 10;
 
     public $komoditasSearch = '';
     public $kabupaten_kotaSearch = '';
