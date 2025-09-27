@@ -79,8 +79,8 @@ class Rkabop extends Component
             $prefix . 'rkab_sd_thn_iii_mt_tertunjuk' => 'nullable|numeric|min:0',
             $prefix . 'rkab_sd_thn_iii_mt_terukur' => 'nullable|numeric|min:0',
 
-            // Tenaga Ahli
-            $prefix . 'rkab_tenaga_ahli_competent_person' => 'nullable|string',
+            // Tenaga Ahli Sumber Daya
+            $prefix . 'rkab_sd_tenaga_ahli_competent_person' => 'nullable|string',
 
             // Cadangan
             $prefix . 'rkab_cadangan_thn_i_terkira' => 'nullable|numeric|min:0',
@@ -89,6 +89,9 @@ class Rkabop extends Component
             $prefix . 'rkab_cadangan_thn_ii_terbukti' => 'nullable|numeric|min:0',
             $prefix . 'rkab_cadangan_thn_iii_terkira' => 'nullable|numeric|min:0',
             $prefix . 'rkab_cadangan_thn_iii_terbukti' => 'nullable|numeric|min:0',
+
+            // Tenaga Ahli Cadangan
+            $prefix . 'rkab_cadangan_tenaga_ahli_competent_person' => 'nullable|string',
 
             // Produksi Tahun I
             $prefix . 'rkab_prod_thn_i_target_m3_utama' => 'nullable|numeric|min:0',

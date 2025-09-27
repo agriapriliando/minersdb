@@ -12,25 +12,49 @@
                         </div>
                     @endsession
                     <!-- Actions-->
-                    <div class="d-md-flex justify-content-between align-items-center mb-3">
-                        <form class="bg-light rounded px-3 py-1 flex-shrink-0 d-flex align-items-center me-2 mb-2">
-                            <input wire:model.live="search" class="form-control border-0 bg-transparent px-0 py-2 me-5 fw-bolder" type="search" placeholder="Search" aria-label="Search">
-                            <button class="btn btn-link p-0 text-muted" type="submit"><i class="ri-search-2-line"></i></button>
+                    <div class="d-md-flex align-items-center mb-3">
+                        <button class="btn btn-outline-secondary btn-sm text-body me-2" type="button" wire:click="resetFilters"><i class="ri-download-fill align-bottom"></i> Reset</button>
+                        <div class="bg-light rounded px-3 py-1 flex-shrink-0 d-flex align-items-center me-2 mb-2">
+                            <input wire:model.live="search" class="form-control border-0 bg-transparent px-0 py-2 me-5 fw-bolder" placeholder="Cari Nama Perusahaan">
+                        </div>
+                        <form class="d-none bg-light rounded px-3 py-1 flex-shrink-0 d-flex align-items-center me-2 mb-2">
+                            <input wire:model.live="kabupaten_kotaSearch" class="form-control border-0 bg-transparent px-0 py-2 me-5 fw-bolder" type="search" placeholder="Kabupaten/Kota"
+                                list="kabupatenKotaList" aria-label="Search">
+
+                            <datalist id="kabupatenKotaList">
+                                @foreach ($kabupaten_kota as $item)
+                                    <option value="{{ $item }}">
+                                @endforeach
+                            </datalist>
                         </form>
-                        <select wire:model.live="komoditasSearch" class="form-select me-2 mb-2 rounded">
-                            <option value="">==Komoditas==</option>
-                            @foreach ($komoditas as $key => $value)
-                                <option value="{{ $key }}">{{ $value }}</option>
-                            @endforeach
-                        </select>
-                        <select wire:model.live="perPage" class="form-select me-2 mb-2 rounded">
-                            <option value="5">5</option>
-                            <option value="10">10</option>
-                            <option value="{{ $profiles->total() }}">{{ $profiles->total() }}</option>
-                        </select>
-                        <div class="d-flex justify-content-end mb-2">
-                            <a href="{{ route('exports.view') }}" class="btn btn-outline-secondary btn-sm text-body me-2"><i class="ri-download-fill align-bottom"></i> Export</a>
-                            <a class="btn btn-sm btn-primary" href="{{ route('profile.create') }}"><i class="ri-add-circle-line align-bottom"></i> Tambah</a>
+                        <div class="bg-light rounded px-3 py-1 flex-shrink-0 d-flex align-items-center me-2 mb-2">
+                            <input wire:model.live="kabupaten_kotaSearch" class="form-control border-0 bg-transparent px-0 py-2 me-5 fw-bolder" list="kabupatenKotaList"
+                                placeholder="==Kabupaten/Kota==">
+
+                            <datalist id="kabupatenKotaList">
+                                @foreach ($kabupaten_kota as $key => $value)
+                                    <option value="{{ $key }}">{{ $value }}</option>
+                                @endforeach
+                            </datalist>
+                        </div>
+                        <div class="bg-light rounded px-3 py-1 flex-shrink-0 d-flex align-items-center me-2 mb-2">
+                            <input wire:model.live="komoditasSearch" class="form-control border-0 bg-transparent px-0 py-2 me-5 fw-bolder" list="komoditasList" placeholder="==Komoditas==">
+                            <datalist id="komoditasList">
+                                @foreach ($komoditas as $key => $value)
+                                    <option value="{{ $key }}">{{ $value }}</option>
+                                @endforeach
+                            </datalist>
+                        </div>
+                        <div class="d-md-flex align-items-center">
+                            <select wire:model.live="perPage" class="form-select me-2 mb-2 rounded" style="max-width: 200px">
+                                <option value="5">5</option>
+                                <option value="10">10</option>
+                                <option value="{{ $profiles->total() }}">{{ $profiles->total() }} All</option>
+                            </select>
+                            <div class="d-flex justify-content-end mb-2">
+                                <a href="{{ route('exports.view') }}" class="btn btn-outline-secondary btn-sm text-body me-2"><i class="ri-download-fill align-bottom"></i> Export</a>
+                                <a class="btn btn-sm btn-primary" href="{{ route('profile.create') }}"><i class="ri-add-circle-line align-bottom"></i> Tambah</a>
+                            </div>
                         </div>
                     </div>
                     <!-- /Actions-->
@@ -42,6 +66,7 @@
                                 <tr>
                                     <th width="1">No</th>
                                     <th>Nama Perusahaan</th>
+                                    <th>Kabupaten/Kota</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -52,19 +77,11 @@
                                             {{ ($profiles->currentPage() - 1) * $profiles->perPage() + $loop->index + 1 }}
                                         </td>
                                         <td>
-                                            <div class="d-flex justify-content-start align-items-start">
-                                                <div>
-                                                    <p class="fw-bolder mb-1 d-flex align-items-center lh-1">{{ $item->nama_pemegang_perizinan }}
-                                                        <span class="d-block f-w-4 ms-1 lh-1 text-primary">
-                                                            <i class="ri-checkbox-circle-line"></i>
-                                                        </span>
-                                                    </p>
-                                                    <span class="d-block text-muted">NIB : {{ $item->nomor_induk_berusaha_nib }}</span>
-                                                </div>
-                                            </div>
+                                            {{ $item->nama_pemegang_perizinan }}
                                         </td>
+                                        <td>{{ $item->kabupaten_kota }}</td>
                                         <td>
-                                            <a href="{{ route('profile.show', $item->id) }}" class="btn btn-sm btn-primary"> <i class="ri-eye-2-line"></i> Lihat</a>
+                                            <a href="{{ route('profile.show', $item->id) }}" class="btn btn-sm btn-primary"> <i class="ri-eye-fill"></i></a>
                                         </td>
                                     </tr>
                                 @endforeach

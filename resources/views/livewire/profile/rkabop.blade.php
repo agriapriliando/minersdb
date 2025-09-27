@@ -24,7 +24,9 @@
                         showProd2: false,
                         showProd3: false,
                         showPajak: false,
-                        showTk: false,
+                        showTk1: false,
+                        showTk2: false,
+                        showTk3: false,
                         tambah: false,
                     }" x-on:livewire-upload-progress="progress = $event.detail.progress" x-on:livewire-upload-finish="progress = 0"
                         x-on:livewire-upload-error="progress = 0">
@@ -149,8 +151,12 @@
                                 <label class="btn btn-sm btn-outline-primary" for="showProd3">Produksi Thn III</label>
                                 <input type="checkbox" @click="showPajak = !showPajak" class="btn-check" id="showPajak" autocomplete="off">
                                 <label class="btn btn-sm btn-outline-primary" for="showPajak">Pajak</label>
-                                <input type="checkbox" @click="showTk = !showTk" class="btn-check" id="showTk" autocomplete="off">
-                                <label class="btn btn-sm btn-outline-primary" for="showTk">Tenaga Kerja</label>
+                                <input type="checkbox" @click="showTk1 = !showTk1" class="btn-check" id="showTk1" autocomplete="off">
+                                <label class="btn btn-sm btn-outline-primary" for="showTk1">Tenaga Kerja Thn I</label>
+                                <input type="checkbox" @click="showTk2 = !showTk2" class="btn-check" id="showTk2" autocomplete="off">
+                                <label class="btn btn-sm btn-outline-primary" for="showTk2">Tenaga Kerja Thn 2</label>
+                                <input type="checkbox" @click="showTk3 = !showTk3" class="btn-check" id="showTk3" autocomplete="off">
+                                <label class="btn btn-sm btn-outline-primary" for="showTk3">Tenaga Kerja Thn 3</label>
                                 <input type="checkbox" @click="tambah = !tambah" class="btn-check" id="tambah" autocomplete="off">
                                 <label class="btn btn-sm btn-outline-primary" for="tambah"><i class="ri-add-line"></i> Tambah</label>
                             </div>
@@ -235,19 +241,19 @@
                                         <th x-show="showPajak">Pajak III Opsen</th>
 
                                         {{-- Tenaga Kerja Thn I --}}
-                                        <th x-show="showTk">TK I Lokal</th>
-                                        <th x-show="showTk">TK I Non Lokal</th>
-                                        <th x-show="showTk">TK I TKA</th>
+                                        <th x-show="showTk1">TK I Lokal</th>
+                                        <th x-show="showTk1">TK I Non Lokal</th>
+                                        <th x-show="showTk1">TK I TKA</th>
 
                                         {{-- Tenaga Kerja Thn II --}}
-                                        <th x-show="showTk">TK II Lokal</th>
-                                        <th x-show="showTk">TK II Non Lokal</th>
-                                        <th x-show="showTk">TK II TKA</th>
+                                        <th x-show="showTk2">TK II Lokal</th>
+                                        <th x-show="showTk2">TK II Non Lokal</th>
+                                        <th x-show="showTk2">TK II TKA</th>
 
                                         {{-- Tenaga Kerja Thn III --}}
-                                        <th x-show="showTk">TK III Lokal</th>
-                                        <th x-show="showTk">TK III Non Lokal</th>
-                                        <th x-show="showTk">TK III TKA</th>
+                                        <th x-show="showTk3">TK III Lokal</th>
+                                        <th x-show="showTk3">TK III Non Lokal</th>
+                                        <th x-show="showTk3">TK III TKA</th>
 
                                         <th>Aksi</th>
                                     </tr>
@@ -310,9 +316,9 @@
                                             <td x-show="showSd"><input type="number" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkab_sd_thn_iii_mt_terukur"
                                                     :disabled="$wire.editingId !== {{ $id }}"></td>
 
-                                            {{-- Tenaga Ahli --}}
+                                            {{-- Tenaga Ahli Sumber Daya --}}
                                             <td x-show="showSd"><input type="text" class="form-control form-control-sm"
-                                                    wire:model="rkabop.{{ $id }}.rkab_tenaga_ahli_competent_person" :disabled="$wire.editingId !== {{ $id }}"></td>
+                                                    wire:model="rkabop.{{ $id }}.rkab_sd_tenaga_ahli_competent_person" :disabled="$wire.editingId !== {{ $id }}"></td>
 
                                             {{-- Cadangan --}}
                                             <td x-show="showCad"><input type="number" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkab_cadangan_thn_i_terkira"
@@ -327,6 +333,10 @@
                                                     :disabled="$wire.editingId !== {{ $id }}"></td>
                                             <td x-show="showCad"><input type="number" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkab_cadangan_thn_iii_terbukti"
                                                     :disabled="$wire.editingId !== {{ $id }}"></td>
+
+                                            {{-- Tenaga Ahli Sumber Daya --}}
+                                            <td x-show="showCad"><input type="text" class="form-control form-control-sm"
+                                                    wire:model="rkabop.{{ $id }}.rkab_cadangan_tenaga_ahli_competent_person" :disabled="$wire.editingId !== {{ $id }}"></td>
 
                                             {{-- Produksi I --}}
                                             <td x-show="showProd1"><input type="number" class="form-control form-control-sm"
@@ -397,27 +407,27 @@
                                                     :disabled="$wire.editingId !== {{ $id }}"></td>
 
                                             {{-- Tenaga Kerja I --}}
-                                            <td x-show="showTk"><input type="number" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkab_tenaga_kerja_thn_i_lokal"
+                                            <td x-show="showTk1"><input type="number" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkab_tenaga_kerja_thn_i_lokal"
                                                     :disabled="$wire.editingId !== {{ $id }}"></td>
-                                            <td x-show="showTk"><input type="number" class="form-control form-control-sm"
+                                            <td x-show="showTk1"><input type="number" class="form-control form-control-sm"
                                                     wire:model="rkabop.{{ $id }}.rkab_tenaga_kerja_thn_i_non_lokal" :disabled="$wire.editingId !== {{ $id }}"></td>
-                                            <td x-show="showTk"><input type="number" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkab_tenaga_kerja_thn_i_tka"
+                                            <td x-show="showTk1"><input type="number" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkab_tenaga_kerja_thn_i_tka"
                                                     :disabled="$wire.editingId !== {{ $id }}"></td>
 
                                             {{-- Tenaga Kerja II --}}
-                                            <td x-show="showTk"><input type="number" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkab_tenaga_kerja_thn_ii_lokal"
+                                            <td x-show="showTk2"><input type="number" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkab_tenaga_kerja_thn_ii_lokal"
                                                     :disabled="$wire.editingId !== {{ $id }}"></td>
-                                            <td x-show="showTk"><input type="number" class="form-control form-control-sm"
+                                            <td x-show="showTk2"><input type="number" class="form-control form-control-sm"
                                                     wire:model="rkabop.{{ $id }}.rkab_tenaga_kerja_thn_ii_non_lokal" :disabled="$wire.editingId !== {{ $id }}"></td>
-                                            <td x-show="showTk"><input type="number" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkab_tenaga_kerja_thn_ii_tka"
+                                            <td x-show="showTk2"><input type="number" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkab_tenaga_kerja_thn_ii_tka"
                                                     :disabled="$wire.editingId !== {{ $id }}"></td>
 
                                             {{-- Tenaga Kerja III --}}
-                                            <td x-show="showTk"><input type="number" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkab_tenaga_kerja_thn_iii_lokal"
-                                                    :disabled="$wire.editingId !== {{ $id }}"></td>
-                                            <td x-show="showTk"><input type="number" class="form-control form-control-sm"
+                                            <td x-show="showTk3"><input type="number" class="form-control form-control-sm"
+                                                    wire:model="rkabop.{{ $id }}.rkab_tenaga_kerja_thn_iii_lokal" :disabled="$wire.editingId !== {{ $id }}"></td>
+                                            <td x-show="showTk3"><input type="number" class="form-control form-control-sm"
                                                     wire:model="rkabop.{{ $id }}.rkab_tenaga_kerja_thn_iii_non_lokal" :disabled="$wire.editingId !== {{ $id }}"></td>
-                                            <td x-show="showTk"><input type="number" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkab_tenaga_kerja_thn_iii_tka"
+                                            <td x-show="showTk3"><input type="number" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkab_tenaga_kerja_thn_iii_tka"
                                                     :disabled="$wire.editingId !== {{ $id }}"></td>
 
                                             {{-- Tombol Aksi --}}
@@ -499,7 +509,7 @@
                                         <th>SD III MT Terukur</th>
 
                                         {{-- Tenaga Ahli --}}
-                                        <th>Competent Person</th>
+                                        <th>Competent Person SD</th>
 
                                         {{-- Cadangan --}}
                                         <th>Cad I Terkira</th>
@@ -508,6 +518,9 @@
                                         <th>Cad II Terbukti</th>
                                         <th>Cad III Terkira</th>
                                         <th>Cad III Terbukti</th>
+
+                                        {{-- Tenaga Ahli Cadangan --}}
+                                        <th>Competent Person Cadangan</th>
 
                                         {{-- Produksi Thn I --}}
                                         <th>Prod I Target M3 Utama</th>
@@ -594,8 +607,8 @@
                                         <td><input type="number" class="form-control form-control-sm" wire:model="newRkabop.rkab_sd_thn_iii_mt_tertunjuk"></td>
                                         <td><input type="number" class="form-control form-control-sm" wire:model="newRkabop.rkab_sd_thn_iii_mt_terukur"></td>
 
-                                        {{-- Tenaga Ahli --}}
-                                        <td><input type="text" class="form-control form-control-sm" wire:model="newRkabop.rkab_tenaga_ahli_competent_person"></td>
+                                        {{-- Tenaga Ahli SD --}}
+                                        <td><input type="text" class="form-control form-control-sm" wire:model="newRkabop.rkab_sd_tenaga_ahli_competent_person"></td>
 
                                         {{-- Cadangan --}}
                                         <td><input type="number" class="form-control form-control-sm" wire:model="newRkabop.rkab_cadangan_thn_i_terkira"></td>
@@ -604,6 +617,9 @@
                                         <td><input type="number" class="form-control form-control-sm" wire:model="newRkabop.rkab_cadangan_thn_ii_terbukti"></td>
                                         <td><input type="number" class="form-control form-control-sm" wire:model="newRkabop.rkab_cadangan_thn_iii_terkira"></td>
                                         <td><input type="number" class="form-control form-control-sm" wire:model="newRkabop.rkab_cadangan_thn_iii_terbukti"></td>
+
+                                        {{-- Tenaga Ahli Cadangan --}}
+                                        <td><input type="text" class="form-control form-control-sm" wire:model="newRkabop.rkab_cadangan_tenaga_ahli_competent_person"></td>
 
                                         {{-- Produksi Tahun I --}}
                                         <td><input type="number" class="form-control form-control-sm" wire:model="newRkabop.rkab_prod_thn_i_target_m3_utama"></td>

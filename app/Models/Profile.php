@@ -57,6 +57,15 @@ class Profile extends Model
         }
         return $query;
     }
+    public function scopeKabupaten_kota($query, $term)
+    {
+        if ($term) {
+            return $query->where(function ($q) use ($term) {
+                $q->where('kabupaten_kota', 'like', "%{$term}%");
+            });
+        }
+        return $query;
+    }
 
     // Relationship with Iuran Tetap model
     public function iurans()

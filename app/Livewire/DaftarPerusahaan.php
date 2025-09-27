@@ -14,6 +14,7 @@ class DaftarPerusahaan extends Component
     public $perPage = 5;
 
     public $komoditasSearch = '';
+    public $kabupaten_kotaSearch = '';
     public function mount()
     {
         session(['id_perusahaan' => null]);
@@ -28,14 +29,28 @@ class DaftarPerusahaan extends Component
     {
         $this->resetPage();
     }
+    public function updatingKabupaten_kotaSearch()
+    {
+        $this->resetPage();
+    }
+
+    public function resetFilters()
+    {
+        $this->search = '';
+        $this->komoditasSearch = '';
+        $this->kabupaten_kotaSearch = '';
+        $this->resetPage();
+    }
     public function render()
     {
         return view('livewire.daftar-perusahaan', [
             'profiles' => Profile::search($this->search)
                 ->komoditas($this->komoditasSearch)
+                ->kabupaten_kota($this->kabupaten_kotaSearch)
                 ->latest()
                 ->paginate($this->perPage),
             'komoditas' => Profile::select('komoditas')->distinct()->pluck('komoditas', 'komoditas'),
+            'kabupaten_kota' => Profile::select('kabupaten_kota')->distinct()->pluck('kabupaten_kota', 'kabupaten_kota'),
         ]);
     }
 }
