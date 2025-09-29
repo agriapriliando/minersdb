@@ -27,7 +27,6 @@
                         showTk1: false,
                         showTk2: false,
                         showTk3: false,
-                        tambah: false,
                     }" x-on:livewire-upload-progress="progress = $event.detail.progress" x-on:livewire-upload-finish="progress = 0"
                         x-on:livewire-upload-error="progress = 0">
                         <div class="card-header justify-content-between align-items-center d-md-flex">
@@ -157,12 +156,10 @@
                                 <label class="btn btn-sm btn-outline-primary" for="showTk2">Tenaga Kerja Thn 2</label>
                                 <input type="checkbox" @click="showTk3 = !showTk3" class="btn-check" id="showTk3" autocomplete="off">
                                 <label class="btn btn-sm btn-outline-primary" for="showTk3">Tenaga Kerja Thn 3</label>
-                                <input type="checkbox" @click="tambah = !tambah" class="btn-check" id="tambah" autocomplete="off">
-                                <label class="btn btn-sm btn-outline-primary" for="tambah"><i class="ri-add-line"></i> Tambah</label>
                             </div>
                             <table class="table table-bordered align-middle">
                                 <thead class="table-light">
-                                    <tr x-show="!tambah">
+                                    <tr>
                                         <th>#</th>
                                         <th>No Persetujuan</th>
                                         <th>Tgl Persetujuan</th>
@@ -265,174 +262,174 @@
                                 </style>
                                 <tbody>
                                     @foreach ($rkabop as $id => $item)
-                                        <tr x-show="!tambah" wire:key="rkabop-row-{{ $id }}" x-data="{ confirmDelete: false }">
+                                        <tr wire:key="rkabop-row-{{ $id }}" x-data="{ confirmDelete: false }">
                                             <td>{{ $loop->iteration }}</td>
 
                                             {{-- Persetujuan --}}
-                                            <td><input type="text" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkab_no_persetujuan"
+                                            <td><input type="text" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkabop_no_persetujuan"
                                                     :disabled="$wire.editingId !== {{ $id }}"></td>
-                                            <td><input type="date" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkab_tgl_persetujuan"
+                                            <td><input type="date" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkabop_tgl_persetujuan"
                                                     :disabled="$wire.editingId !== {{ $id }}"></td>
 
                                             {{-- Sumber Daya I --}}
-                                            <td x-show="showSd"><input type="number" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkab_sd_thn_i_m3_tereka"
+                                            <td x-show="showSd"><input type="number" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkabop_sd_thn_i_m3_tereka"
                                                     :disabled="$wire.editingId !== {{ $id }}"></td>
-                                            <td x-show="showSd"><input type="number" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkab_sd_thn_i_m3_tertunjuk"
+                                            <td x-show="showSd"><input type="number" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkabop_sd_thn_i_m3_tertunjuk"
                                                     :disabled="$wire.editingId !== {{ $id }}"></td>
-                                            <td x-show="showSd"><input type="number" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkab_sd_thn_i_m3_terukur"
+                                            <td x-show="showSd"><input type="number" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkabop_sd_thn_i_m3_terukur"
                                                     :disabled="$wire.editingId !== {{ $id }}"></td>
-                                            <td x-show="showSd"><input type="number" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkab_sd_thn_i_mt_tereka"
+                                            <td x-show="showSd"><input type="number" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkabop_sd_thn_i_mt_tereka"
                                                     :disabled="$wire.editingId !== {{ $id }}"></td>
-                                            <td x-show="showSd"><input type="number" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkab_sd_thn_i_mt_tertunjuk"
+                                            <td x-show="showSd"><input type="number" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkabop_sd_thn_i_mt_tertunjuk"
                                                     :disabled="$wire.editingId !== {{ $id }}"></td>
-                                            <td x-show="showSd"><input type="number" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkab_sd_thn_i_mt_terukur"
+                                            <td x-show="showSd"><input type="number" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkabop_sd_thn_i_mt_terukur"
                                                     :disabled="$wire.editingId !== {{ $id }}"></td>
 
                                             {{-- Sumber Daya II --}}
-                                            <td x-show="showSd"><input type="number" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkab_sd_thn_ii_m3_tereka"
+                                            <td x-show="showSd"><input type="number" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkabop_sd_thn_ii_m3_tereka"
                                                     :disabled="$wire.editingId !== {{ $id }}"></td>
-                                            <td x-show="showSd"><input type="number" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkab_sd_thn_ii_m3_tertunjuk"
+                                            <td x-show="showSd"><input type="number" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkabop_sd_thn_ii_m3_tertunjuk"
                                                     :disabled="$wire.editingId !== {{ $id }}"></td>
-                                            <td x-show="showSd"><input type="number" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkab_sd_thn_ii_m3_terukur"
+                                            <td x-show="showSd"><input type="number" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkabop_sd_thn_ii_m3_terukur"
                                                     :disabled="$wire.editingId !== {{ $id }}"></td>
-                                            <td x-show="showSd"><input type="number" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkab_sd_thn_ii_mt_tereka"
+                                            <td x-show="showSd"><input type="number" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkabop_sd_thn_ii_mt_tereka"
                                                     :disabled="$wire.editingId !== {{ $id }}"></td>
-                                            <td x-show="showSd"><input type="number" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkab_sd_thn_ii_mt_tertunjuk"
+                                            <td x-show="showSd"><input type="number" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkabop_sd_thn_ii_mt_tertunjuk"
                                                     :disabled="$wire.editingId !== {{ $id }}"></td>
-                                            <td x-show="showSd"><input type="number" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkab_sd_thn_ii_mt_terukur"
+                                            <td x-show="showSd"><input type="number" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkabop_sd_thn_ii_mt_terukur"
                                                     :disabled="$wire.editingId !== {{ $id }}"></td>
 
                                             {{-- Sumber Daya III --}}
-                                            <td x-show="showSd"><input type="number" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkab_sd_thn_iii_m3_tereka"
+                                            <td x-show="showSd"><input type="number" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkabop_sd_thn_iii_m3_tereka"
                                                     :disabled="$wire.editingId !== {{ $id }}"></td>
-                                            <td x-show="showSd"><input type="number" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkab_sd_thn_iii_m3_tertunjuk"
+                                            <td x-show="showSd"><input type="number" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkabop_sd_thn_iii_m3_tertunjuk"
                                                     :disabled="$wire.editingId !== {{ $id }}"></td>
-                                            <td x-show="showSd"><input type="number" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkab_sd_thn_iii_m3_terukur"
+                                            <td x-show="showSd"><input type="number" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkabop_sd_thn_iii_m3_terukur"
                                                     :disabled="$wire.editingId !== {{ $id }}"></td>
-                                            <td x-show="showSd"><input type="number" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkab_sd_thn_iii_mt_tereka"
+                                            <td x-show="showSd"><input type="number" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkabop_sd_thn_iii_mt_tereka"
                                                     :disabled="$wire.editingId !== {{ $id }}"></td>
-                                            <td x-show="showSd"><input type="number" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkab_sd_thn_iii_mt_tertunjuk"
+                                            <td x-show="showSd"><input type="number" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkabop_sd_thn_iii_mt_tertunjuk"
                                                     :disabled="$wire.editingId !== {{ $id }}"></td>
-                                            <td x-show="showSd"><input type="number" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkab_sd_thn_iii_mt_terukur"
+                                            <td x-show="showSd"><input type="number" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkabop_sd_thn_iii_mt_terukur"
                                                     :disabled="$wire.editingId !== {{ $id }}"></td>
 
                                             {{-- Tenaga Ahli Sumber Daya --}}
-                                            <td x-show="showSd"><input type="text" class="form-control form-control-sm"
-                                                    wire:model="rkabop.{{ $id }}.rkab_sd_tenaga_ahli_competent_person" :disabled="$wire.editingId !== {{ $id }}"></td>
+                                            <td x-show="showSd"><input type="text" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkabop_sd_tenaga_ahli"
+                                                    :disabled="$wire.editingId !== {{ $id }}"></td>
 
                                             {{-- Cadangan --}}
-                                            <td x-show="showCad"><input type="number" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkab_cadangan_thn_i_terkira"
+                                            <td x-show="showCad"><input type="number" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkabop_cadangan_thn_i_terkira"
                                                     :disabled="$wire.editingId !== {{ $id }}"></td>
-                                            <td x-show="showCad"><input type="number" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkab_cadangan_thn_i_terbukti"
+                                            <td x-show="showCad"><input type="number" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkabop_cadangan_thn_i_terbukti"
                                                     :disabled="$wire.editingId !== {{ $id }}"></td>
-                                            <td x-show="showCad"><input type="number" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkab_cadangan_thn_ii_terkira"
+                                            <td x-show="showCad"><input type="number" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkabop_cadangan_thn_ii_terkira"
                                                     :disabled="$wire.editingId !== {{ $id }}"></td>
-                                            <td x-show="showCad"><input type="number" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkab_cadangan_thn_ii_terbukti"
+                                            <td x-show="showCad"><input type="number" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkabop_cadangan_thn_ii_terbukti"
                                                     :disabled="$wire.editingId !== {{ $id }}"></td>
-                                            <td x-show="showCad"><input type="number" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkab_cadangan_thn_iii_terkira"
+                                            <td x-show="showCad"><input type="number" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkabop_cadangan_thn_iii_terkira"
                                                     :disabled="$wire.editingId !== {{ $id }}"></td>
-                                            <td x-show="showCad"><input type="number" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkab_cadangan_thn_iii_terbukti"
-                                                    :disabled="$wire.editingId !== {{ $id }}"></td>
+                                            <td x-show="showCad"><input type="number" class="form-control form-control-sm"
+                                                    wire:model="rkabop.{{ $id }}.rkabop_cadangan_thn_iii_terbukti" :disabled="$wire.editingId !== {{ $id }}"></td>
 
                                             {{-- Tenaga Ahli Sumber Daya --}}
-                                            <td x-show="showCad"><input type="text" class="form-control form-control-sm"
-                                                    wire:model="rkabop.{{ $id }}.rkab_cadangan_tenaga_ahli_competent_person" :disabled="$wire.editingId !== {{ $id }}"></td>
+                                            <td x-show="showCad"><input type="text" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkabop_cadangan_tenaga_ahli"
+                                                    :disabled="$wire.editingId !== {{ $id }}"></td>
 
                                             {{-- Produksi I --}}
                                             <td x-show="showProd1"><input type="number" class="form-control form-control-sm"
-                                                    wire:model="rkabop.{{ $id }}.rkab_prod_thn_i_target_m3_utama" :disabled="$wire.editingId !== {{ $id }}"></td>
+                                                    wire:model="rkabop.{{ $id }}.rkabop_prod_thn_i_target_m3_utama" :disabled="$wire.editingId !== {{ $id }}"></td>
                                             <td x-show="showProd1"><input type="number" class="form-control form-control-sm"
-                                                    wire:model="rkabop.{{ $id }}.rkab_prod_thn_i_target_m3_sampingan" :disabled="$wire.editingId !== {{ $id }}"></td>
+                                                    wire:model="rkabop.{{ $id }}.rkabop_prod_thn_i_target_m3_sampingan" :disabled="$wire.editingId !== {{ $id }}"></td>
                                             <td x-show="showProd1"><input type="number" class="form-control form-control-sm"
-                                                    wire:model="rkabop.{{ $id }}.rkab_prod_thn_i_realisasi_m3_utama" :disabled="$wire.editingId !== {{ $id }}"></td>
+                                                    wire:model="rkabop.{{ $id }}.rkabop_prod_thn_i_realisasi_m3_utama" :disabled="$wire.editingId !== {{ $id }}"></td>
                                             <td x-show="showProd1"><input type="number" class="form-control form-control-sm"
-                                                    wire:model="rkabop.{{ $id }}.rkab_prod_thn_i_realisasi_m3_sampingan" :disabled="$wire.editingId !== {{ $id }}"></td>
+                                                    wire:model="rkabop.{{ $id }}.rkabop_prod_thn_i_realisasi_m3_sampingan" :disabled="$wire.editingId !== {{ $id }}"></td>
                                             <td x-show="showProd1"><input type="number" class="form-control form-control-sm"
-                                                    wire:model="rkabop.{{ $id }}.rkab_prod_thn_i_target_mt_utama" :disabled="$wire.editingId !== {{ $id }}"></td>
+                                                    wire:model="rkabop.{{ $id }}.rkabop_prod_thn_i_target_mt_utama" :disabled="$wire.editingId !== {{ $id }}"></td>
                                             <td x-show="showProd1"><input type="number" class="form-control form-control-sm"
-                                                    wire:model="rkabop.{{ $id }}.rkab_prod_thn_i_target_my_sampingan" :disabled="$wire.editingId !== {{ $id }}"></td>
+                                                    wire:model="rkabop.{{ $id }}.rkabop_prod_thn_i_target_my_sampingan" :disabled="$wire.editingId !== {{ $id }}"></td>
                                             <td x-show="showProd1"><input type="number" class="form-control form-control-sm"
-                                                    wire:model="rkabop.{{ $id }}.rkab_prod_thn_i_realisasi_mt_utama" :disabled="$wire.editingId !== {{ $id }}"></td>
+                                                    wire:model="rkabop.{{ $id }}.rkabop_prod_thn_i_realisasi_mt_utama" :disabled="$wire.editingId !== {{ $id }}"></td>
                                             <td x-show="showProd1"><input type="number" class="form-control form-control-sm"
-                                                    wire:model="rkabop.{{ $id }}.rkab_prod_thn_i_realisasi_mt_sampingan" :disabled="$wire.editingId !== {{ $id }}"></td>
+                                                    wire:model="rkabop.{{ $id }}.rkabop_prod_thn_i_realisasi_mt_sampingan" :disabled="$wire.editingId !== {{ $id }}"></td>
 
                                             {{-- Produksi II --}}
                                             <td x-show="showProd2"><input type="number" class="form-control form-control-sm"
-                                                    wire:model="rkabop.{{ $id }}.rkab_prod_thn_ii_target_m3_utama" :disabled="$wire.editingId !== {{ $id }}"></td>
+                                                    wire:model="rkabop.{{ $id }}.rkabop_prod_thn_ii_target_m3_utama" :disabled="$wire.editingId !== {{ $id }}"></td>
                                             <td x-show="showProd2"><input type="number" class="form-control form-control-sm"
-                                                    wire:model="rkabop.{{ $id }}.rkab_prod_thn_ii_target_m3_sampingan" :disabled="$wire.editingId !== {{ $id }}"></td>
+                                                    wire:model="rkabop.{{ $id }}.rkabop_prod_thn_ii_target_m3_sampingan" :disabled="$wire.editingId !== {{ $id }}"></td>
                                             <td x-show="showProd2"><input type="number" class="form-control form-control-sm"
-                                                    wire:model="rkabop.{{ $id }}.rkab_prod_thn_ii_realisasi_m3_utama" :disabled="$wire.editingId !== {{ $id }}"></td>
+                                                    wire:model="rkabop.{{ $id }}.rkabop_prod_thn_ii_realisasi_m3_utama" :disabled="$wire.editingId !== {{ $id }}"></td>
                                             <td x-show="showProd2"><input type="number" class="form-control form-control-sm"
-                                                    wire:model="rkabop.{{ $id }}.rkab_prod_thn_ii_realisasi_m3_sampingan" :disabled="$wire.editingId !== {{ $id }}"></td>
+                                                    wire:model="rkabop.{{ $id }}.rkabop_prod_thn_ii_realisasi_m3_sampingan" :disabled="$wire.editingId !== {{ $id }}"></td>
                                             <td x-show="showProd2"><input type="number" class="form-control form-control-sm"
-                                                    wire:model="rkabop.{{ $id }}.rkab_prod_thn_ii_target_mt_utama" :disabled="$wire.editingId !== {{ $id }}"></td>
+                                                    wire:model="rkabop.{{ $id }}.rkabop_prod_thn_ii_target_mt_utama" :disabled="$wire.editingId !== {{ $id }}"></td>
                                             <td x-show="showProd2"><input type="number" class="form-control form-control-sm"
-                                                    wire:model="rkabop.{{ $id }}.rkab_prod_thn_ii_target_my_sampingan" :disabled="$wire.editingId !== {{ $id }}"></td>
+                                                    wire:model="rkabop.{{ $id }}.rkabop_prod_thn_ii_target_my_sampingan" :disabled="$wire.editingId !== {{ $id }}"></td>
                                             <td x-show="showProd2"><input type="number" class="form-control form-control-sm"
-                                                    wire:model="rkabop.{{ $id }}.rkab_prod_thn_ii_realisasi_mt_utama" :disabled="$wire.editingId !== {{ $id }}"></td>
+                                                    wire:model="rkabop.{{ $id }}.rkabop_prod_thn_ii_realisasi_mt_utama" :disabled="$wire.editingId !== {{ $id }}"></td>
                                             <td x-show="showProd2"><input type="number" class="form-control form-control-sm"
-                                                    wire:model="rkabop.{{ $id }}.rkab_prod_thn_ii_realisasi_mt_sampingan" :disabled="$wire.editingId !== {{ $id }}"></td>
+                                                    wire:model="rkabop.{{ $id }}.rkabop_prod_thn_ii_realisasi_mt_sampingan" :disabled="$wire.editingId !== {{ $id }}"></td>
 
                                             {{-- Produksi III --}}
                                             <td x-show="showProd3"><input type="number" class="form-control form-control-sm"
-                                                    wire:model="rkabop.{{ $id }}.rkab_prod_thn_iii_target_m3_utama" :disabled="$wire.editingId !== {{ $id }}"></td>
+                                                    wire:model="rkabop.{{ $id }}.rkabop_prod_thn_iii_target_m3_utama" :disabled="$wire.editingId !== {{ $id }}"></td>
                                             <td x-show="showProd3"><input type="number" class="form-control form-control-sm"
-                                                    wire:model="rkabop.{{ $id }}.rkab_prod_thn_iii_target_m3_sampingan" :disabled="$wire.editingId !== {{ $id }}"></td>
+                                                    wire:model="rkabop.{{ $id }}.rkabop_prod_thn_iii_target_m3_sampingan" :disabled="$wire.editingId !== {{ $id }}"></td>
                                             <td x-show="showProd3"><input type="number" class="form-control form-control-sm"
-                                                    wire:model="rkabop.{{ $id }}.rkab_prod_thn_iii_realisasi_m3_utama" :disabled="$wire.editingId !== {{ $id }}"></td>
+                                                    wire:model="rkabop.{{ $id }}.rkabop_prod_thn_iii_realisasi_m3_utama" :disabled="$wire.editingId !== {{ $id }}"></td>
                                             <td x-show="showProd3"><input type="number" class="form-control form-control-sm"
-                                                    wire:model="rkabop.{{ $id }}.rkab_prod_thn_iii_realisasi_m3_sampingan" :disabled="$wire.editingId !== {{ $id }}"></td>
+                                                    wire:model="rkabop.{{ $id }}.rkabop_prod_thn_iii_realisasi_m3_sampingan" :disabled="$wire.editingId !== {{ $id }}"></td>
                                             <td x-show="showProd3"><input type="number" class="form-control form-control-sm"
-                                                    wire:model="rkabop.{{ $id }}.rkab_prod_thn_iii_target_mt_utama" :disabled="$wire.editingId !== {{ $id }}"></td>
+                                                    wire:model="rkabop.{{ $id }}.rkabop_prod_thn_iii_target_mt_utama" :disabled="$wire.editingId !== {{ $id }}"></td>
                                             <td x-show="showProd3"><input type="number" class="form-control form-control-sm"
-                                                    wire:model="rkabop.{{ $id }}.rkab_prod_thn_iii_target_my_sampingan" :disabled="$wire.editingId !== {{ $id }}"></td>
+                                                    wire:model="rkabop.{{ $id }}.rkabop_prod_thn_iii_target_my_sampingan" :disabled="$wire.editingId !== {{ $id }}"></td>
                                             <td x-show="showProd3"><input type="number" class="form-control form-control-sm"
-                                                    wire:model="rkabop.{{ $id }}.rkab_prod_thn_iii_realisasi_mt_utama" :disabled="$wire.editingId !== {{ $id }}"></td>
+                                                    wire:model="rkabop.{{ $id }}.rkabop_prod_thn_iii_realisasi_mt_utama" :disabled="$wire.editingId !== {{ $id }}"></td>
                                             <td x-show="showProd3"><input type="number" class="form-control form-control-sm"
-                                                    wire:model="rkabop.{{ $id }}.rkab_prod_thn_iii_realisasi_mt_sampingan" :disabled="$wire.editingId !== {{ $id }}"></td>
+                                                    wire:model="rkabop.{{ $id }}.rkabop_prod_thn_iii_realisasi_mt_sampingan" :disabled="$wire.editingId !== {{ $id }}"></td>
 
                                             {{-- Pajak --}}
-                                            <td x-show="showPajak"><input type="number" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkab_pajak_thn_i_daerah"
+                                            <td x-show="showPajak"><input type="number" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkabop_pajak_thn_i_daerah"
                                                     :disabled="$wire.editingId !== {{ $id }}"></td>
-                                            <td x-show="showPajak"><input type="number" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkab_pajak_thn_i_opsen"
+                                            <td x-show="showPajak"><input type="number" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkabop_pajak_thn_i_opsen"
                                                     :disabled="$wire.editingId !== {{ $id }}"></td>
-                                            <td x-show="showPajak"><input type="number" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkab_pajak_thn_ii_daerah"
+                                            <td x-show="showPajak"><input type="number" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkabop_pajak_thn_ii_daerah"
                                                     :disabled="$wire.editingId !== {{ $id }}"></td>
-                                            <td x-show="showPajak"><input type="number" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkab_pajak_thn_ii_opsen"
+                                            <td x-show="showPajak"><input type="number" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkabop_pajak_thn_ii_opsen"
                                                     :disabled="$wire.editingId !== {{ $id }}"></td>
-                                            <td x-show="showPajak"><input type="number" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkab_pajak_thn_iii_daerah"
+                                            <td x-show="showPajak"><input type="number" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkabop_pajak_thn_iii_daerah"
                                                     :disabled="$wire.editingId !== {{ $id }}"></td>
-                                            <td x-show="showPajak"><input type="number" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkab_pajak_thn_iii_opsen"
+                                            <td x-show="showPajak"><input type="number" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkabop_pajak_thn_iii_opsen"
                                                     :disabled="$wire.editingId !== {{ $id }}"></td>
 
                                             {{-- Tenaga Kerja I --}}
-                                            <td x-show="showTk1"><input type="number" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkab_tenaga_kerja_thn_i_lokal"
-                                                    :disabled="$wire.editingId !== {{ $id }}"></td>
                                             <td x-show="showTk1"><input type="number" class="form-control form-control-sm"
-                                                    wire:model="rkabop.{{ $id }}.rkab_tenaga_kerja_thn_i_non_lokal" :disabled="$wire.editingId !== {{ $id }}"></td>
-                                            <td x-show="showTk1"><input type="number" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkab_tenaga_kerja_thn_i_tka"
+                                                    wire:model="rkabop.{{ $id }}.rkabop_tenaga_kerja_thn_i_lokal" :disabled="$wire.editingId !== {{ $id }}"></td>
+                                            <td x-show="showTk1"><input type="number" class="form-control form-control-sm"
+                                                    wire:model="rkabop.{{ $id }}.rkabop_tenaga_kerja_thn_i_non_lokal" :disabled="$wire.editingId !== {{ $id }}"></td>
+                                            <td x-show="showTk1"><input type="number" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkabop_tenaga_kerja_thn_i_tka"
                                                     :disabled="$wire.editingId !== {{ $id }}"></td>
 
                                             {{-- Tenaga Kerja II --}}
-                                            <td x-show="showTk2"><input type="number" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkab_tenaga_kerja_thn_ii_lokal"
-                                                    :disabled="$wire.editingId !== {{ $id }}"></td>
                                             <td x-show="showTk2"><input type="number" class="form-control form-control-sm"
-                                                    wire:model="rkabop.{{ $id }}.rkab_tenaga_kerja_thn_ii_non_lokal" :disabled="$wire.editingId !== {{ $id }}"></td>
-                                            <td x-show="showTk2"><input type="number" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkab_tenaga_kerja_thn_ii_tka"
+                                                    wire:model="rkabop.{{ $id }}.rkabop_tenaga_kerja_thn_ii_lokal" :disabled="$wire.editingId !== {{ $id }}"></td>
+                                            <td x-show="showTk2"><input type="number" class="form-control form-control-sm"
+                                                    wire:model="rkabop.{{ $id }}.rkabop_tenaga_kerja_thn_ii_non_lokal" :disabled="$wire.editingId !== {{ $id }}"></td>
+                                            <td x-show="showTk2"><input type="number" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkabop_tenaga_kerja_thn_ii_tka"
                                                     :disabled="$wire.editingId !== {{ $id }}"></td>
 
                                             {{-- Tenaga Kerja III --}}
                                             <td x-show="showTk3"><input type="number" class="form-control form-control-sm"
-                                                    wire:model="rkabop.{{ $id }}.rkab_tenaga_kerja_thn_iii_lokal" :disabled="$wire.editingId !== {{ $id }}"></td>
+                                                    wire:model="rkabop.{{ $id }}.rkabop_tenaga_kerja_thn_iii_lokal" :disabled="$wire.editingId !== {{ $id }}"></td>
                                             <td x-show="showTk3"><input type="number" class="form-control form-control-sm"
-                                                    wire:model="rkabop.{{ $id }}.rkab_tenaga_kerja_thn_iii_non_lokal" :disabled="$wire.editingId !== {{ $id }}"></td>
-                                            <td x-show="showTk3"><input type="number" class="form-control form-control-sm" wire:model="rkabop.{{ $id }}.rkab_tenaga_kerja_thn_iii_tka"
-                                                    :disabled="$wire.editingId !== {{ $id }}"></td>
+                                                    wire:model="rkabop.{{ $id }}.rkabop_tenaga_kerja_thn_iii_non_lokal" :disabled="$wire.editingId !== {{ $id }}"></td>
+                                            <td x-show="showTk3"><input type="number" class="form-control form-control-sm"
+                                                    wire:model="rkabop.{{ $id }}.rkabop_tenaga_kerja_thn_iii_tka" :disabled="$wire.editingId !== {{ $id }}"></td>
 
                                             {{-- Tombol Aksi --}}
                                             <td>
-                                                <div class="d-flex flex-wrap gap-1">
+                                                <div class="d-flex gap-1">
                                                     {{-- Detail --}}
                                                     <a href="{{ route('rkabop.peralatan.show', $id) }}" class="btn btn-primary btn-sm" x-show="$wire.editingId !== {{ $id }}">
                                                         <i class="ri-eye-line"></i>
@@ -479,200 +476,32 @@
                                     @endforeach
 
                                     {{-- Tambah data baru --}}
-                                    <tr x-show="tambah">
+                                    <tr>
                                         <th>#</th>
                                         <th>No Persetujuan</th>
                                         <th>Tgl Persetujuan</th>
 
-                                        {{-- Sumber Daya Thn I --}}
-                                        <th>SD I M3 Tereka</th>
-                                        <th>SD I M3 Tertunjuk</th>
-                                        <th>SD I M3 Terukur</th>
-                                        <th>SD I MT Tereka</th>
-                                        <th>SD I MT Tertunjuk</th>
-                                        <th>SD I MT Terukur</th>
-
-                                        {{-- Sumber Daya Thn II --}}
-                                        <th>SD II M3 Tereka</th>
-                                        <th>SD II M3 Tertunjuk</th>
-                                        <th>SD II M3 Terukur</th>
-                                        <th>SD II MT Tereka</th>
-                                        <th>SD II MT Tertunjuk</th>
-                                        <th>SD II MT Terukur</th>
-
-                                        {{-- Sumber Daya Thn III --}}
-                                        <th>SD III M3 Tereka</th>
-                                        <th>SD III M3 Tertunjuk</th>
-                                        <th>SD III M3 Terukur</th>
-                                        <th>SD III MT Tereka</th>
-                                        <th>SD III MT Tertunjuk</th>
-                                        <th>SD III MT Terukur</th>
-
-                                        {{-- Tenaga Ahli --}}
-                                        <th>Competent Person SD</th>
-
-                                        {{-- Cadangan --}}
-                                        <th>Cad I Terkira</th>
-                                        <th>Cad I Terbukti</th>
-                                        <th>Cad II Terkira</th>
-                                        <th>Cad II Terbukti</th>
-                                        <th>Cad III Terkira</th>
-                                        <th>Cad III Terbukti</th>
-
-                                        {{-- Tenaga Ahli Cadangan --}}
-                                        <th>Competent Person Cadangan</th>
-
-                                        {{-- Produksi Thn I --}}
-                                        <th>Prod I Target M3 Utama</th>
-                                        <th>Prod I Target M3 Sampingan</th>
-                                        <th>Prod I Realisasi M3 Utama</th>
-                                        <th>Prod I Realisasi M3 Sampingan</th>
-                                        <th>Prod I Target MT Utama</th>
-                                        <th>Prod I Target MT Sampingan</th>
-                                        <th>Prod I Realisasi MT Utama</th>
-                                        <th>Prod I Realisasi MT Sampingan</th>
-
-                                        {{-- Produksi Thn II --}}
-                                        <th>Prod II Target M3 Utama</th>
-                                        <th>Prod II Target M3 Sampingan</th>
-                                        <th>Prod II Realisasi M3 Utama</th>
-                                        <th>Prod II Realisasi M3 Sampingan</th>
-                                        <th>Prod II Target MT Utama</th>
-                                        <th>Prod II Target MT Sampingan</th>
-                                        <th>Prod II Realisasi MT Utama</th>
-                                        <th>Prod II Realisasi MT Sampingan</th>
-
-                                        {{-- Produksi Thn III --}}
-                                        <th>Prod III Target M3 Utama</th>
-                                        <th>Prod III Target M3 Sampingan</th>
-                                        <th>Prod III Realisasi M3 Utama</th>
-                                        <th>Prod III Realisasi M3 Sampingan</th>
-                                        <th>Prod III Target MT Utama</th>
-                                        <th>Prod III Target MT Sampingan</th>
-                                        <th>Prod III Realisasi MT Utama</th>
-                                        <th>Prod III Realisasi MT Sampingan</th>
-
-                                        {{-- Pajak --}}
-                                        <th>Pajak I Daerah</th>
-                                        <th>Pajak I Opsen</th>
-                                        <th>Pajak II Daerah</th>
-                                        <th>Pajak II Opsen</th>
-                                        <th>Pajak III Daerah</th>
-                                        <th>Pajak III Opsen</th>
-
-                                        {{-- Tenaga Kerja Thn I --}}
-                                        <th>TK I Lokal</th>
-                                        <th>TK I Non Lokal</th>
-                                        <th>TK I TKA</th>
-
-                                        {{-- Tenaga Kerja Thn II --}}
-                                        <th>TK II Lokal</th>
-                                        <th>TK II Non Lokal</th>
-                                        <th>TK II TKA</th>
-
-                                        {{-- Tenaga Kerja Thn III --}}
-                                        <th>TK III Lokal</th>
-                                        <th>TK III Non Lokal</th>
-                                        <th>TK III TKA</th>
-
                                         <th>Aksi</th>
                                     </tr>
-                                    <tr x-show="tambah">
+                                    <tr>
                                         <td>+</td>
                                         {{-- Persetujuan --}}
-                                        <td><input type="text" class="form-control form-control-sm" wire:model="newRkabop.rkab_no_persetujuan" placeholder="No Persetujuan"></td>
-                                        <td><input type="date" class="form-control form-control-sm" wire:model="newRkabop.rkab_tgl_persetujuan"></td>
+                                        <td>
+                                            <input type="text" class="form-control form-control-sm @error('rkabop_no_persetujuan') is-invalid @enderror" wire:model="rkabop_no_persetujuan"
+                                                placeholder="No Persetujuan">
+                                            @error('rkabop_no_persetujuan')
+                                                <div class="text-danger small">{{ $message }}</div>
+                                            @enderror
+                                        </td>
 
-                                        {{-- Sumber Daya Tahun I --}}
-                                        <td><input type="number" class="form-control form-control-sm" wire:model="newRkabop.rkab_sd_thn_i_m3_tereka"></td>
-                                        <td><input type="number" class="form-control form-control-sm" wire:model="newRkabop.rkab_sd_thn_i_m3_tertunjuk"></td>
-                                        <td><input type="number" class="form-control form-control-sm" wire:model="newRkabop.rkab_sd_thn_i_m3_terukur"></td>
-                                        <td><input type="number" class="form-control form-control-sm" wire:model="newRkabop.rkab_sd_thn_i_mt_tereka"></td>
-                                        <td><input type="number" class="form-control form-control-sm" wire:model="newRkabop.rkab_sd_thn_i_mt_tertunjuk"></td>
-                                        <td><input type="number" class="form-control form-control-sm" wire:model="newRkabop.rkab_sd_thn_i_mt_terukur"></td>
+                                        <td>
+                                            <input type="date" class="form-control form-control-sm @error('rkabop_tgl_persetujuan') is-invalid @enderror" wire:model="rkabop_tgl_persetujuan">
 
-                                        {{-- Sumber Daya Tahun II --}}
-                                        <td><input type="number" class="form-control form-control-sm" wire:model="newRkabop.rkab_sd_thn_ii_m3_tereka"></td>
-                                        <td><input type="number" class="form-control form-control-sm" wire:model="newRkabop.rkab_sd_thn_ii_m3_tertunjuk"></td>
-                                        <td><input type="number" class="form-control form-control-sm" wire:model="newRkabop.rkab_sd_thn_ii_m3_terukur"></td>
-                                        <td><input type="number" class="form-control form-control-sm" wire:model="newRkabop.rkab_sd_thn_ii_mt_tereka"></td>
-                                        <td><input type="number" class="form-control form-control-sm" wire:model="newRkabop.rkab_sd_thn_ii_mt_tertunjuk"></td>
-                                        <td><input type="number" class="form-control form-control-sm" wire:model="newRkabop.rkab_sd_thn_ii_mt_terukur"></td>
+                                            @error('rkabop_tgl_persetujuan')
+                                                <div class="text-danger small">{{ $message }}</div>
+                                            @enderror
+                                        </td>
 
-                                        {{-- Sumber Daya Tahun III --}}
-                                        <td><input type="number" class="form-control form-control-sm" wire:model="newRkabop.rkab_sd_thn_iii_m3_tereka"></td>
-                                        <td><input type="number" class="form-control form-control-sm" wire:model="newRkabop.rkab_sd_thn_iii_m3_tertunjuk"></td>
-                                        <td><input type="number" class="form-control form-control-sm" wire:model="newRkabop.rkab_sd_thn_iii_m3_terukur"></td>
-                                        <td><input type="number" class="form-control form-control-sm" wire:model="newRkabop.rkab_sd_thn_iii_mt_tereka"></td>
-                                        <td><input type="number" class="form-control form-control-sm" wire:model="newRkabop.rkab_sd_thn_iii_mt_tertunjuk"></td>
-                                        <td><input type="number" class="form-control form-control-sm" wire:model="newRkabop.rkab_sd_thn_iii_mt_terukur"></td>
-
-                                        {{-- Tenaga Ahli SD --}}
-                                        <td><input type="text" class="form-control form-control-sm" wire:model="newRkabop.rkab_sd_tenaga_ahli_competent_person"></td>
-
-                                        {{-- Cadangan --}}
-                                        <td><input type="number" class="form-control form-control-sm" wire:model="newRkabop.rkab_cadangan_thn_i_terkira"></td>
-                                        <td><input type="number" class="form-control form-control-sm" wire:model="newRkabop.rkab_cadangan_thn_i_terbukti"></td>
-                                        <td><input type="number" class="form-control form-control-sm" wire:model="newRkabop.rkab_cadangan_thn_ii_terkira"></td>
-                                        <td><input type="number" class="form-control form-control-sm" wire:model="newRkabop.rkab_cadangan_thn_ii_terbukti"></td>
-                                        <td><input type="number" class="form-control form-control-sm" wire:model="newRkabop.rkab_cadangan_thn_iii_terkira"></td>
-                                        <td><input type="number" class="form-control form-control-sm" wire:model="newRkabop.rkab_cadangan_thn_iii_terbukti"></td>
-
-                                        {{-- Tenaga Ahli Cadangan --}}
-                                        <td><input type="text" class="form-control form-control-sm" wire:model="newRkabop.rkab_cadangan_tenaga_ahli_competent_person"></td>
-
-                                        {{-- Produksi Tahun I --}}
-                                        <td><input type="number" class="form-control form-control-sm" wire:model="newRkabop.rkab_prod_thn_i_target_m3_utama"></td>
-                                        <td><input type="number" class="form-control form-control-sm" wire:model="newRkabop.rkab_prod_thn_i_target_m3_sampingan"></td>
-                                        <td><input type="number" class="form-control form-control-sm" wire:model="newRkabop.rkab_prod_thn_i_realisasi_m3_utama"></td>
-                                        <td><input type="number" class="form-control form-control-sm" wire:model="newRkabop.rkab_prod_thn_i_realisasi_m3_sampingan"></td>
-                                        <td><input type="number" class="form-control form-control-sm" wire:model="newRkabop.rkab_prod_thn_i_target_mt_utama"></td>
-                                        <td><input type="number" class="form-control form-control-sm" wire:model="newRkabop.rkab_prod_thn_i_target_my_sampingan"></td>
-                                        <td><input type="number" class="form-control form-control-sm" wire:model="newRkabop.rkab_prod_thn_i_realisasi_mt_utama"></td>
-                                        <td><input type="number" class="form-control form-control-sm" wire:model="newRkabop.rkab_prod_thn_i_realisasi_mt_sampingan"></td>
-
-                                        {{-- Produksi Tahun II --}}
-                                        <td><input type="number" class="form-control form-control-sm" wire:model="newRkabop.rkab_prod_thn_ii_target_m3_utama"></td>
-                                        <td><input type="number" class="form-control form-control-sm" wire:model="newRkabop.rkab_prod_thn_ii_target_m3_sampingan"></td>
-                                        <td><input type="number" class="form-control form-control-sm" wire:model="newRkabop.rkab_prod_thn_ii_realisasi_m3_utama"></td>
-                                        <td><input type="number" class="form-control form-control-sm" wire:model="newRkabop.rkab_prod_thn_ii_realisasi_m3_sampingan"></td>
-                                        <td><input type="number" class="form-control form-control-sm" wire:model="newRkabop.rkab_prod_thn_ii_target_mt_utama"></td>
-                                        <td><input type="number" class="form-control form-control-sm" wire:model="newRkabop.rkab_prod_thn_ii_target_my_sampingan"></td>
-                                        <td><input type="number" class="form-control form-control-sm" wire:model="newRkabop.rkab_prod_thn_ii_realisasi_mt_utama"></td>
-                                        <td><input type="number" class="form-control form-control-sm" wire:model="newRkabop.rkab_prod_thn_ii_realisasi_mt_sampingan"></td>
-
-                                        {{-- Produksi Tahun III --}}
-                                        <td><input type="number" class="form-control form-control-sm" wire:model="newRkabop.rkab_prod_thn_iii_target_m3_utama"></td>
-                                        <td><input type="number" class="form-control form-control-sm" wire:model="newRkabop.rkab_prod_thn_iii_target_m3_sampingan"></td>
-                                        <td><input type="number" class="form-control form-control-sm" wire:model="newRkabop.rkab_prod_thn_iii_realisasi_m3_utama"></td>
-                                        <td><input type="number" class="form-control form-control-sm" wire:model="newRkabop.rkab_prod_thn_iii_realisasi_m3_sampingan"></td>
-                                        <td><input type="number" class="form-control form-control-sm" wire:model="newRkabop.rkab_prod_thn_iii_target_mt_utama"></td>
-                                        <td><input type="number" class="form-control form-control-sm" wire:model="newRkabop.rkab_prod_thn_iii_target_my_sampingan"></td>
-                                        <td><input type="number" class="form-control form-control-sm" wire:model="newRkabop.rkab_prod_thn_iii_realisasi_mt_utama"></td>
-                                        <td><input type="number" class="form-control form-control-sm" wire:model="newRkabop.rkab_prod_thn_iii_realisasi_mt_sampingan"></td>
-
-                                        {{-- Pajak --}}
-                                        <td><input type="number" class="form-control form-control-sm" wire:model="newRkabop.rkab_pajak_thn_i_daerah"></td>
-                                        <td><input type="number" class="form-control form-control-sm" wire:model="newRkabop.rkab_pajak_thn_i_opsen"></td>
-                                        <td><input type="number" class="form-control form-control-sm" wire:model="newRkabop.rkab_pajak_thn_ii_daerah"></td>
-                                        <td><input type="number" class="form-control form-control-sm" wire:model="newRkabop.rkab_pajak_thn_ii_opsen"></td>
-                                        <td><input type="number" class="form-control form-control-sm" wire:model="newRkabop.rkab_pajak_thn_iii_daerah"></td>
-                                        <td><input type="number" class="form-control form-control-sm" wire:model="newRkabop.rkab_pajak_thn_iii_opsen"></td>
-
-                                        {{-- Tenaga Kerja Tahun I --}}
-                                        <td><input type="number" class="form-control form-control-sm" wire:model="newRkabop.rkab_tenaga_kerja_thn_i_lokal"></td>
-                                        <td><input type="number" class="form-control form-control-sm" wire:model="newRkabop.rkab_tenaga_kerja_thn_i_non_lokal"></td>
-                                        <td><input type="number" class="form-control form-control-sm" wire:model="newRkabop.rkab_tenaga_kerja_thn_i_tka"></td>
-
-                                        {{-- Tenaga Kerja Tahun II --}}
-                                        <td><input type="number" class="form-control form-control-sm" wire:model="newRkabop.rkab_tenaga_kerja_thn_ii_lokal"></td>
-                                        <td><input type="number" class="form-control form-control-sm" wire:model="newRkabop.rkab_tenaga_kerja_thn_ii_non_lokal"></td>
-                                        <td><input type="number" class="form-control form-control-sm" wire:model="newRkabop.rkab_tenaga_kerja_thn_ii_tka"></td>
-
-                                        {{-- Tenaga Kerja Tahun III --}}
-                                        <td><input type="number" class="form-control form-control-sm" wire:model="newRkabop.rkab_tenaga_kerja_thn_iii_lokal"></td>
-                                        <td><input type="number" class="form-control form-control-sm" wire:model="newRkabop.rkab_tenaga_kerja_thn_iii_non_lokal"></td>
-                                        <td><input type="number" class="form-control form-control-sm" wire:model="newRkabop.rkab_tenaga_kerja_thn_iii_tka"></td>
 
                                         <td>
                                             <button type="button" class="btn btn-success btn-sm text-white" wire:click="store">

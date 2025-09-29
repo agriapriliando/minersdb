@@ -27,23 +27,13 @@
                         </div>
                     @endsession
                     <!-- Actions-->
-                    <div class="d-md-flex align-items-center mb-3">
-                        <button class="btn btn-outline-secondary text-body me-2" type="button" wire:click="resetFilters"><i class="ri-refresh-line align-bottom"></i> Reset</button>
-                        <div class="bg-light rounded px-3 py-1 flex-shrink-0 d-flex align-items-center me-2 mb-2">
-                            <input wire:model.live="search" class="form-control border-0 bg-transparent px-0 py-2 me-5 fw-bolder" placeholder="Cari Nama Perusahaan">
+                    <div class="d-flex flex-wrap align-items-center mb-3 gap-1">
+                        <button class="btn btn-sm btn-outline-secondary text-body me-2 mb-2" type="button" wire:click="resetFilters"><i class="ri-refresh-line align-bottom"></i> Reset</button>
+                        <div class="bg-light rounded px-3 py-1 me-2 mb-2">
+                            <input wire:model.live="search" class="form-control form-control-sm border-0 bg-transparent px-0 py-2 me-5 fw-bolder" placeholder="Cari Nama Perusahaan">
                         </div>
-                        <form class="d-none bg-light rounded px-3 py-1 flex-shrink-0 d-flex align-items-center me-2 mb-2">
-                            <input wire:model.live="kabupaten_kotaSearch" class="form-control border-0 bg-transparent px-0 py-2 me-5 fw-bolder" type="search" placeholder="Kabupaten/Kota"
-                                list="kabupatenKotaList" aria-label="Search">
-
-                            <datalist id="kabupatenKotaList">
-                                @foreach ($kabupaten_kota as $item)
-                                    <option value="{{ $item }}">
-                                @endforeach
-                            </datalist>
-                        </form>
-                        <div class="bg-light rounded px-3 py-1 flex-shrink-0 d-flex align-items-center me-2 mb-2">
-                            <input wire:model.live="kabupaten_kotaSearch" class="form-control border-0 bg-transparent px-0 py-2 me-5 fw-bolder" list="kabupatenKotaList"
+                        <div style="max-width: 180px" class="bg-light rounded px-3 py-1 me-2 mb-2">
+                            <input wire:model.live="kabupaten_kotaSearch" class="form-control form-control-sm border-0 bg-transparent px-0 py-2 me-5 fw-bolder" list="kabupatenKotaList"
                                 placeholder="==Kabupaten/Kota==">
 
                             <datalist id="kabupatenKotaList">
@@ -52,29 +42,25 @@
                                 @endforeach
                             </datalist>
                         </div>
-                        <div class="bg-light rounded px-3 py-1 flex-shrink-0 d-flex align-items-center me-2 mb-2">
-                            <input wire:model.live="komoditasSearch" class="form-control border-0 bg-transparent px-0 py-2 me-5 fw-bolder" list="komoditasList" placeholder="==Komoditas==">
+                        <div style="max-width: 180px" class="bg-light rounded px-3 py-1 me-2 mb-2">
+                            <input wire:model.live="komoditasSearch" class="form-control form-control-sm border-0 bg-transparent px-0 py-2 me-5 fw-bolder" list="komoditasList"
+                                placeholder="==Komoditas==">
                             <datalist id="komoditasList">
                                 @foreach ($komoditas as $key => $value)
                                     <option value="{{ $key }}">{{ $value }}</option>
                                 @endforeach
                             </datalist>
                         </div>
-                        <div class="d-md-flex align-items-center">
-                            <select wire:model.live="perPage" class="form-select me-2 mb-2 rounded" style="max-width: 200px">
-                                <option>==Halaman==</option>
-                                <option value="5">5</option>
-                                <option value="10">10</option>
-                                <option value="20">20</option>
-                                <option value="50">50</option>
-                                <option value="{{ $profiles->total() }}">{{ $profiles->total() }} All</option>
-                            </select>
-                            <div class="d-flex justify-content-end mb-2">
-                                <a href="{{ route('exports.view') }}" class="btn btn-outline-secondary btn-sm text-body me-2"><i class="ri-download-fill align-bottom"></i> Export</a>
-                                <a class="btn btn-sm btn-primary me-2" href="{{ route('profile.create') }}"><i class="ri-add-circle-line align-bottom"></i> Tambah</a>
-                                <button class="d-none btn btn-success btn-sm text-white" @click="copyTable">Copy Data</button>
-                            </div>
-                        </div>
+                        <select style="max-width: 120px" wire:model.live="perPage" class="form-select form-control-sm me-2 mb-2 rounded">
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="20">20</option>
+                            <option value="50">50</option>
+                            <option value="{{ $profiles->total() }}">{{ $profiles->total() }} All</option>
+                        </select>
+                        <a href="{{ route('exports.view') }}" class="btn btn-sm btn-outline-secondary text-body me-2 mb-2"><i class="ri-file-excel-2-line align-bottom"></i> Excel</a>
+                        <a href="{{ route('profile.create') }}" class="btn btn-sm btn-primary text-white me-2 mb-2"><i class="ri-add-circle-line align-bottom"></i> Tambah</a>
+                        <button class="d-none btn btn-success text-white" @click="copyTable">Copy Data</button>
                     </div>
                     <!-- /Actions-->
 
@@ -103,6 +89,7 @@
                                         <td>{{ $item->komoditas }}</td>
                                         <td>
                                             <a href="{{ route('profile.show', $item->id) }}" class="btn btn-sm btn-primary"> <i class="ri-eye-fill"></i></a>
+                                            <a target="_blank" href="{{ route('profile.cetak', $item->id) }}" class="btn btn-sm btn-primary"> <i class="ri-printer-fill"></i></a>
                                         </td>
                                     </tr>
                                 @endforeach

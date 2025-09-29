@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthApiController;
 use App\Http\Middleware\CekIdPerusahaan;
 use App\Http\Middleware\CekApiAuth;
+use App\Livewire\CetakProfil;
 use App\Livewire\DaftarPerusahaan;
 use App\Livewire\ExportProfiles;
 use App\Livewire\Profile\Bbc;
@@ -48,6 +49,7 @@ Route::post('/logout', [AuthApiController::class, 'logout'])->name('auth.logout'
 
 Route::middleware([CekIdPerusahaan::class, CekApiAuth::class])->group(function () {
     Route::get('/home', DaftarPerusahaan::class)->name('home')->withoutMiddleware([CekIdPerusahaan::class]);
+    Route::get('/profile/{id}/cetak', CetakProfil::class)->name('profile.cetak')->withoutMiddleware([CekIdPerusahaan::class]);
 
     Route::get('/profile/create', ProfileAdd::class)->name('profile.create')->withoutMiddleware([CekIdPerusahaan::class]);;
     Route::get('/profile/{id}', Profile::class)->name('profile.show')->withoutMiddleware([CekIdPerusahaan::class]);;

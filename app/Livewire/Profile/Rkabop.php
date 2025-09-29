@@ -14,19 +14,112 @@ class Rkabop extends Component
     public $rkabop = [];
     public $original = [];
 
-    public $newRkabop = [];  // data baru untuk form tambah
+    // field tambah data baru
+    public $rkabop_no_persetujuan;
+    public $rkabop_tgl_persetujuan;
 
-    // field tambah data baru (bisa ditambah sesuai kebutuhan form create)
-    // public $rkab_no_persetujuan;
-    // public $rkab_tgl_persetujuan;
+    // Sumber Daya Tahun I
+    public $rkabop_sd_thn_i_m3_tereka;
+    public $rkabop_sd_thn_i_m3_tertunjuk;
+    public $rkabop_sd_thn_i_m3_terukur;
+    public $rkabop_sd_thn_i_mt_tereka;
+    public $rkabop_sd_thn_i_mt_tertunjuk;
+    public $rkabop_sd_thn_i_mt_terukur;
+
+    // Sumber Daya Tahun II
+    public $rkabop_sd_thn_ii_m3_tereka;
+    public $rkabop_sd_thn_ii_m3_tertunjuk;
+    public $rkabop_sd_thn_ii_m3_terukur;
+    public $rkabop_sd_thn_ii_mt_tereka;
+    public $rkabop_sd_thn_ii_mt_tertunjuk;
+    public $rkabop_sd_thn_ii_mt_terukur;
+
+    // Sumber Daya Tahun III
+    public $rkabop_sd_thn_iii_m3_tereka;
+    public $rkabop_sd_thn_iii_m3_tertunjuk;
+    public $rkabop_sd_thn_iii_m3_terukur;
+    public $rkabop_sd_thn_iii_mt_tereka;
+    public $rkabop_sd_thn_iii_mt_tertunjuk;
+    public $rkabop_sd_thn_iii_mt_terukur;
+
+    // Tenaga Ahli SD
+    public $rkabop_sd_tenaga_ahli;
+
+    // Cadangan
+    public $rkabop_cadangan_thn_i_terkira;
+    public $rkabop_cadangan_thn_i_terbukti;
+    public $rkabop_cadangan_thn_ii_terkira;
+    public $rkabop_cadangan_thn_ii_terbukti;
+    public $rkabop_cadangan_thn_iii_terkira;
+    public $rkabop_cadangan_thn_iii_terbukti;
+
+    // Tenaga Ahli Cadangan
+    public $rkabop_cadangan_tenaga_ahli;
+
+    // Produksi Tahun I
+    public $rkabop_prod_thn_i_target_m3_utama;
+    public $rkabop_prod_thn_i_target_m3_sampingan;
+    public $rkabop_prod_thn_i_realisasi_m3_utama;
+    public $rkabop_prod_thn_i_realisasi_m3_sampingan;
+    public $rkabop_prod_thn_i_target_mt_utama;
+    public $rkabop_prod_thn_i_target_my_sampingan;
+    public $rkabop_prod_thn_i_realisasi_mt_utama;
+    public $rkabop_prod_thn_i_realisasi_mt_sampingan;
+
+    // Produksi Tahun II
+    public $rkabop_prod_thn_ii_target_m3_utama;
+    public $rkabop_prod_thn_ii_target_m3_sampingan;
+    public $rkabop_prod_thn_ii_realisasi_m3_utama;
+    public $rkabop_prod_thn_ii_realisasi_m3_sampingan;
+    public $rkabop_prod_thn_ii_target_mt_utama;
+    public $rkabop_prod_thn_ii_target_my_sampingan;
+    public $rkabop_prod_thn_ii_realisasi_mt_utama;
+    public $rkabop_prod_thn_ii_realisasi_mt_sampingan;
+
+    // Produksi Tahun III
+    public $rkabop_prod_thn_iii_target_m3_utama;
+    public $rkabop_prod_thn_iii_target_m3_sampingan;
+    public $rkabop_prod_thn_iii_realisasi_m3_utama;
+    public $rkabop_prod_thn_iii_realisasi_m3_sampingan;
+    public $rkabop_prod_thn_iii_target_mt_utama;
+    public $rkabop_prod_thn_iii_target_my_sampingan;
+    public $rkabop_prod_thn_iii_realisasi_mt_utama;
+    public $rkabop_prod_thn_iii_realisasi_mt_sampingan;
+
+    // Pajak
+    public $rkabop_pajak_thn_i_daerah;
+    public $rkabop_pajak_thn_i_opsen;
+    public $rkabop_pajak_thn_ii_daerah;
+    public $rkabop_pajak_thn_ii_opsen;
+    public $rkabop_pajak_thn_iii_daerah;
+    public $rkabop_pajak_thn_iii_opsen;
+
+    // Tenaga Kerja Tahun I
+    public $rkabop_tenaga_kerja_thn_i_lokal;
+    public $rkabop_tenaga_kerja_thn_i_non_lokal;
+    public $rkabop_tenaga_kerja_thn_i_tka;
+
+    // Tenaga Kerja Tahun II
+    public $rkabop_tenaga_kerja_thn_ii_lokal;
+    public $rkabop_tenaga_kerja_thn_ii_non_lokal;
+    public $rkabop_tenaga_kerja_thn_ii_tka;
+
+    // Tenaga Kerja Tahun III
+    public $rkabop_tenaga_kerja_thn_iii_lokal;
+    public $rkabop_tenaga_kerja_thn_iii_non_lokal;
+    public $rkabop_tenaga_kerja_thn_iii_tka;
 
     public $editingId = null;
 
-    // protected $messages = [
-    //     'rkabop.*.rkab_no_persetujuan.required' => 'Nomor persetujuan wajib diisi.',
-    //     'rkabop.*.rkab_tgl_persetujuan.required' => 'Tanggal persetujuan wajib diisi.',
-    //     'rkabop.*.rkab_tgl_persetujuan.date' => 'Tanggal tidak valid.',
-    // ];
+    protected $messages = [
+        'rkabop.*.rkabop_no_persetujuan.required' => 'Nomor persetujuan wajib diisi.',
+        'rkabop.*.rkabop_tgl_persetujuan.required' => 'Tanggal persetujuan wajib diisi.',
+        'rkabop.*.rkabop_tgl_persetujuan.date'     => 'Tanggal persetujuan tidak valid.',
+
+        'rkabop_no_persetujuan.required' => 'Nomor persetujuan wajib diisi.',
+        'rkabop_tgl_persetujuan.required' => 'Tanggal persetujuan wajib diisi.',
+        'rkabop_tgl_persetujuan.date'     => 'Tanggal persetujuan tidak valid.',
+    ];
 
     public function mount()
     {
@@ -41,110 +134,17 @@ class Rkabop extends Component
 
     protected function rulesForRow($id)
     {
-        return $this->rules("rkabop.$id.");
+        return [
+            "rkabop.$id.rkabop_no_persetujuan" => 'required',
+            "rkabop.$id.rkabop_tgl_persetujuan" => 'required|date',
+        ];
     }
 
     protected function rulesForNew()
     {
-        return $this->rules("newRkabop.");
-    }
-
-    protected function rules($prefix = '')
-    {
         return [
-            $prefix . 'rkab_no_persetujuan' => 'required|string',
-            $prefix . 'rkab_tgl_persetujuan' => 'required|date',
-
-            // Sumber Daya Tahun I
-            $prefix . 'rkab_sd_thn_i_m3_tereka' => 'nullable|numeric|min:0',
-            $prefix . 'rkab_sd_thn_i_m3_tertunjuk' => 'nullable|numeric|min:0',
-            $prefix . 'rkab_sd_thn_i_m3_terukur' => 'nullable|numeric|min:0',
-            $prefix . 'rkab_sd_thn_i_mt_tereka' => 'nullable|numeric|min:0',
-            $prefix . 'rkab_sd_thn_i_mt_tertunjuk' => 'nullable|numeric|min:0',
-            $prefix . 'rkab_sd_thn_i_mt_terukur' => 'nullable|numeric|min:0',
-
-            // Sumber Daya Tahun II
-            $prefix . 'rkab_sd_thn_ii_m3_tereka' => 'nullable|numeric|min:0',
-            $prefix . 'rkab_sd_thn_ii_m3_tertunjuk' => 'nullable|numeric|min:0',
-            $prefix . 'rkab_sd_thn_ii_m3_terukur' => 'nullable|numeric|min:0',
-            $prefix . 'rkab_sd_thn_ii_mt_tereka' => 'nullable|numeric|min:0',
-            $prefix . 'rkab_sd_thn_ii_mt_tertunjuk' => 'nullable|numeric|min:0',
-            $prefix . 'rkab_sd_thn_ii_mt_terukur' => 'nullable|numeric|min:0',
-
-            // Sumber Daya Tahun III
-            $prefix . 'rkab_sd_thn_iii_m3_tereka' => 'nullable|numeric|min:0',
-            $prefix . 'rkab_sd_thn_iii_m3_tertunjuk' => 'nullable|numeric|min:0',
-            $prefix . 'rkab_sd_thn_iii_m3_terukur' => 'nullable|numeric|min:0',
-            $prefix . 'rkab_sd_thn_iii_mt_tereka' => 'nullable|numeric|min:0',
-            $prefix . 'rkab_sd_thn_iii_mt_tertunjuk' => 'nullable|numeric|min:0',
-            $prefix . 'rkab_sd_thn_iii_mt_terukur' => 'nullable|numeric|min:0',
-
-            // Tenaga Ahli Sumber Daya
-            $prefix . 'rkab_sd_tenaga_ahli_competent_person' => 'nullable|string',
-
-            // Cadangan
-            $prefix . 'rkab_cadangan_thn_i_terkira' => 'nullable|numeric|min:0',
-            $prefix . 'rkab_cadangan_thn_i_terbukti' => 'nullable|numeric|min:0',
-            $prefix . 'rkab_cadangan_thn_ii_terkira' => 'nullable|numeric|min:0',
-            $prefix . 'rkab_cadangan_thn_ii_terbukti' => 'nullable|numeric|min:0',
-            $prefix . 'rkab_cadangan_thn_iii_terkira' => 'nullable|numeric|min:0',
-            $prefix . 'rkab_cadangan_thn_iii_terbukti' => 'nullable|numeric|min:0',
-
-            // Tenaga Ahli Cadangan
-            $prefix . 'rkab_cadangan_tenaga_ahli_competent_person' => 'nullable|string',
-
-            // Produksi Tahun I
-            $prefix . 'rkab_prod_thn_i_target_m3_utama' => 'nullable|numeric|min:0',
-            $prefix . 'rkab_prod_thn_i_target_m3_sampingan' => 'nullable|numeric|min:0',
-            $prefix . 'rkab_prod_thn_i_realisasi_m3_utama' => 'nullable|numeric|min:0',
-            $prefix . 'rkab_prod_thn_i_realisasi_m3_sampingan' => 'nullable|numeric|min:0',
-            $prefix . 'rkab_prod_thn_i_target_mt_utama' => 'nullable|numeric|min:0',
-            $prefix . 'rkab_prod_thn_i_target_my_sampingan' => 'nullable|numeric|min:0',
-            $prefix . 'rkab_prod_thn_i_realisasi_mt_utama' => 'nullable|numeric|min:0',
-            $prefix . 'rkab_prod_thn_i_realisasi_mt_sampingan' => 'nullable|numeric|min:0',
-
-            // Produksi Tahun II
-            $prefix . 'rkab_prod_thn_ii_target_m3_utama' => 'nullable|numeric|min:0',
-            $prefix . 'rkab_prod_thn_ii_target_m3_sampingan' => 'nullable|numeric|min:0',
-            $prefix . 'rkab_prod_thn_ii_realisasi_m3_utama' => 'nullable|numeric|min:0',
-            $prefix . 'rkab_prod_thn_ii_realisasi_m3_sampingan' => 'nullable|numeric|min:0',
-            $prefix . 'rkab_prod_thn_ii_target_mt_utama' => 'nullable|numeric|min:0',
-            $prefix . 'rkab_prod_thn_ii_target_my_sampingan' => 'nullable|numeric|min:0',
-            $prefix . 'rkab_prod_thn_ii_realisasi_mt_utama' => 'nullable|numeric|min:0',
-            $prefix . 'rkab_prod_thn_ii_realisasi_mt_sampingan' => 'nullable|numeric|min:0',
-
-            // Produksi Tahun III
-            $prefix . 'rkab_prod_thn_iii_target_m3_utama' => 'nullable|numeric|min:0',
-            $prefix . 'rkab_prod_thn_iii_target_m3_sampingan' => 'nullable|numeric|min:0',
-            $prefix . 'rkab_prod_thn_iii_realisasi_m3_utama' => 'nullable|numeric|min:0',
-            $prefix . 'rkab_prod_thn_iii_realisasi_m3_sampingan' => 'nullable|numeric|min:0',
-            $prefix . 'rkab_prod_thn_iii_target_mt_utama' => 'nullable|numeric|min:0',
-            $prefix . 'rkab_prod_thn_iii_target_my_sampingan' => 'nullable|numeric|min:0',
-            $prefix . 'rkab_prod_thn_iii_realisasi_mt_utama' => 'nullable|numeric|min:0',
-            $prefix . 'rkab_prod_thn_iii_realisasi_mt_sampingan' => 'nullable|numeric|min:0',
-
-            // Pajak
-            $prefix . 'rkab_pajak_thn_i_daerah' => 'nullable|numeric|min:0',
-            $prefix . 'rkab_pajak_thn_i_opsen' => 'nullable|numeric|min:0',
-            $prefix . 'rkab_pajak_thn_ii_daerah' => 'nullable|numeric|min:0',
-            $prefix . 'rkab_pajak_thn_ii_opsen' => 'nullable|numeric|min:0',
-            $prefix . 'rkab_pajak_thn_iii_daerah' => 'nullable|numeric|min:0',
-            $prefix . 'rkab_pajak_thn_iii_opsen' => 'nullable|numeric|min:0',
-
-            // Tenaga Kerja Tahun I
-            $prefix . 'rkab_tenaga_kerja_thn_i_lokal' => 'nullable|numeric|min:0',
-            $prefix . 'rkab_tenaga_kerja_thn_i_non_lokal' => 'nullable|numeric|min:0',
-            $prefix . 'rkab_tenaga_kerja_thn_i_tka' => 'nullable|numeric|min:0',
-
-            // Tenaga Kerja Tahun II
-            $prefix . 'rkab_tenaga_kerja_thn_ii_lokal' => 'nullable|numeric|min:0',
-            $prefix . 'rkab_tenaga_kerja_thn_ii_non_lokal' => 'nullable|numeric|min:0',
-            $prefix . 'rkab_tenaga_kerja_thn_ii_tka' => 'nullable|numeric|min:0',
-
-            // Tenaga Kerja Tahun III
-            $prefix . 'rkab_tenaga_kerja_thn_iii_lokal' => 'nullable|numeric|min:0',
-            $prefix . 'rkab_tenaga_kerja_thn_iii_non_lokal' => 'nullable|numeric|min:0',
-            $prefix . 'rkab_tenaga_kerja_thn_iii_tka' => 'nullable|numeric|min:0',
+            "rkabop_no_persetujuan" => 'required',
+            "rkabop_tgl_persetujuan" => 'required|date',
         ];
     }
 
@@ -152,11 +152,104 @@ class Rkabop extends Component
     {
         $this->validate($this->rulesForNew());
 
-        ModelsRkabop::create(array_merge(
-            ['profile_id' => session('id_perusahaan')],
-            $this->newRkabop
-        ));
+        ModelsRkabop::create([
+            'profile_id' => session('id_perusahaan'),
+            'rkabop_no_persetujuan' => $this->rkabop_no_persetujuan,
+            'rkabop_tgl_persetujuan' => $this->rkabop_tgl_persetujuan,
 
+            // Sumber Daya Tahun I
+            'rkabop_sd_thn_i_m3_tereka' => $this->rkabop_sd_thn_i_m3_tereka,
+            'rkabop_sd_thn_i_m3_tertunjuk' => $this->rkabop_sd_thn_i_m3_tertunjuk,
+            'rkabop_sd_thn_i_m3_terukur' => $this->rkabop_sd_thn_i_m3_terukur,
+            'rkabop_sd_thn_i_mt_tereka' => $this->rkabop_sd_thn_i_mt_tereka,
+            'rkabop_sd_thn_i_mt_tertunjuk' => $this->rkabop_sd_thn_i_mt_tertunjuk,
+            'rkabop_sd_thn_i_mt_terukur' => $this->rkabop_sd_thn_i_mt_terukur,
+
+            // Sumber Daya Tahun II
+            'rkabop_sd_thn_ii_m3_tereka' => $this->rkabop_sd_thn_ii_m3_tereka,
+            'rkabop_sd_thn_ii_m3_tertunjuk' => $this->rkabop_sd_thn_ii_m3_tertunjuk,
+            'rkabop_sd_thn_ii_m3_terukur' => $this->rkabop_sd_thn_ii_m3_terukur,
+            'rkabop_sd_thn_ii_mt_tereka' => $this->rkabop_sd_thn_ii_mt_tereka,
+            'rkabop_sd_thn_ii_mt_tertunjuk' => $this->rkabop_sd_thn_ii_mt_tertunjuk,
+            'rkabop_sd_thn_ii_mt_terukur' => $this->rkabop_sd_thn_ii_mt_terukur,
+
+            // Sumber Daya Tahun III
+            'rkabop_sd_thn_iii_m3_tereka' => $this->rkabop_sd_thn_iii_m3_tereka,
+            'rkabop_sd_thn_iii_m3_tertunjuk' => $this->rkabop_sd_thn_iii_m3_tertunjuk,
+            'rkabop_sd_thn_iii_m3_terukur' => $this->rkabop_sd_thn_iii_m3_terukur,
+            'rkabop_sd_thn_iii_mt_tereka' => $this->rkabop_sd_thn_iii_mt_tereka,
+            'rkabop_sd_thn_iii_mt_tertunjuk' => $this->rkabop_sd_thn_iii_mt_tertunjuk,
+            'rkabop_sd_thn_iii_mt_terukur' => $this->rkabop_sd_thn_iii_mt_terukur,
+
+            // Tenaga Ahli SD
+            'rkabop_sd_tenaga_ahli' => $this->rkabop_sd_tenaga_ahli,
+
+            // Cadangan
+            'rkabop_cadangan_thn_i_terkira' => $this->rkabop_cadangan_thn_i_terkira,
+            'rkabop_cadangan_thn_i_terbukti' => $this->rkabop_cadangan_thn_i_terbukti,
+            'rkabop_cadangan_thn_ii_terkira' => $this->rkabop_cadangan_thn_ii_terkira,
+            'rkabop_cadangan_thn_ii_terbukti' => $this->rkabop_cadangan_thn_ii_terbukti,
+            'rkabop_cadangan_thn_iii_terkira' => $this->rkabop_cadangan_thn_iii_terkira,
+            'rkabop_cadangan_thn_iii_terbukti' => $this->rkabop_cadangan_thn_iii_terbukti,
+
+            // Tenaga Ahli Cadangan
+            'rkabop_cadangan_tenaga_ahli' => $this->rkabop_cadangan_tenaga_ahli,
+
+            // Produksi Tahun I
+            'rkabop_prod_thn_i_target_m3_utama' => $this->rkabop_prod_thn_i_target_m3_utama,
+            'rkabop_prod_thn_i_target_m3_sampingan' => $this->rkabop_prod_thn_i_target_m3_sampingan,
+            'rkabop_prod_thn_i_realisasi_m3_utama' => $this->rkabop_prod_thn_i_realisasi_m3_utama,
+            'rkabop_prod_thn_i_realisasi_m3_sampingan' => $this->rkabop_prod_thn_i_realisasi_m3_sampingan,
+            'rkabop_prod_thn_i_target_mt_utama' => $this->rkabop_prod_thn_i_target_mt_utama,
+            'rkabop_prod_thn_i_target_my_sampingan' => $this->rkabop_prod_thn_i_target_my_sampingan,
+            'rkabop_prod_thn_i_realisasi_mt_utama' => $this->rkabop_prod_thn_i_realisasi_mt_utama,
+            'rkabop_prod_thn_i_realisasi_mt_sampingan' => $this->rkabop_prod_thn_i_realisasi_mt_sampingan,
+
+            // Produksi Tahun II
+            'rkabop_prod_thn_ii_target_m3_utama' => $this->rkabop_prod_thn_ii_target_m3_utama,
+            'rkabop_prod_thn_ii_target_m3_sampingan' => $this->rkabop_prod_thn_ii_target_m3_sampingan,
+            'rkabop_prod_thn_ii_realisasi_m3_utama' => $this->rkabop_prod_thn_ii_realisasi_m3_utama,
+            'rkabop_prod_thn_ii_realisasi_m3_sampingan' => $this->rkabop_prod_thn_ii_realisasi_m3_sampingan,
+            'rkabop_prod_thn_ii_target_mt_utama' => $this->rkabop_prod_thn_ii_target_mt_utama,
+            'rkabop_prod_thn_ii_target_my_sampingan' => $this->rkabop_prod_thn_ii_target_my_sampingan,
+            'rkabop_prod_thn_ii_realisasi_mt_utama' => $this->rkabop_prod_thn_ii_realisasi_mt_utama,
+            'rkabop_prod_thn_ii_realisasi_mt_sampingan' => $this->rkabop_prod_thn_ii_realisasi_mt_sampingan,
+
+            // Produksi Tahun III
+            'rkabop_prod_thn_iii_target_m3_utama' => $this->rkabop_prod_thn_iii_target_m3_utama,
+            'rkabop_prod_thn_iii_target_m3_sampingan' => $this->rkabop_prod_thn_iii_target_m3_sampingan,
+            'rkabop_prod_thn_iii_realisasi_m3_utama' => $this->rkabop_prod_thn_iii_realisasi_m3_utama,
+            'rkabop_prod_thn_iii_realisasi_m3_sampingan' => $this->rkabop_prod_thn_iii_realisasi_m3_sampingan,
+            'rkabop_prod_thn_iii_target_mt_utama' => $this->rkabop_prod_thn_iii_target_mt_utama,
+            'rkabop_prod_thn_iii_target_my_sampingan' => $this->rkabop_prod_thn_iii_target_my_sampingan,
+            'rkabop_prod_thn_iii_realisasi_mt_utama' => $this->rkabop_prod_thn_iii_realisasi_mt_utama,
+            'rkabop_prod_thn_iii_realisasi_mt_sampingan' => $this->rkabop_prod_thn_iii_realisasi_mt_sampingan,
+
+            // Pajak
+            'rkabop_pajak_thn_i_daerah' => $this->rkabop_pajak_thn_i_daerah,
+            'rkabop_pajak_thn_i_opsen' => $this->rkabop_pajak_thn_i_opsen,
+            'rkabop_pajak_thn_ii_daerah' => $this->rkabop_pajak_thn_ii_daerah,
+            'rkabop_pajak_thn_ii_opsen' => $this->rkabop_pajak_thn_ii_opsen,
+            'rkabop_pajak_thn_iii_daerah' => $this->rkabop_pajak_thn_iii_daerah,
+            'rkabop_pajak_thn_iii_opsen' => $this->rkabop_pajak_thn_iii_opsen,
+
+            // Tenaga Kerja Tahun I
+            'rkabop_tenaga_kerja_thn_i_lokal' => $this->rkabop_tenaga_kerja_thn_i_lokal,
+            'rkabop_tenaga_kerja_thn_i_non_lokal' => $this->rkabop_tenaga_kerja_thn_i_non_lokal,
+            'rkabop_tenaga_kerja_thn_i_tka' => $this->rkabop_tenaga_kerja_thn_i_tka,
+
+            // Tenaga Kerja Tahun II
+            'rkabop_tenaga_kerja_thn_ii_lokal' => $this->rkabop_tenaga_kerja_thn_ii_lokal,
+            'rkabop_tenaga_kerja_thn_ii_non_lokal' => $this->rkabop_tenaga_kerja_thn_ii_non_lokal,
+            'rkabop_tenaga_kerja_thn_ii_tka' => $this->rkabop_tenaga_kerja_thn_ii_tka,
+
+            // Tenaga Kerja Tahun III
+            'rkabop_tenaga_kerja_thn_iii_lokal' => $this->rkabop_tenaga_kerja_thn_iii_lokal,
+            'rkabop_tenaga_kerja_thn_iii_non_lokal' => $this->rkabop_tenaga_kerja_thn_iii_non_lokal,
+            'rkabop_tenaga_kerja_thn_iii_tka' => $this->rkabop_tenaga_kerja_thn_iii_tka,
+        ]);
+
+        // refresh data
         $this->rkabop = ModelsRkabop::where('profile_id', session('id_perusahaan'))
             ->latest()
             ->get()
@@ -165,8 +258,9 @@ class Rkabop extends Component
 
         $this->original = $this->rkabop;
 
-        // reset form tambah
-        $this->reset('newRkabop');
+        $this->reset(
+            array_diff((new ModelsRkabop)->getFillable(), ['profile_id'])
+        ); // reset semua property
 
         $this->dispatch('store-success', message: 'Data RKABOP baru berhasil ditambahkan!');
     }

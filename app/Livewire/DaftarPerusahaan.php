@@ -39,6 +39,7 @@ class DaftarPerusahaan extends Component
         $this->search = '';
         $this->komoditasSearch = '';
         $this->kabupaten_kotaSearch = '';
+        $this->perPage = 10;
         $this->resetPage();
     }
     public function render()
