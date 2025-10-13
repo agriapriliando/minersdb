@@ -82,7 +82,11 @@
                                     {{-- Tahapan IUP --}}
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label">Tahapan IUP</label>
-                                        <input type="text" class="form-control @error('tahapan_iup') is-invalid @enderror" wire:model="tahapan_iup" @disabled(!$isEditing)>
+                                        <select class="form-select @error('tahapan_iup') is-invalid @enderror" wire:model="tahapan_iup" @disabled(!$isEditing)>
+                                            <option value="">-- Pilih Tahapan --</option>
+                                            <option value="Eksplorasi">Eksplorasi</option>
+                                            <option value="Operasi Produksi">Operasi Produksi</option>
+                                        </select>
                                         @error('tahapan_iup')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -128,10 +132,12 @@
                                     {{-- Jenis Izin --}}
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label">Jenis Izin</label>
-                                        <select class="form-control @error('jenis_izin') is-invalid @enderror" wire:model="jenis_izin" @disabled(!$isEditing)>
+                                        <select class="form-select @error('jenis_izin') is-invalid @enderror" wire:model="jenis_izin" @disabled(!$isEditing)>
                                             <option value="">-- Pilih Jenis Izin --</option>
                                             <option value="IUP">IUP</option>
                                             <option value="SIPB">SIPB</option>
+                                            <option value="IPP">IPP</option>
+                                            <option value="IUJP">IUJP</option>
                                         </select>
                                         @error('jenis_izin')
                                             <div class="invalid-feedback">{{ $message }}</div>
