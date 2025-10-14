@@ -129,7 +129,7 @@
                                 <thead class="table-light">
                                     <tr>
                                         <th style="width: 5%">#</th>
-                                        <th class="text-nowrap">No Persetujuan</th>
+                                        <th class="text-nowrap">No Persetujuan <br>dan Perihal</th>
                                         <th class="text-nowrap">Tanggal</th>
                                         <th class="text-nowrap">Jenis Bahan</th>
                                         <th class="text-nowrap">Kapasitas Gudang</th>
@@ -246,7 +246,7 @@
                                         <td>+</td>
                                         <td>
                                             <input type="text" class="form-control form-control-sm @error('handak_no_persetujuan') is-invalid @enderror" wire:model="handak_no_persetujuan"
-                                                placeholder="No Persetujuan">
+                                                placeholder="No dan Perihal">
                                             @error('handak_no_persetujuan')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror

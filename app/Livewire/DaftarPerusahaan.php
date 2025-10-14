@@ -15,6 +15,7 @@ class DaftarPerusahaan extends Component
 
     public $komoditasSearch = '';
     public $kabupaten_kotaSearch = '';
+    public $jenis_izin;
     public function mount()
     {
         session(['id_perusahaan' => null]);
@@ -39,6 +40,7 @@ class DaftarPerusahaan extends Component
         $this->search = '';
         $this->komoditasSearch = '';
         $this->kabupaten_kotaSearch = '';
+        $this->jenis_izin = '';
         $this->perPage = 10;
         $this->resetPage();
     }
@@ -48,6 +50,7 @@ class DaftarPerusahaan extends Component
             'profiles' => Profile::search($this->search)
                 ->komoditas($this->komoditasSearch)
                 ->kabupaten_kota($this->kabupaten_kotaSearch)
+                ->jenis_izin($this->jenis_izin)
                 ->latest()
                 ->paginate($this->perPage),
             'komoditas' => Profile::select('komoditas')->distinct()->pluck('komoditas', 'komoditas'),

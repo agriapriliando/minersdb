@@ -129,7 +129,7 @@
                                 <thead class="table-light">
                                     <tr>
                                         <th style="width: 5%">#</th>
-                                        <th class="text-nowrap">No. Persetujuan</th>
+                                        <th class="text-nowrap">No Persetujuan <br>dan Perihal</th>
                                         <th class="text-nowrap">Tanggal Persetujuan</th>
                                         <th class="text-nowrap">Keterangan</th>
                                         <th style="width: 20%">Aksi</th>

@@ -129,7 +129,7 @@
                                 <thead class="table-light">
                                     <tr>
                                         <th style="width: 5%">#</th>
-                                        <th class="text-nowrap">Nomor Area</th>
+                                        <th class="text-nowrap">No SK dan Perihal</th>
                                         <th class="text-nowrap">Tanggal</th>
                                         <th class="text-nowrap">Penggunaan</th>
                                         <th class="text-nowrap">Luas (m²)</th>
@@ -142,7 +142,7 @@
                                         <tr wire:key="pa-row-{{ $id }}" x-data="{ confirmDelete: false }">
                                             <td>{{ $loop->iteration }}</td>
 
-                                            {{-- Nomor Area --}}
+                                            {{-- No SK dan Perihal --}}
                                             <td>
                                                 <input type="text" class="form-control form-control-sm @error('pa.' . $id . '.project_area_nomor') is-invalid @enderror"
                                                     wire:model="pa.{{ $id }}.project_area_nomor" :disabled="$wire.editingId !== {{ $id }}">
@@ -236,7 +236,7 @@
                                         <td>+</td>
                                         <td>
                                             <input type="text" class="form-control form-control-sm @error('project_area_nomor') is-invalid @enderror" wire:model="project_area_nomor"
-                                                placeholder="Nomor Area">
+                                                placeholder="No SK dan Perihal">
                                             @error('project_area_nomor')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
@@ -249,7 +249,7 @@
                                         </td>
                                         <td>
                                             <input type="text" class="form-control form-control-sm @error('project_area_penggunaan') is-invalid @enderror" wire:model="project_area_penggunaan"
-                                                placeholder="Penggunaan">
+                                                placeholder="Petunjuk : Penunjang diluar IUP">
                                             @error('project_area_penggunaan')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
@@ -276,6 +276,7 @@
                                     </tr>
                                 </tbody>
                             </table>
+                            <small class="text-muted">Contoh Isian Penggunaan : Sarana Penunjang diluar IUP</small>
                         </div>
                         {{-- tabel data --}}
                     </div>

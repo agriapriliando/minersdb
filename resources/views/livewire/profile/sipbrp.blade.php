@@ -129,7 +129,7 @@
                                 <thead class="table-light">
                                     <tr>
                                         <th style="width: 3%">#</th>
-                                        <th class="text-nowrap">No Persetujuan</th>
+                                        <th class="text-nowrap">No Persetujuan <br>dan Perihal</th>
                                         <th class="text-nowrap">Tgl Persetujuan</th>
                                         <th class="text-nowrap">SD M³ Tereka</th>
                                         <th class="text-nowrap">SD M³ Tertunjuk</th>
@@ -328,7 +328,7 @@
                                     <tr>
                                         <td>+</td>
                                         <td><input type="text" class="form-control form-control-sm @error('sipbrp_no_persetujuan') is-invalid @enderror" wire:model="sipbrp_no_persetujuan"
-                                                placeholder="No Persetujuan">
+                                                placeholder="No dan Perihal">
                                             @error('sipbrp_no_persetujuan')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror

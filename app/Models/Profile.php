@@ -31,6 +31,8 @@ class Profile extends Model
         'nib_email_oss',
         'nib_nomor_hp_oss',
         'keterangan',
+        'kontrak_kerja_sama',
+        'jenis_bidang_sub_bidang_usaha_jasa'
     ];
 
     protected $casts = [
@@ -62,6 +64,15 @@ class Profile extends Model
         if ($term) {
             return $query->where(function ($q) use ($term) {
                 $q->where('kabupaten_kota', 'like', "%{$term}%");
+            });
+        }
+        return $query;
+    }
+    public function scopeJenis_izin($query, $term)
+    {
+        if ($term) {
+            return $query->where(function ($q) use ($term) {
+                $q->where('jenis_izin', $term);
             });
         }
         return $query;

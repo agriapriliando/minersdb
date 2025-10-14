@@ -3,6 +3,7 @@
 namespace App\Livewire\Profile;
 
 use App\Models\Dokumen;
+use App\Models\Profile;
 use App\Models\Rkabop as ModelsRkabop;
 use App\Traits\WithDokumen;
 use Livewire\Component;
@@ -312,7 +313,8 @@ class Rkabop extends Component
                 ->latest()
                 ->paginate(5),
             'jenis_dokumens' => ['Persetujuan', 'Non Persetujuan'],
-            'judul_menu' => 'RKAB Operasi Produksi',
+            'judul_menu' => 'RKAB',
+            'jenis_tahapan' => Profile::find(session('id_perusahaan'))->tahapan_iup,
             'input_model_dokumen' => $input_model_dokumen,
         ]);
     }

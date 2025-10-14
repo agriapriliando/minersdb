@@ -70,69 +70,10 @@
                                         @enderror
                                     </div>
 
-                                    {{-- Luas Ha --}}
-                                    <div class="col-md-6 mb-3">
-                                        <label class="form-label">Luas (Ha)</label>
-                                        <input type="text" class="form-control @error('luas_ha') is-invalid @enderror" wire:model="luas_ha" @disabled(!$isEditing)>
-                                        @error('luas_ha')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-
-                                    {{-- Tahapan IUP --}}
-                                    <div class="col-md-6 mb-3">
-                                        <label class="form-label">Tahapan IUP</label>
-                                        <select class="form-select @error('tahapan_iup') is-invalid @enderror" wire:model="tahapan_iup" @disabled(!$isEditing)>
-                                            <option value="">-- Pilih Tahapan --</option>
-                                            <option value="Eksplorasi">Eksplorasi</option>
-                                            <option value="Operasi Produksi">Operasi Produksi</option>
-                                        </select>
-                                        @error('tahapan_iup')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-
-                                    {{-- Komoditas --}}
-                                    <div class="col-md-6 mb-3">
-                                        <label class="form-label">Komoditas</label>
-                                        <input type="text" class="form-control @error('komoditas') is-invalid @enderror" wire:model="komoditas" @disabled(!$isEditing)>
-                                        @error('komoditas')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-
-                                    {{-- NIB --}}
-                                    <div class="col-md-6 mb-3">
-                                        <label class="form-label">Nomor Induk Berusaha (NIB)</label>
-                                        <input type="text" class="form-control @error('nomor_induk_berusaha_nib') is-invalid @enderror" wire:model="nomor_induk_berusaha_nib"
-                                            @disabled(!$isEditing)>
-                                        @error('nomor_induk_berusaha_nib')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-
-                                    {{-- NPWP --}}
-                                    <div class="col-md-6 mb-3">
-                                        <label class="form-label">Nomor NPWP</label>
-                                        <input type="text" class="form-control @error('nomor_npwp') is-invalid @enderror" wire:model="nomor_npwp" @disabled(!$isEditing)>
-                                        @error('nomor_npwp')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-
-                                    {{-- Status NPWP --}}
-                                    <div class="col-md-6 mb-3">
-                                        <label class="form-label">Status NPWP</label>
-                                        <input type="text" class="form-control @error('status_npwp') is-invalid @enderror" wire:model="status_npwp" @disabled(!$isEditing)>
-                                        @error('status_npwp')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-
                                     {{-- Jenis Izin --}}
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label">Jenis Izin</label>
-                                        <select class="form-select @error('jenis_izin') is-invalid @enderror" wire:model="jenis_izin" @disabled(!$isEditing)>
+                                        <select class="form-select @error('jenis_izin') is-invalid @enderror" wire:model.live="jenis_izin" @disabled(!$isEditing)>
                                             <option value="">-- Pilih Jenis Izin --</option>
                                             <option value="IUP">IUP</option>
                                             <option value="SIPB">SIPB</option>
@@ -171,6 +112,67 @@
                                         @enderror
                                     </div>
 
+                                    @if ($jenis_izin == 'IUP' || $jenis_izin == 'SIPB')
+                                        {{-- Luas Ha --}}
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Luas (Ha)</label>
+                                            <input type="text" class="form-control @error('luas_ha') is-invalid @enderror" wire:model="luas_ha" @disabled(!$isEditing)>
+                                            @error('luas_ha')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+
+                                        {{-- Tahapan IUP --}}
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Tahapan IUP</label>
+                                            <select class="form-select @error('tahapan_iup') is-invalid @enderror" wire:model="tahapan_iup" @disabled(!$isEditing)>
+                                                <option value="">-- Pilih Tahapan --</option>
+                                                <option value="Eksplorasi">Eksplorasi</option>
+                                                <option value="Operasi Produksi">Operasi Produksi</option>
+                                            </select>
+                                            @error('tahapan_iup')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    @endif
+
+                                    {{-- Komoditas --}}
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Komoditas</label>
+                                        <input type="text" class="form-control @error('komoditas') is-invalid @enderror" wire:model="komoditas" @disabled(!$isEditing)>
+                                        @error('komoditas')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    {{-- NIB --}}
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Nomor Induk Berusaha (NIB)</label>
+                                        <input type="text" class="form-control @error('nomor_induk_berusaha_nib') is-invalid @enderror" wire:model="nomor_induk_berusaha_nib"
+                                            @disabled(!$isEditing)>
+                                        @error('nomor_induk_berusaha_nib')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    {{-- NPWP --}}
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Nomor NPWP</label>
+                                        <input type="text" class="form-control @error('nomor_npwp') is-invalid @enderror" wire:model="nomor_npwp" @disabled(!$isEditing)>
+                                        @error('nomor_npwp')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    {{-- Status NPWP --}}
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Status NPWP</label>
+                                        <input type="text" class="form-control @error('status_npwp') is-invalid @enderror" wire:model="status_npwp" @disabled(!$isEditing)>
+                                        @error('status_npwp')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
                                     {{-- Alamat Perusahaan --}}
                                     <div class="col-md-12 mb-3">
                                         <label class="form-label">Alamat Perusahaan (Sesuai SK Izin)</label>
@@ -193,7 +195,7 @@
                                     {{-- Dewan Direksi --}}
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label">Dewan Direksi (BOD)</label>
-                                        <input type="text" class="form-control @error('dewan_direksi_bod') is-invalid @enderror" wire:model="dewan_direksi_bod" @disabled(!$isEditing)>
+                                        <textarea class="form-control @error('dewan_direksi_bod') is-invalid @enderror" wire:model="dewan_direksi_bod" rows="3" @disabled(!$isEditing)></textarea>
                                         @error('dewan_direksi_bod')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -262,10 +264,31 @@
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>
+
+                                    @if ($jenis_izin == 'IPP' || $jenis_izin == 'IUJP')
+                                        {{-- Kontrak Kerja Sama --}}
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Kontrak Kerja Sama</label>
+                                            <input type="text" class="form-control @error('kontrak_kerja_sama') is-invalid @enderror" wire:model="kontrak_kerja_sama"
+                                                @disabled(!$isEditing)>
+                                            @error('kontrak_kerja_sama')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+
+                                        {{-- jenis_bidang_sub_bidang_usaha_jasa --}}
+                                        <div class="col-md-12 mb-3">
+                                            <label class="form-label">Jenis, Bidang, Sub Bidang Usaha Jasa</label>
+                                            <textarea class="form-control @error('jenis_bidang_sub_bidang_usaha_jasa') is-invalid @enderror" rows="3" wire:model="jenis_bidang_sub_bidang_usaha_jasa" @disabled(!$isEditing)></textarea>
+                                            @error('jenis_bidang_sub_bidang_usaha_jasa')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    @endif
                                 </div>
 
                                 <div class="d-flex">
-                                    <a href="{{ route('home') }}" class="btn btn-secondary btn-sm me-2">Dashboard</a>
+                                    <a href="{{ route('home') }}" class="btn btn-secondary btn-sm me-2">Kembali</a>
                                     @if (!$isEditing)
                                         <button type="button" class="btn btn-sm btn-primary" wire:click="edit({{ $id }})">
                                             <i class="ri-edit-line"></i> Edit

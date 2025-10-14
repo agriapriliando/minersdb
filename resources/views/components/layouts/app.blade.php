@@ -191,37 +191,52 @@
                                         Profil Perusahaan
                                     </span></a>
                             </li>
-                            <!-- / Profil Menu Section-->
-                            <li class="menu-item"><a class="d-flex align-items-center collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseMenuItemPages"
-                                    aria-expanded="false" aria-controls="collapseMenuItemPages">
-                                    <span class="menu-icon">
-                                        <i class="ri-file-list-3-line"></i>
-                                    </span>
-                                    <span class="menu-link">Dokumen Teknis</span></a>
-                                <div class="collapse" id="collapseMenuItemPages">
-                                    <ul class="submenu">
-                                        <li><a href="{{ route('iuran.show') }}"><span class="menu-icon"><i class="ri-money-dollar-circle-line"></i></span>Iuran Tetap Tahunan</a></li>
-                                        <li><a href="{{ route('iui.show') }}"><span class="menu-icon"><i class="ri-file-list-3-line"></i></span>Izin Usaha Industri (IUI)</a></li>
-                                        <li><a href="{{ route('ktt.show') }}"><span class="menu-icon"><i class="ri-shield-user-line"></i></span>Kepala Teknik Tambang (KTT)</a></li>
-                                        <li><a href="{{ route('kim.show') }}"><span class="menu-icon"><i class="ri-key-2-line"></i></span>Kartu Izin Meledakan (KIM)</a></li>
-                                        <li><a href="{{ route('handak.show') }}"><span class="menu-icon"><i class="ri-archive-line"></i></span>Gudang Bahan Peledak</a></li>
-                                        <li><a href="{{ route('bbc.show') }}"><span class="menu-icon"><i class="ri-oil-line"></i></span>Tangki BBC</a></li>
-                                        <li><a href="{{ route('le.show') }}"><span class="menu-icon"><i class="ri-file-search-line"></i></span>Laporan Eksplorasi</a></li>
-                                        <li><a href="{{ route('pelabuhan.show') }}"><span class="menu-icon"><i class="ri-anchor-line"></i></span>Pelabuhan</a></li>
-                                        <li><a href="{{ route('pl.show') }}"><span class="menu-icon"><i class="ri-leaf-line"></i></span>Persetujuan Lingkungan (PKPLH/SKKL)</a></li>
-                                        <li><a href="{{ route('pa.show') }}"><span class="menu-icon"><i class="ri-map-pin-line"></i></span>Project Area</a></li>
-                                        <li><a href="{{ route('rpt.show') }}"><span class="menu-icon"><i class="ri-earth-line"></i></span>Rencana Pascatambang RPT</a></li>
-                                        <li><a href="{{ route('rr.show') }}"><span class="menu-icon"><i class="ri-seedling-line"></i></span>Rencana Reklamasi RR</a></li>
-                                        <li><a href="{{ route('stk.show') }}"><span class="menu-icon"><i class="ri-book-2-line"></i></span>Studi Kelayakan (PersetujuanTekno-Ekonomi)</a></li>
-                                        <li><a href="{{ route('tb.show') }}"><span class="menu-icon"><i class="ri-flag-line"></i></span>Tanda Batas</a></li>
-                                        <li><a href="{{ route('rippm.show') }}"><span class="menu-icon"><i class="ri-government-line"></i></span>RIPPM</a></li>
-                                        <li><a href="{{ route('rkabop.show') }}"><span class="menu-icon"><i class="ri-briefcase-4-line"></i></span>RKAB Operasi Produksi</a></li>
-                                        <li><a href="{{ route('sipbrp.show') }}"><span class="menu-icon"><i class="ri-road-map-line"></i></span>Rencana Penambangan</a></li>
-                                        <li><a href="{{ route('sipbrtp.show') }}"><span class="menu-icon"><i class="ri-tools-line"></i></span>Rencana Teknis Penambangan</a></li>
-                                        {{-- <li><a href="#"><span class="menu-icon"><i class="ri-clipboard-line"></i></span>RKAB Eksplorasi</a></li> --}}
-                                    </ul>
-                                </div>
-                            </li>
+                            <!-- / Profil Menu Dokumen Teknis-->
+                            @php
+                                $jenis_izin = \App\Models\Profile::find(session('id_perusahaan'))?->jenis_izin ?? '-';
+                            @endphp
+                            @if ($jenis_izin == 'IUP' || $jenis_izin == 'SIPB')
+                                <li class="menu-item"><a class="d-flex align-items-center collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseMenuItemPages"
+                                        aria-expanded="false" aria-controls="collapseMenuItemPages">
+                                        <span class="menu-icon">
+                                            <i class="ri-file-list-3-line"></i>
+                                        </span>
+                                        <span class="menu-link">Dokumen Teknis</span></a>
+                                    <div class="collapse" id="collapseMenuItemPages">
+                                        <ul class="submenu">
+                                            @if ($jenis_izin == 'IUP')
+                                                <li><a href="{{ route('le.show') }}"><span class="menu-icon"><i class="ri-file-search-line"></i></span>Laporan Eksplorasi</a></li>
+                                                <li><a href="{{ route('pl.show') }}"><span class="menu-icon"><i class="ri-leaf-line"></i></span>Persetujuan Lingkungan (PKPLH/SKKL)</a></li>
+                                                <li><a href="{{ route('stk.show') }}"><span class="menu-icon"><i class="ri-book-2-line"></i></span>Studi Kelayakan</a></li>
+                                                <li><a href="{{ route('rr.show') }}"><span class="menu-icon"><i class="ri-seedling-line"></i></span>Rencana Reklamasi (RR)</a></li>
+                                                <li><a href="{{ route('rpt.show') }}"><span class="menu-icon"><i class="ri-earth-line"></i></span>Rencana Pascatambang (RPT)</a></li>
+                                                <li><a href="{{ route('ktt.show') }}"><span class="menu-icon"><i class="ri-shield-user-line"></i></span>Kepala Teknik Tambang (KTT)</a></li>
+                                                <li>
+                                                    <a href="{{ route('rippm.show') }}">
+                                                        <span class="menu-icon"><i class="ri-government-line"></i></span>
+                                                        Rencana Induk Pengembangan dan Pemberdayaan Masyarakat (RIPPM)
+                                                    </a>
+                                                </li>
+                                                <li><a href="{{ route('tb.show') }}"><span class="menu-icon"><i class="ri-flag-line"></i></span>Tanda Batas</a></li>
+                                                <li><a href="{{ route('rkabop.show') }}"><span class="menu-icon"><i class="ri-briefcase-4-line"></i></span>Rencana Kerja Anggaran Biaya (RKAB)</a>
+                                                </li>
+                                                <li><a href="{{ route('kim.show') }}"><span class="menu-icon"><i class="ri-key-2-line"></i></span>Kartu Izin Meledakan (KIM)</a></li>
+                                                <li><a href="{{ route('handak.show') }}"><span class="menu-icon"><i class="ri-archive-line"></i></span>Gudang Bahan Peledak</a></li>
+                                                <li><a href="{{ route('bbc.show') }}"><span class="menu-icon"><i class="ri-oil-line"></i></span>Tangki BBC</a></li>
+                                                <li><a href="{{ route('pelabuhan.show') }}"><span class="menu-icon"><i class="ri-anchor-line"></i></span>Pelabuhan</a></li>
+                                                <li><a href="{{ route('pa.show') }}"><span class="menu-icon"><i class="ri-map-pin-line"></i></span>Project Area</a></li>
+                                                <li><a href="{{ route('iuran.show') }}"><span class="menu-icon"><i class="ri-money-dollar-circle-line"></i></span>Iuran Tetap Tahunan</a></li>
+                                                <li><a href="{{ route('iui.show') }}"><span class="menu-icon"><i class="ri-file-list-3-line"></i></span>Izin Usaha Industri (IUI)</a></li>
+                                            @endif
+                                            @if ($jenis_izin == 'SIPB')
+                                                <li><a href="{{ route('pl.show') }}"><span class="menu-icon"><i class="ri-leaf-line"></i></span>Persetujuan Lingkungan (PKPLH/SKKL)</a></li>
+                                                <li><a href="{{ route('sipbrp.show') }}"><span class="menu-icon"><i class="ri-road-map-line"></i></span>Rencana Penambangan</a></li>
+                                                <li><a href="{{ route('sipbrtp.show') }}"><span class="menu-icon"><i class="ri-tools-line"></i></span>Rencana Teknis Penambangan</a></li>
+                                            @endif
+                                        </ul>
+                                    </div>
+                                </li>
+                            @endif
                             <!-- Pelaporan Section-->
                             <li class="menu-item"><a class="d-flex align-items-center" href="{{ route('reportmonth.show') }}">
                                     <span class="menu-icon">

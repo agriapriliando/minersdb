@@ -129,7 +129,7 @@
                                 <thead class="table-light">
                                     <tr>
                                         <th style="width: 3%">#</th>
-                                        <th class="text-nowrap">No Persetujuan</th>
+                                        <th class="text-nowrap">No Persetujuan <br>dan Perihal</th>
                                         <th class="text-nowrap">Tgl Persetujuan</th>
                                         <th class="text-nowrap">SD M³ Tereka</th>
                                         <th class="text-nowrap">SD M³ Tertunjuk</th>
@@ -155,7 +155,7 @@
                                         <tr wire:key="sipbrtp-row-{{ $id }}" x-data="{ confirmDelete: false }">
                                             <td>{{ $loop->iteration }}</td>
 
-                                            {{-- No Persetujuan --}}
+                                            {{-- No Persetujuan dan Perihal --}}
                                             <td>
                                                 <input type="text" class="form-control form-control-sm @error('sipbrtp.' . $id . '.sipbrtp_no_persetujuan') is-invalid @enderror"
                                                     wire:model="sipbrtp.{{ $id }}.sipbrtp_no_persetujuan" :disabled="$wire.editingId !== {{ $id }}">
@@ -328,7 +328,7 @@
                                     <tr>
                                         <td>+</td>
                                         <td><input type="text" class="form-control form-control-sm @error('sipbrtp_no_persetujuan') is-invalid @enderror" wire:model="sipbrtp_no_persetujuan"
-                                                placeholder="No Persetujuan">
+                                                placeholder="No Persetujuan <br>dan Perihal">
                                             @error('sipbrtp_no_persetujuan')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror

@@ -37,6 +37,8 @@ return new class extends Migration
             $table->string('nib_email_oss', 120)->nullable();
             $table->string('nib_nomor_hp_oss', 120)->nullable();
             $table->text('keterangan')->nullable();
+            $table->string('kontrak_kerja_sama')->nullable();
+            $table->text('jenis_bidang_sub_bidang_usaha_jasa')->nullable();
             $table->timestamps();
         });
     }

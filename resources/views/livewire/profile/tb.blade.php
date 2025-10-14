@@ -129,7 +129,7 @@
                                 <thead class="table-light">
                                     <tr>
                                         <th style="width: 5%">#</th>
-                                        <th class="text-nowrap">No. SK Tanda Batas</th>
+                                        <th class="text-nowrap">No SK dan Perihal</th>
                                         <th class="text-nowrap">Tanggal SK Tanda Batas</th>
                                         <th class="text-nowrap">Laporan Pemeliharaan</th>
                                         <th style="width: 20%">Aksi</th>
@@ -140,7 +140,7 @@
                                         <tr wire:key="tb-row-{{ $id }}" x-data="{ confirmDelete: false }">
                                             <td>{{ $loop->iteration }}</td>
 
-                                            {{-- No. SK Tanda Batas --}}
+                                            {{-- No SK dan Perihal --}}
                                             <td>
                                                 <input type="text" class="form-control form-control-sm @error('tb.' . $id . '.no_sk_tanda_batas') is-invalid @enderror"
                                                     wire:model="tb.{{ $id }}.no_sk_tanda_batas" :disabled="$wire.editingId !== {{ $id }}">
@@ -216,7 +216,7 @@
                                         <td>+</td>
                                         <td>
                                             <input type="text" class="form-control form-control-sm @error('no_sk_tanda_batas') is-invalid @enderror" wire:model="no_sk_tanda_batas"
-                                                placeholder="No. SK Tanda Batas">
+                                                placeholder="No SK dan Perihal">
                                             @error('no_sk_tanda_batas')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror

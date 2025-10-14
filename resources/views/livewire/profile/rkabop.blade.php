@@ -30,7 +30,11 @@
                     }" x-on:livewire-upload-progress="progress = $event.detail.progress" x-on:livewire-upload-finish="progress = 0"
                         x-on:livewire-upload-error="progress = 0">
                         <div class="card-header justify-content-between align-items-center d-md-flex">
-                            <h5 class="card-title m-0">Daftar {{ $judul_menu . ' | ' . session('nama_pemegang_perizinan') }}</h5>
+                            <div>
+                                <h5 class="card-title m-0">Daftar {{ $judul_menu . ' | ' . session('nama_pemegang_perizinan') }}</h5>
+                                <p><span class="badge text-bg-success">Tahapan : {{ $jenis_tahapan }}</span></p>
+                            </div>
+
                             <div class="d-flex gap-1 mt-md-0 mt-2">
                                 <button type="button" @click="opendokumen = !opendokumen" class="btn btn-primary btn-sm"><i class="ri-menu-line"></i> <span
                                         x-text="opendokumen ? 'Tutup Dokumen' : 'Lihat Dokumen'"></span></button>
@@ -161,7 +165,7 @@
                                 <thead class="table-light">
                                     <tr>
                                         <th>#</th>
-                                        <th>No Persetujuan</th>
+                                        <th>No Persetujuan <br>dan Perihal</th>
                                         <th>Tgl Persetujuan</th>
 
                                         {{-- Sumber Daya Thn I --}}
@@ -431,7 +435,8 @@
                                             <td>
                                                 <div class="d-flex gap-1">
                                                     {{-- Detail --}}
-                                                    <a href="{{ route('rkabop.peralatan.show', $id) }}" class="btn btn-primary btn-sm" x-show="$wire.editingId !== {{ $id }}">
+                                                    <a href="{{ route('rkabop.peralatan.show', $id) }}" class="btn btn-primary btn-sm {{ $jenis_tahapan == 'Eksplorasi' ? 'd-none' : '' }}"
+                                                        x-show="$wire.editingId !== {{ $id }}">
                                                         <i class="ri-eye-line"></i>
                                                     </a>
                                                     {{-- Simpan --}}
@@ -478,7 +483,7 @@
                                     {{-- Tambah data baru --}}
                                     <tr>
                                         <th>#</th>
-                                        <th>No Persetujuan</th>
+                                        <th>No Persetujuan <br>dan Perihal</th>
                                         <th>Tgl Persetujuan</th>
 
                                         <th>Aksi</th>
@@ -488,7 +493,7 @@
                                         {{-- Persetujuan --}}
                                         <td>
                                             <input type="text" class="form-control form-control-sm @error('rkabop_no_persetujuan') is-invalid @enderror" wire:model="rkabop_no_persetujuan"
-                                                placeholder="No Persetujuan">
+                                                placeholder="No dan Perihal">
                                             @error('rkabop_no_persetujuan')
                                                 <div class="text-danger small">{{ $message }}</div>
                                             @enderror
@@ -511,6 +516,7 @@
                                     </tr>
                                 </tbody>
                             </table>
+                            <small class="text-muted">Menu Daftar Peralatan Terbuka jika Tahapan : Operasi Produksi</small>
                         </div>
                         {{-- tabel data --}}
                     </div>

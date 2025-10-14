@@ -129,8 +129,8 @@
                                 <thead class="table-light">
                                     <tr>
                                         <th style="width: 5%">#</th>
-                                        <th>No. Pengesahan</th>
-                                        <th>Tanggal Pengesahan</th>
+                                        <th>No Persetujuan <br>dan Perihal</th>
+                                        <th>Tanggal</th>
                                         <th>Nama KTT</th>
                                         <th style="width: 20%">Aksi</th>
                                     </tr>
@@ -140,7 +140,7 @@
                                         <tr wire:key="ktt-row-{{ $id }}" x-data="{ confirmDelete: false }">
                                             <td>{{ $loop->iteration }}</td>
 
-                                            {{-- No. Pengesahan --}}
+                                            {{-- No. --}}
                                             <td>
                                                 <input type="text" class="form-control form-control-sm @error('ktt.' . $id . '.ktt_no_pengesahan') is-invalid @enderror"
                                                     wire:model="ktt.{{ $id }}.ktt_no_pengesahan" :disabled="$wire.editingId !== {{ $id }}">
@@ -216,7 +216,7 @@
                                         <td>+</td>
                                         <td>
                                             <input type="text" class="form-control form-control-sm @error('ktt_no_pengesahan') is-invalid @enderror" wire:model="ktt_no_pengesahan"
-                                                placeholder="No. Pengesahan">
+                                                placeholder="No dan Perihal">
                                             @error('ktt_no_pengesahan')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror

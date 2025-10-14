@@ -36,6 +36,8 @@ class Profile extends Component
     public $nib_email_oss;
     public $nib_nomor_hp_oss;
     public $keterangan;
+    public $kontrak_kerja_sama;
+    public $jenis_bidang_sub_bidang_usaha_jasa;
 
     public function mount($id)
     {
@@ -44,6 +46,10 @@ class Profile extends Component
 
         // isi property sesuai data dari database
         $this->fill($this->profile->toArray());
+
+        // format khusus untuk input date
+        $this->tgl_terbit_izin = optional($this->profile->tgl_terbit_izin)->format('Y-m-d');
+        $this->tgl_berakhir_izin = optional($this->profile->tgl_berakhir_izin)->format('Y-m-d');
 
         // simpan di session jika perlu
         session(['id_perusahaan' => $id]);
@@ -77,6 +83,8 @@ class Profile extends Component
             'nib_email_oss' => 'nullable|string|max:255',
             'nib_nomor_hp_oss' => 'nullable|string|max:20',
             'keterangan' => 'nullable|string',
+            'kontrak_kerja_sama' => 'nullable|string',
+            'jenis_bidang_sub_bidang_usaha_jasa' => 'nullable|string',
         ];
     }
 
@@ -100,32 +108,36 @@ class Profile extends Component
     {
         $this->validate();
 
-        $this->profile->update($this->only([
-            'nama_pemegang_perizinan',
-            'kabupaten_kota',
-            'kecamatan',
-            'desa_kelurahan',
-            'luas_ha',
-            'tahapan_iup',
-            'komoditas',
-            'nomor_induk_berusaha_nib',
-            'nomor_npwp',
-            'status_npwp',
-            'jenis_izin',
-            'nomor_sk_izin',
-            'tgl_terbit_izin',
-            'tgl_berakhir_izin',
-            'alamat_perusahaan_berdasarkan_sk_izin',
-            'nama_direktur_sesuai_sk_izin',
-            'dewan_direksi_bod',
-            'modal_kerja',
-            'nama_pic',
-            'no_hp_pic',
-            'email_resmi_perusahaan',
-            'nib_email_oss',
-            'nib_nomor_hp_oss',
-            'keterangan',
-        ]));
+        // dd($this->tgl_terbit_izin, $this->tgl_berakhir_izin);
+
+        $this->profile->update([
+            'nama_pemegang_perizinan' => $this->nama_pemegang_perizinan,
+            'kabupaten_kota' => $this->kabupaten_kota,
+            'kecamatan' => $this->kecamatan,
+            'desa_kelurahan' => $this->desa_kelurahan,
+            'luas_ha' => $this->luas_ha,
+            'tahapan_iup' => $this->tahapan_iup,
+            'komoditas' => $this->komoditas,
+            'nomor_induk_berusaha_nib' => $this->nomor_induk_berusaha_nib,
+            'nomor_npwp' => $this->nomor_npwp,
+            'status_npwp' => $this->status_npwp,
+            'jenis_izin' => $this->jenis_izin,
+            'nomor_sk_izin' => $this->nomor_sk_izin,
+            'tgl_terbit_izin' => $this->tgl_terbit_izin ?: null,
+            'tgl_berakhir_izin' => $this->tgl_berakhir_izin ?: null,
+            'alamat_perusahaan_berdasarkan_sk_izin' => $this->alamat_perusahaan_berdasarkan_sk_izin,
+            'nama_direktur_sesuai_sk_izin' => $this->nama_direktur_sesuai_sk_izin,
+            'dewan_direksi_bod' => $this->dewan_direksi_bod,
+            'modal_kerja' => $this->modal_kerja,
+            'nama_pic' => $this->nama_pic,
+            'no_hp_pic' => $this->no_hp_pic,
+            'email_resmi_perusahaan' => $this->email_resmi_perusahaan,
+            'nib_email_oss' => $this->nib_email_oss,
+            'nib_nomor_hp_oss' => $this->nib_nomor_hp_oss,
+            'keterangan' => $this->keterangan,
+            'kontrak_kerja_sama' => $this->kontrak_kerja_sama,
+            'jenis_bidang_sub_bidang_usaha_jasa' => $this->jenis_bidang_sub_bidang_usaha_jasa,
+        ]);
 
         $this->isEditing = false; // kembali ke mode view
         $this->dispatch('update-success', message: 'Profile berhasil diperbaharui!');

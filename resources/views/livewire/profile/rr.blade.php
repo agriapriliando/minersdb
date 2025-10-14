@@ -129,7 +129,7 @@
                                 <thead class="table-light">
                                     <tr>
                                         <th style="width: 5%">#</th>
-                                        <th class="text-nowrap">No. Persetujuan</th>
+                                        <th class="text-nowrap">No Persetujuan <br>dan Perihal</th>
                                         <th class="text-nowrap">Tanggal Persetujuan</th>
                                         <th class="text-nowrap">Tahun</th>
                                         <th class="text-nowrap">Nominal Ditetapkan</th>
@@ -142,7 +142,7 @@
                                         <tr wire:key="rr-row-{{ $id }}" x-data="{ confirmDelete: false }">
                                             <td>{{ $loop->iteration }}</td>
 
-                                            {{-- No. Persetujuan --}}
+                                            {{-- No. Persetujuan dan Perihal --}}
                                             <td>
                                                 <input type="text" class="form-control form-control-sm @error('rr.' . $id . '.rr_no_persetujuan') is-invalid @enderror"
                                                     wire:model="rr.{{ $id }}.rr_no_persetujuan" :disabled="$wire.editingId !== {{ $id }}">
@@ -236,7 +236,7 @@
                                         <td>+</td>
                                         <td>
                                             <input type="text" class="form-control form-control-sm @error('rr_no_persetujuan') is-invalid @enderror" wire:model="rr_no_persetujuan"
-                                                placeholder="No. Persetujuan">
+                                                placeholder="No dan Perihal">
                                             @error('rr_no_persetujuan')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror

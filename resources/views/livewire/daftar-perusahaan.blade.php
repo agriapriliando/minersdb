@@ -51,6 +51,13 @@
                                 @endforeach
                             </datalist>
                         </div>
+                        <select style="max-width: 120px" wire:model.live="jenis_izin" class="form-select form-control-sm me-2 mb-2 rounded">
+                            <option value="">Semua Izin</option>
+                            <option value="IUP">IUP</option>
+                            <option value="SIPB">SIPB</option>
+                            <option value="IPP">IPP</option>
+                            <option value="IUJP">IUJP</option>
+                        </select>
                         <select style="max-width: 120px" wire:model.live="perPage" class="form-select form-control-sm me-2 mb-2 rounded">
                             <option value="5">5</option>
                             <option value="10">10</option>

@@ -31,6 +31,8 @@ class ProfileAdd extends Component
     public $nib_email_oss;
     public $nib_nomor_hp_oss;
     public $keterangan;
+    public $kontrak_kerja_sama;
+    public $jenis_bidang_sub_bidang_usaha_jasa;
 
     protected $rules = [
         'nama_pemegang_perizinan' => 'required|string|max:255',
@@ -57,6 +59,8 @@ class ProfileAdd extends Component
         'nib_email_oss' => 'nullable|email|max:255',
         'nib_nomor_hp_oss' => 'nullable|string|max:50',
         'keterangan' => 'nullable|string',
+        'kontrak_kerja_sama' => 'nullable|string',
+        'jenis_bidang_sub_bidang_usaha_jasa' => 'nullable|string',
     ];
 
     public function store()
