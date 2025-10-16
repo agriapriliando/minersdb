@@ -2,7 +2,9 @@
 
 namespace App\Livewire;
 
+use App\Models\Dokumen;
 use App\Models\Profile;
+use Illuminate\Support\Facades\File;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -16,6 +18,8 @@ class DaftarPerusahaan extends Component
     public $komoditasSearch = '';
     public $kabupaten_kotaSearch = '';
     public $jenis_izin;
+
+    public $toogleDelete = false;
     public function mount()
     {
         session(['id_perusahaan' => null]);
@@ -43,6 +47,31 @@ class DaftarPerusahaan extends Component
         $this->jenis_izin = '';
         $this->perPage = 10;
         $this->resetPage();
+    }
+
+    public function updatingPerPage()
+    {
+        $this->resetPage();
+    }
+
+    public function updatingJenis_izin()
+    {
+        $this->resetPage();
+    }
+
+    public function delete($id)
+    {
+        $profile = Profile::find($id);
+        Dokumen::where('profile_id', $id)->delete();
+        $path = storage_path('app/public/dokumens/' . $id); // contoh path folder
+
+        if (File::exists($path)) {
+            File::deleteDirectory($path);
+        }
+        $nama_pemegang_perizinan = $profile->nama_pemegang_perizinan;
+        $profile->delete();
+        $this->resetPage();
+        $this->dispatch('delete-success', message: 'Data ' . $nama_pemegang_perizinan . ' berhasil dihapus!');
     }
     public function render()
     {

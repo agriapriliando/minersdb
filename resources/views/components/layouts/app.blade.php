@@ -13,10 +13,10 @@
     <meta name="keywords" content="">
 
     <!-- Favicon -->
-    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('') }}assets/images/favicon/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('') }}assets/images/favicon/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('') }}assets/images/favicon/favicon-16x16.png">
-    <link rel="mask-icon" href="{{ asset('') }}assets/images/favicon/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('assets/logo/apple-touch-icon.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('assets/logo/favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('assets/logo/favicon-16x16.png') }}">
+    <link rel="mask-icon" href="{{ asset('assets/logo/favicon-16x16.png.png') }}" color="#5bbad5">
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="theme-color" content="#ffffff">
 
@@ -56,7 +56,7 @@
                     <div class="me-2">
                         <img src="{{ asset('assets/logo/android-chrome-192x192.png') }}" width="30" alt="">
                     </div>
-                    <span class="fw-black tracking-wide fs-6 lh-1">DESDM Kalteng</span>
+                    <span class="fw-black tracking-wide fs-6 lh-1">MinersDB Kalteng</span>
                 </div>
             </a>
             <div class="d-flex justify-content-between align-items-center flex-grow-1 navbar-actions">
@@ -82,10 +82,6 @@
                         <span class="fw-medium badge bg-primary me-1">
                             Hai, {{ session('user')['name'] }}
                         </span>
-                        <form action="{{ route('auth.logout') }}" method="POST">
-                            @csrf
-                            <button type="submit" class="btn badge bg-danger"><i class="ri-logout-circle-line"></i> Logout</button>
-                        </form>
                     @else
                         <span class="fw-medium badge bg-primary">
                             <a href="{{ route('auth.login') }}" class="btn btn-primary btn-sm">Login</a>
@@ -129,7 +125,6 @@
             <!-- Footer -->
             <footer class="footer" style="background-color: white !important;">
                 <p class="small text-muted m-0">All rights reserved | © 2025</p>
-                <p class="small text-muted m-0">Template created by <a href="https://www.ditaria.com">Ditaria</a></p>
             </footer>
             <!-- Footer -->
 
@@ -276,6 +271,35 @@
                             </li>
                             <!-- / Surat Menyurat Section-->
                             <!-- / Menu Perusahaan Section-->
+                        @endif
+                        <!-- Logout Section-->
+                        @if (session('user'))
+                            <li class="menu-item">
+                                <div class="d-flex align-items-center ms-2">
+                                    <form action="{{ route('auth.logout') }}" method="POST" class="d-flex align-items-center">
+                                        @csrf
+                                        <button type="submit" class="btn w-100 d-flex align-items-center text-start">
+                                            <span class="menu-icon me-2">
+                                                <i class="ri-logout-circle-line text-danger"></i>
+                                            </span>
+                                            <span class="menu-link text-danger fw-semibold">
+                                                L O G O U T
+                                            </span>
+                                        </button>
+                                    </form>
+                                </div>
+                            </li>
+                            <!-- / Logout Section-->
+                        @else
+                            <li class="menu-item">
+                                <a class="d-flex align-items-center" href="{{ route('auth.login') }}">
+                                    <span class="menu-icon">
+                                        <i class="ri-archive-drawer-line"></i>
+                                    </span>
+                                    <span class="menu-link">
+                                        LOGIN
+                                    </span></a>
+                            </li>
                         @endif
                     </ul>
                 </div>

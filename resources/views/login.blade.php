@@ -4,7 +4,7 @@
             <div class="card align-middle" style="min-height: 50vh;">
                 <div class="card-body px-5 pt-5 pb-4">
                     <img src="assets/logo_kotak.png" alt="navbar brand" class="navbar-brand float-end d-none" height="40" />
-                    <h5 class="card-title">Login</h5>
+                    <h5 class="card-title">Login MinersDB</h5>
                     <h6 class="card-subtitle mb-4 text-body-secondary">Bidang Pertambangan DESDM Kalteng</h6>
                     <hr>
                     <div>
@@ -40,8 +40,7 @@
                         </form>
                     </div>
                     <div class="text-center mt-4">
-                        Aplikasi Pendataan Bidang Pertambangan DESDM Kalteng<br>2025, made with <i class="ri-heart-fill text-danger"></i> by
-                        <a target="_blank" href="#">Ditaria Berkat Harati</a>.
+                        <span class="fw-bold">MinersDB</span> Bidang Pertambangan DESDM Kalteng<br>Tahun 2025
                     </div>
                 </div>
             </div>

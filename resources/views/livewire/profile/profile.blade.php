@@ -20,7 +20,7 @@
                         <div class="card-header justify-content-between align-items-center d-flex">
                             <h6 class="card-title m-0">{{ $nama_pemegang_perizinan }}</h6>
                             <div class="d-flex gap-2">
-                                <a href="{{ route('home') }}" class="btn btn-primary btn-sm">Dashboard</a>
+                                <a href="{{ route('home') }}" class="btn btn-primary btn-sm"><i class="ri-arrow-left-line"></i> DAFTAR</a>
 
                                 @if (!$isEditing)
                                     <button type="button" class="btn btn-sm btn-primary" wire:click="edit({{ $id }})">

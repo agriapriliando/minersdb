@@ -109,7 +109,11 @@
                                                 <span class="badge text-bg-success">{{ $dok->jenis_dokumen }}</span>
                                                 <span class="badge text-bg-success">({{ number_format($dok->size_dokumen / 1024, 2) }} KB)</span>
                                                 <div class="d-flex gap-1 float-end" @click.outside="confirmDelete = false">
-                                                    <a class="btn btn-success btn-sm text-white" href="{{ asset($dok->link_dokumen) }}" target="_blank"><i class="ri-download-2-line"></i></a>
+                                                    {{-- btn unduh --}}
+                                                    <a class="d-none btn btn-success btn-sm text-white" href="{{ asset($dok->link_dokumen) }}" target="_blank"><i class="ri-download-2-line"></i></a>
+                                                    <button wire:click="downloadDokumen({{ $dok->id }})" class="btn btn-success btn-sm text-white"><i class="ri-download-2-line"></i></button>
+                                                    <span wire:loading wire:target="downloadDokumen({{ $dok->id }})">Proses...</span>
+                                                    {{-- btn unduh --}}
                                                     {{-- Konfirmasi hapus --}}
                                                     <div x-cloak x-show="confirmDelete" x-transition>
                                                         <div class="d-flex">

@@ -28,7 +28,7 @@ trait WithDokumen
             ]);
         }
 
-        $path = $this->file->store('dokumens/' . session('id_perusahaan'), 'public');
+        $path = $this->file->store('dokumens/' . session('id_perusahaan'));
 
         Dokumen::create([
             'profile_id'    => session('id_perusahaan'),
@@ -36,7 +36,8 @@ trait WithDokumen
             'jenis_dokumen' => $this->jenis_dokumen,
             'judul_dokumen' => pathinfo($this->file->getClientOriginalName(), PATHINFO_FILENAME),
             'ket_dokumen'   => null,
-            'link_dokumen'  => 'storage/' . $path,
+            // 'link_dokumen'  => 'storage/' . $path, untuk folder public
+            'link_dokumen'  => $path,
             'size_dokumen'  => $this->file->getSize(),
             'ext_dokumen'   => $this->file->getClientOriginalExtension(),
         ]);
@@ -44,6 +45,30 @@ trait WithDokumen
         $this->reset(['file', 'jenis_dokumen']);
 
         session()->flash('success', 'Dokumen berhasil diunggah!');
+    }
+
+    public function downloadDokumen($id)
+    {
+        // $dokumen = Dokumen::find($id);
+
+        // if (!$dokumen) {
+        //     session()->flash('error', 'Dokumen tidak ditemukan.');
+        //     return;
+        // }
+        // untuk langsung download
+        // return Storage::download($dokumen->link_dokumen);
+
+        $dokumen = Dokumen::findOrFail($id);
+        $filePath = storage_path('app/private/' . $dokumen->link_dokumen);
+
+        if (!file_exists($filePath)) {
+            abort(404);
+        }
+
+        return response()->file($filePath, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="' . basename($filePath) . '"'
+        ]);
     }
 
     public function deleteDokumen($id)
@@ -55,8 +80,8 @@ trait WithDokumen
             return;
         }
 
-        if ($dokumen->link_dokumen && Storage::disk('public')->exists(str_replace('storage/', '', $dokumen->link_dokumen))) {
-            Storage::disk('public')->delete(str_replace('storage/', '', $dokumen->link_dokumen));
+        if ($dokumen->link_dokumen && Storage::disk('local')->exists(str_replace('storage/', '', $dokumen->link_dokumen))) {
+            Storage::disk('local')->delete(str_replace('storage/', '', $dokumen->link_dokumen));
         }
 
         $dokumen->delete();

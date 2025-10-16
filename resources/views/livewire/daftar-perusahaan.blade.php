@@ -1,6 +1,16 @@
 <div>
     <!-- Top Row Widgets-->
     <div class="row">
+        {{-- toast --}}
+        <div class="toast-container position-fixed top-0 start-50 translate-middle-x">
+            <div id="liveToast" class="toast mt-3" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header">
+                    <strong class="me-auto" id="pesan"></strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
+        {{-- toast --}}
         <!-- Tabel Perusahaan-->
         <div class="col-12">
             <div class="card">
@@ -73,6 +83,9 @@
 
                     <!-- Table-->
                     <div class="table-responsive">
+                        <div>
+                            {{ $profiles->links('custom-pagination') }}
+                        </div>
                         <table class="table m-0 table-striped" id="tabel-perusahaan">
                             <thead>
                                 <tr>
@@ -80,7 +93,14 @@
                                     <th>Nama Perusahaan</th>
                                     <th>Kabupaten/Kota</th>
                                     <th>Komoditas</th>
-                                    <th></th>
+                                    <th>
+                                        <div class="">
+                                            <label class="form-check-label" for="checkDefault">
+                                                <i class="ri-delete-bin-line" style="font-size: 20px"></i>
+                                            </label>
+                                            <input wire:model.live="toogleDelete" type="checkbox" style="width: 20px; height: 20px;" id="checkDefault">
+                                        </div>
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -90,21 +110,30 @@
                                             {{ ($profiles->currentPage() - 1) * $profiles->perPage() + $loop->index + 1 }}
                                         </td>
                                         <td>
-                                            {{ $item->nama_pemegang_perizinan }}
+                                            <span class="badge text-bg-success">{{ $item->jenis_izin }}</span>
+                                            <a href="{{ route('profile.show', $item->id) }}" class="text-decoration-underline text-nowrap text-black">
+                                                {{ $item->nama_pemegang_perizinan }}
+                                            </a>
                                         </td>
                                         <td>{{ $item->kabupaten_kota }}</td>
                                         <td>{{ $item->komoditas }}</td>
                                         <td>
-                                            <a href="{{ route('profile.show', $item->id) }}" class="btn btn-sm btn-primary"> <i class="ri-eye-fill"></i></a>
-                                            <a target="_blank" href="{{ route('profile.cetak', $item->id) }}" class="btn btn-sm btn-primary"> <i class="ri-printer-fill"></i></a>
+                                            <div x-data="{ confirmDelete: false }">
+                                                <button @click="confirmDelete = true" x-show="!confirmDelete" class="btn btn-sm btn-danger text-white" {{ $toogleDelete ? '' : 'disabled' }}> <i
+                                                        class="ri-delete-bin-line"></i></button>
+                                                <div x-show="confirmDelete" @click.outside="confirmDelete = false">
+                                                    <span @click="confirmDelete = false" wire:click="delete({{ $item->id }})" class="btn btn-sm btn-danger text-white">Ya Hapus</span>
+                                                    <span class="btn btn-sm btn-secondary" @click="confirmDelete = false">Batal</span>
+                                                </div>
+                                            </div>
                                         </td>
                                     </tr>
                                 @endforeach
                             </tbody>
                         </table>
-                    </div>
-                    <div>
-                        {{ $profiles->links('custom-pagination') }}
+                        <div class="mt-1">
+                            {{ $profiles->links('custom-pagination') }}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -114,6 +143,24 @@
     </div>
     <!-- / Top Row Widgets-->
 </div>
+@script
+    <script>
+        $wire.on('delete-success', (event) => {
+            var element = document.getElementById('liveToast');
+            console.log(event.message);
+            const myToast = bootstrap.Toast.getOrCreateInstance(element);
+            setTimeout(function() {
+                myToast.show();
+                document.getElementById('pesan').innerHTML = event.message;
+                element.className += " text-bg-warning";
+                console.log(event.message);
+            }, 10);
+            setTimeout(function() {
+                myToast.hide();
+            }, 3000);
+        });
+    </script>
+@endscript
 @push('scriptsatas')
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Vendor CSS -->

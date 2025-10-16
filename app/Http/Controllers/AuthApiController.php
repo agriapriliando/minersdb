@@ -29,6 +29,9 @@ class AuthApiController extends Controller
 
         if ($response->successful()) {
             $data = $response->json();
+            if ($data['status'] != 'success') {
+                return redirect()->route('login.form')->with('status', $data['message']);
+            }
 
             // Simpan token & user di session
             session([
@@ -44,10 +47,8 @@ class AuthApiController extends Controller
 
             return redirect()->route('home')->with('status', 'Login berhasil');
         }
-
-        return redirect()->route('login.form')->with('status', 'Username atau password salah');
+        return redirect()->route('login.form')->with('status', 'Sistem Sedang Galat, tidak bisa Login');
     }
-
     public function logout(Request $request)
     {
         // Ambil token dari session
