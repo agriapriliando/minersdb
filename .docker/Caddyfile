@@ -1,4 +1,6 @@
 :80 {
+    auto_https off
+
     root * /app/public
     php_server
     file_server
