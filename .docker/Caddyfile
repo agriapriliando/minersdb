@@ -1,4 +1,4 @@
-minerskalteng.com, www.minerskalteng.com {
+:80 {
     root * /app/public
     php_server
     file_server
