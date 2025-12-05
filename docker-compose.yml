@@ -22,8 +22,8 @@ services:
         extra_hosts:
             - "host.docker.internal:host-gateway"
         networks:
-            - proxy
+            - esdmpermit_default
 
 networks:
-    proxy:
+    esdmpermit_default:
         external: true
