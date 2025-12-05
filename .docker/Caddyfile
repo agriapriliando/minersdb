@@ -1,0 +1,17 @@
+minerskalteng.com, www.minerskalteng.com {
+    root * /app/public
+    php_server
+    file_server
+
+    encode gzip zstd
+
+    header {
+        X-Frame-Options "SAMEORIGIN"
+        X-XSS-Protection "1; mode=block"
+        X-Content-Type-Options "nosniff"
+        Content-Security-Policy "default-src 'self' https: data: 'unsafe-inline' 'unsafe-eval'"
+        Referrer-Policy "strict-origin-when-cross-origin"
+    }
+
+    try_files {path} {path}/ /index.php?{query}
+}
